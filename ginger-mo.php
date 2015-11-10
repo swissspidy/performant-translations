@@ -1,6 +1,12 @@
 <?php
 
 /*
+ * Ginger-Mo is not-quite-gold, but almost.
+ * It's a "lightweight" .mo reader for WordPress, it's designed to use the minimal memory and processing.
+ * This is a POC plugin and includes the ability to hook into WordPress.
+ */
+
+/*
 $ginger = new Ginger_MO(); $ginger->load( WP_LANG_DIR . '/continents-cities-fr_FR.mo' );
 
 var_dump( $ginger->translate( $ginger->example_string ), $ginger );
