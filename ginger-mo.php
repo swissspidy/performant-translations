@@ -64,28 +64,28 @@ var_dump( $translations );
 
 class Ginger_MO_Translation_Provider {
 	private $textdomain = 'default';
-	private $mo_jit;
+	private $ginger_mo;
 	function __construct( $textdomain = 'default' ) {
 		$this->textdomain = $textdomain;
-		$this->mo_jit = Ginger_MO::instance();
+		$this->ginger_mo = Ginger_MO::instance();
 	}
 
 	function translate_plural( $single, $plural, $number = 1, $context = '' ) {
-		return $this->mo_jit->translate_plural( array( $single, $plural ), $number, $context, $this->textdomain );
+		return $this->ginger_mo->translate_plural( array( $single, $plural ), $number, $context, $this->textdomain );
 	}
 	function translate( $text, $context = '' ) {
-		return $this->mo_jit->translate( $text, $context, $this->textdomain );
+		return $this->ginger_mo->translate( $text, $context, $this->textdomain );
 	}
 }
 
 class Ginger_MO_Translation_Compat implements ArrayAccess {
-	private $mo_jit;
+	private $ginger_mo;
 	function __construct() {
-		$this->mo_jit = Ginger_MO::instance();
+		$this->ginger_mo = Ginger_MO::instance();
 	}
 
 	function offsetExists( $domain ) {
-		return $this->mo_jit->is_loaded( $domain );
+		return $this->ginger_mo->is_loaded( $domain );
 	}
 
 	function offsetGet( $domain ) {
@@ -98,14 +98,14 @@ class Ginger_MO_Translation_Compat implements ArrayAccess {
 	}
 
 	function offsetUnset( $domain ) {
-		return $this->mo_jit->unload( $domain );
+		return $this->ginger_mo->unload( $domain );
 	}
 
 	function load_textdomain( $return, $domain, $mofile ) {
 		do_action( 'load_textdomain', $domain, $mofile );
 		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
 
-		$this->mo_jit->load( $mofile, $domain );
+		$this->ginger_mo->load( $mofile, $domain );
 
 		return true;
 	}
@@ -113,7 +113,7 @@ class Ginger_MO_Translation_Compat implements ArrayAccess {
 	function unload_textdomain( $return, $domain ) {
 		do_action( 'unload_textdomain', $domain );
 
-		$this->mo_jit->unload( $domain );
+		$this->ginger_mo->unload( $domain );
 
 		return true;
 	}
