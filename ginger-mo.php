@@ -116,7 +116,7 @@ Ginger_MO_Translation_Compat::overwrite_wordpress();
 
 class Ginger_MO {
 	private $default_textdomain = 'default';
-	private $loaded_mo_files = array(); // [ Locale => [ Textdomain => [ .., .. ] ] ]
+	private $loaded_mo_files = array(); //[ Textdomain => [ .., .. ] ]
 
 	private $fallback_to_default_textdomain = false;
 
@@ -126,7 +126,7 @@ class Ginger_MO {
 	}
 
 	public function load( $mo, $textdomain = null ) {
-		$moe = new Ginger_MO_MO_FILE( $mo );
+		$moe = new Ginger_MO_File( $mo );
 		if ( $moe->exists() && ! $moe->error() ) {
 			if ( ! $textdomain ) {
 				$textdomain = $this->default_textdomain;
@@ -255,7 +255,7 @@ class Ginger_MO {
 
 }
 
-class Ginger_MO_MO_FILE {
+class Ginger_MO_File {
 	public $meta = array(
 		'plural-forms' => 'nplurals=2;plural=(n!=1);',
 	);
