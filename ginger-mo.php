@@ -100,11 +100,7 @@ class Ginger_MO_Translation_Compat implements ArrayAccess {
 	}
 
 	static function overwrite_wordpress() {
-		global $MOJIT, $l10n;
-
-		if ( ! isset( $MOJIT ) ) {
-			$MOJIT = Ginger_MO::instance();
-		}
+		global $l10n;
 
 		$l10n = new Ginger_MO_Translation_Compat();
 
