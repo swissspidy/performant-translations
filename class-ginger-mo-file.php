@@ -69,7 +69,7 @@ class Ginger_MO_File {
 		if ( $this->use_mb_substr ) {
 			return mb_substr( $this->file_contents, $from, $bytes, '8bit' );
 		} else {
-			return substr( $this->file_contents, $start, $bytes );
+			return substr( $this->file_contents, $from, $bytes );
 		}
 	}
 
