@@ -10,14 +10,14 @@ class Ginger_MO_File {
 	protected $flag_exists       = false;
 	protected $flag_error        = false;
 
-	protected $entries           = array(); // [ "Original" => "Translation" ]
-
 	// used for unpack(), little endian = V, big endian = N
 	private $uint32 = false;
 	private $use_mb_substr = false;
 
 	private $file                = '';
 	private $file_contents       = null;
+
+	protected $entries           = array(); // [ "Original" => "Translation" ]
 
 	public function __construct( $file ) {
 		$this->file = $file;
