@@ -1,42 +1,15 @@
 <?php
 
-class Ginger_MO_File {
-	public $headers = array(
-		'plural-forms' => 'nplurals=2;plural=(n!=1);',
-	);
-
-	protected $flag_parsed       = false;
-	protected $flag_error        = false;
-
+class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	// used for unpack(), little endian = V, big endian = N
-	private $uint32 = false;
-	private $use_mb_substr = false;
+	protected $uint32 = false;
+	protected $use_mb_substr = false;
 
-	private $file                = '';
-	private $file_contents       = null;
-
-	protected $entries           = array(); // [ "Original" => "Translation" ]
+	protected $file_contents       = null;
 
 	protected function __construct( $file ) {
-		$this->file = $file;
-		$this->flag_error = ! is_readable( $file );
+		parent::__construct( $file );
 		$this->use_mb_substr = function_exists('mb_substr') && ( (ini_get( 'mbstring.func_overload' ) & 2) != 0 );
-	}
-
-	public function headers() {
-		return $this->headers;
-	}
-
-	public function error() {
-		return $this->flag_error;
-	}
-
-	public function translate( $string ) {
-		if ( ! $this->flag_parsed ) {
-			$this->parse_file();
-		}
-
-		return isset( $this->entries[ $string ] ) ? $this->entries[ $string ] : false;
 	}
 
 	public function get_plural_form( $number ) {
@@ -54,18 +27,10 @@ class Ginger_MO_File {
 			}
 		}
 
-		$result = $plural_func ? $plural_func( $number ) : 0;
+		$result = $plural_func ? $plural_func( $number ) : (int) ( $number !== 1 );
 
 		// Some plural form functions return indexes higher than allowed by the language
 		return min( $result, $num_plurals );
-	}
-
-	static function create( $file ) {
-		$moe = new Ginger_MO_File( $file );
-		if ( $moe->error() ) {
-			$moe = false;
-		}
-		return $moe;
 	}
 
 	protected function detect_endian_and_validate_file() {

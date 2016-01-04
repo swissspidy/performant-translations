@@ -12,22 +12,16 @@ class Ginger_MO {
 	}
 
 	public function load( $translation_file, $textdomain = null ) {
-		if ( '.mo' == substr( $translation_file, -3 ) ) {
-			$moe = Ginger_MO_File::create( $translation_file );
-		} elseif ( '.php' == substr( $translation_file, -4 ) ) {
-			$moe = Ginger_MO_PHP_File::create( $translation_file );
-		} else {
-			$moe = false;
+		$moe = Ginger_MO_Translation_File::create( $translation_file );
+		if ( ! $moe ) {
+			return false;
 		}
 
-		if ( $moe ) {
-			if ( ! $textdomain ) {
-				$textdomain = $this->default_textdomain;
-			}
-			$this->loaded_mo_files[ $textdomain ][] = $moe;
-			return true;
+		if ( ! $textdomain ) {
+			$textdomain = $this->default_textdomain;
 		}
-		return false;
+		$this->loaded_mo_files[ $textdomain ][] = $moe;
+		return true;
 	}
 
 	public function fallback_to_default_textdomain( $set = null ) {

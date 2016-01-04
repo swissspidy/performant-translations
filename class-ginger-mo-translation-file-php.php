@@ -1,18 +1,7 @@
 <?php
 
-class Ginger_MO_PHP_File {
-	private $headers = array();
-	private $entries = array();
+class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	private $plural_form_function = '';
-
-	private $file = null;
-
-	protected $flag_parsed  = false;
-	protected $flag_error   = false;
-
-	public function error() {
-		return $this->flag_error;
-	}
 
 	public function get_plural_form( $number ) {
 		if ( ! $this->flag_parsed ) {
@@ -31,33 +20,6 @@ class Ginger_MO_PHP_File {
 
 		// Default plural form matches English, only "One" is considered singular.
 		return ( $number == 1 ? 0 : 1 );
-	}
-
-	public function headers() {
-		if ( ! $this->flag_parsed ) {
-			$this->parse_file();
-		}
-		return $this->headers;
-	}
-
-	public function translate( $string ) {
-		if ( ! $this->flag_parsed ) {
-			$this->parse_file();
-		}
-		return isset( $this->entries[ $string ] ) ? $this->entries[ $string ] : false;
-	}
-
-	protected function __construct( $file ) {
-		$this->file = $file;
-		$this->flag_error = ! is_readable( $file );
-	}
-
-	static function create( $file ) {
-		$php_moe = new Ginger_MO_PHP_File( $file );
-		if ( $php_moe->error() ) {
-			return false;
-		}
-		return $php_moe;
 	}
 
 	private function parse_file() {
