@@ -4,10 +4,8 @@ class Ginger_MO_File {
 	public $meta = array(
 		'plural-forms' => 'nplurals=2;plural=(n!=1);',
 	);
-	public $total_translations   = 0;
 
 	protected $flag_parsed       = false;
-	protected $flag_exists       = false;
 	protected $flag_error        = false;
 
 	// used for unpack(), little endian = V, big endian = N
@@ -19,14 +17,10 @@ class Ginger_MO_File {
 
 	protected $entries           = array(); // [ "Original" => "Translation" ]
 
-	public function __construct( $file ) {
+	protected function __construct( $file ) {
 		$this->file = $file;
-		$this->flag_exists = is_readable( $file );
+		$this->flag_error = ! is_readable( $file );
 		$this->use_mb_substr = function_exists('mb_substr') && ( (ini_get( 'mbstring.func_overload' ) & 2) != 0 );
-	}
-
-	public function exists() {
-		return $this->flag_exists;
 	}
 
 	public function error() {
@@ -39,6 +33,32 @@ class Ginger_MO_File {
 		}
 
 		return isset( $this->entries[ $string ] ) ? $this->entries[ $string ] : false;
+	}
+
+	public function get_plural_form( $number ) {
+		static $num_plurals = 1;
+		static $plural_func = null;
+		if ( null === $plural_func ) {
+			if ( ! $this->flag_parsed ) {
+				$this->parse_file();
+			}
+			$forms = Ginger_MO::generate_plural_forms_function( $this->meta['plural-forms'] );
+			$this->num_plurals = $forms['num_plurals'];
+			$this->plural_func = $forms['plural_func'];
+		}
+
+		$result = $plural_func ? $plural_func( $number ) : 0;
+
+		// Some plural form functions return indexes higher than allowed by the language
+		return min( $result, $num_plurals );
+	}
+
+	static function create( $file ) {
+		$moe = new Ginger_MO_File( $file );
+		if ( $moe->error() ) {
+			$moe = false;
+		}
+		return $moe;
 	}
 
 	protected function detect_endian_and_validate_file() {
@@ -62,10 +82,6 @@ class Ginger_MO_File {
 	}
 
 	protected function read( $from, $bytes ) {
-		if ( empty( $this->file_contents ) ) {
-			$this->file_contents = file_get_contents( $this->file );
-		}
-
 		if ( $this->use_mb_substr ) {
 			return mb_substr( $this->file_contents, $from, $bytes, '8bit' );
 		} else {
@@ -75,6 +91,8 @@ class Ginger_MO_File {
 
 	protected function parse_file() {
 		$this->flag_parsed = true;
+
+		$this->file_contents = file_get_contents( $this->file );
 
 		$this->uint32 = $this->detect_endian_and_validate_file( $this->read( 0, 4 ) );
 		if ( ! $this->uint32 ) {
@@ -88,7 +106,6 @@ class Ginger_MO_File {
 
 		$offsets = unpack( "{$this->uint32}rev/{$this->uint32}total/{$this->uint32}originals_addr/{$this->uint32}translations_addr/{$this->uint32}hash_length/{$this->uint32}hash_addr", $offsets );
 
-		$this->total_translations = $offsets['total'];
 		$offsets['originals_length'] = $offsets['translations_addr'] - $offsets['originals_addr'];
 		$offsets['translations_length'] = $offsets['hash_addr'] - $offsets['translations_addr'];
 

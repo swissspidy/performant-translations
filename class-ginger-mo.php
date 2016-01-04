@@ -2,7 +2,7 @@
 
 class Ginger_MO {
 	private $default_textdomain = 'default';
-	private $loaded_mo_files = array(); //[ Textdomain => [ .., .. ] ]
+	private $loaded_mo_files = array(); // [ Textdomain => [ .., .. ] ]
 
 	private $fallback_to_default_textdomain = false;
 
@@ -11,9 +11,16 @@ class Ginger_MO {
 		return $instance ? $instance : $instance = new Ginger_MO();
 	}
 
-	public function load( $mo, $textdomain = null ) {
-		$moe = new Ginger_MO_File( $mo );
-		if ( $moe->exists() && ! $moe->error() ) {
+	public function load( $translation_file, $textdomain = null ) {
+		if ( '.mo' == substr( $translation_file, -3 ) ) {
+			$moe = Ginger_MO_File::create( $translation_file );
+		} elseif ( '.php' == substr( $translation_file, -4 ) ) {
+			$moe = Ginger_MO_PHP_File::create( $translation_file );
+		} else {
+			$moe = false;
+		}
+
+		if ( $moe ) {
 			if ( ! $textdomain ) {
 				$textdomain = $this->default_textdomain;
 			}
@@ -23,8 +30,26 @@ class Ginger_MO {
 		return false;
 	}
 
-	public function unload( $textdomain, $mo = null ) {
+	public function fallback_to_default_textdomain( $set = null ) {
+		if ( null !== $set ) {
+			$this->fallback_to_default_textdomain = $set;
+		}
+		return $this->fallback_to_default_textdomain;
+	}
+
+	public function unload( $textdomain, $mo = null ) {	
+		if ( $mo ) {
+			foreach ( $this->loaded_mo_files[ $textdomain ] as $i => $moe ) {
+				if ( $mo === $moe ) {
+					unset( $this->loaded_mo_files[ $textdomain ][ $i ] );
+					return true;
+				}
+			}
+			return true;
+		}
+
 		unset( $this->loaded_mo_files[ $textdomain ] );
+		return true;
 	}
 
 	public function is_loaded( $textdomain ) {
@@ -35,6 +60,7 @@ class Ginger_MO {
 		if ( $context ) {
 			$context .= "\4";
 		}
+
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
 		return $translation ? $translation[0] : $text;
 	}
@@ -47,11 +73,12 @@ class Ginger_MO {
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
 
 		if ( $translation ) {
-			$t = explode( "\0", $translation[0] );
-			$num = $this->get_plural_forms_number( $number, $translation[1] /* Moe */ );
+			$t = is_array( $translations['translations'] ) ? $translations['translations'] : explode( "\0", $translation['translations'] );
+			$num = $translation['file']->get_plural_form( $number );
 		} else {
 			$t = $plurals;
-			$num = $this->get_plural_forms_number( $number );
+			// Fallback to english grammer
+			$num = ( $number == 1 ? 0 : 1 );
 		}
 
 		if ( isset( $t[ $num ] ) ) {
@@ -61,82 +88,53 @@ class Ginger_MO {
 		}
 	}
 
+	static public function generate_plural_forms_function( $plural_form ) {
+		$num_plurals = 1;
+		$plural_func = false;
+		// Validate that the plural form function is legit
+		// This should/could use a more strict plural matching (such as validating it's a valid expression)
+		if ( $plural_form && preg_match( '#^nplurals=(\d+);\s*plural=([n><!=\s()?%&|:0-9-]+);?$#i', $plural_form, $match ) ) {
+			$num_plurals = (int) $match[1] - 1; // indexed from 1
+			$nexpression =  str_replace( 'n', '$n', preg_replace( '#\s+#', '', $match[2] ) );
+			$plural_func = create_function( '$n', "return (int)($nexpression);" );
+		}
+		return compact( 'num_plurals', 'plural_func' );
+	}
+
 	private function locate_translation( $string, $textdomain = null ) {
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
 
 		// Find the translation in all loaded files for this text domain
-		$moes = isset( $this->loaded_mo_files[ $textdomain ] ) ? $this->loaded_mo_files[ $textdomain ] : array();
-		foreach ( $moes as $i => $moe ) {
+		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
 			if ( false !== ( $translation = $moe->translate( $string ) ) ) {
 				return array(
-					$translation,
-					$moe
+					'translations' => $translation,
+					'file' => $moe
 				);
 			}
 			if ( $moe->error() ) {
 				// Unload this file, something is wrong.
-				unset( $this->loaded_mo_files[ $textdomain ][ $i ] );
+				$this->unload( $textdomain, $moe );
 			}
+		}
+
+		// Nothing could be found
+		return false;
+	}
+
+	protected function get_mo_files( $textdomain = null ) {
+		$moes = array();
+		if ( isset( $this->loaded_mo_files[ $textdomain ] ) ) {
+			$moes = $this->loaded_mo_files[ $textdomain ];
 		}
 
 		if ( $this->fallback_to_default_textdomain && $textdomain != $this->default_textdomain ) {
-			return $this->locate_translation( $string, $this->default_translation );
-		} else {
-			// Default textdomain, and no translation available.
-			return false;
-		}
-	}
-
-	private function get_plural_forms_number( $number, $moe = false ) {
-		// When no mo is presented for context, fallback to the first default translation if it's loaded, else use English plural forms.
-		if ( ! $moe && empty( $this->loaded_mo_files[ $this->default_textdomain ] ) ) {
-			if ( ! $moe ) {
-				return ( $number == 1 ? 0 : 1 );
-			}
-		} elseif ( ! $moe ) {
-			// Fallback to the first default translation.
-			$moe = reset( $this->loaded_mo_files[ $this->default_textdomain ] );
+			$moes = array_merge( $moes, $this->get_mo_files( $this->default_textdomain ) );
 		}
 
-		$plural_forms = $this->parse_plural_forms( $moe->meta['plural-forms'] );
-		if ( ! $plural_forms ) {
-			return ( $number == 1 ? 0 : 1 );
-		}
-		$plural_form = $plural_forms['plural-form'];
-		$plurals = $plural_forms['num-plurals'];
-
-		$func = $this->get_plural_form_function( $plural_form );
-		$index = $func( $number );
-
-		// Some plural form functions return indexes higher than allowed by the language
-		return min( $index, $plurals );
-	}
-
-	private function get_plural_form_function( $plural_form ) {
-		static $funcs = array();
-		if ( ! isset( $funcs[ $plural_form ] ) ) {
-			$funcs[ $plural_form ] = $this->generate_plural_form_function( $plural_form );
-		}
-		return $funcs[ $plural_form ];
-	}
-
-	private function generate_plural_form_function( $forms ) {
-		$nexpression = str_replace( 'n', '$n', $forms );
-		return create_function( '$n', "return (int)($nexpression);" );
-	}
-
-	private function parse_plural_forms( $form ) {
-		// Validate that the plural form function is legit
-		// This should/could use a more strict plural matching (such as validating it's a valid expression)
-		if ( preg_match( '#^nplurals=(\d+);\s*plural=([n><!=\s()?%&|:0-9-]+);?$#i', $form, $match ) ) {
-			return array(
-				'num-plurals' => (int) $match[1] - 1, // indexed from 1
-				'plural-form' => preg_replace( '#\s+#', '', $match[2] ),
-			);
-		}
-		return false;
+		return $moes;
 	}
 
 }
