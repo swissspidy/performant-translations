@@ -62,7 +62,7 @@ class Ginger_MO {
 		}
 
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
-		return $translation ? $translation[0] : $text;
+		return $translation ? $translation['translations'] : $text;
 	}
 
 	public function translate_plural( $plurals, $number, $context, $textdomain = null ) {
@@ -73,7 +73,7 @@ class Ginger_MO {
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
 
 		if ( $translation ) {
-			$t = is_array( $translations['translations'] ) ? $translations['translations'] : explode( "\0", $translation['translations'] );
+			$t = is_array( $translation['translations'] ) ? $translation['translations'] : explode( "\0", $translation['translations'] );
 			$num = $translation['file']->get_plural_form( $number );
 		} else {
 			$t = $plurals;
