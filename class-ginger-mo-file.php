@@ -1,7 +1,7 @@
 <?php
 
 class Ginger_MO_File {
-	public $meta = array(
+	public $headers = array(
 		'plural-forms' => 'nplurals=2;plural=(n!=1);',
 	);
 
@@ -23,6 +23,10 @@ class Ginger_MO_File {
 		$this->use_mb_substr = function_exists('mb_substr') && ( (ini_get( 'mbstring.func_overload' ) & 2) != 0 );
 	}
 
+	public function headers() {
+		return $this->headers;
+	}
+
 	public function error() {
 		return $this->flag_error;
 	}
@@ -42,9 +46,12 @@ class Ginger_MO_File {
 			if ( ! $this->flag_parsed ) {
 				$this->parse_file();
 			}
-			$forms = Ginger_MO::generate_plural_forms_function( $this->meta['plural-forms'] );
-			$this->num_plurals = $forms['num_plurals'];
-			$this->plural_func = $forms['plural_func'];
+			$this->plural_func = false;
+			if ( isset( $this->headers['plural-forms'] ) ) {
+				$forms = Ginger_MO::generate_plural_forms_function( $this->headers['plural-forms'] );
+				$this->num_plurals = $forms['num_plurals'];
+				$this->plural_func = $forms['plural_func'];
+			}
 		}
 
 		$result = $plural_func ? $plural_func( $number ) : 0;
@@ -126,7 +133,7 @@ class Ginger_MO_File {
 				foreach ( explode( "\n", $translation ) as $meta_line ) {
 					if ( ! $meta_line ) continue;
 					list( $name, $value ) = array_map( 'trim', explode( ':', $meta_line, 2 ) );
-					$this->meta[ strtolower( $name ) ] = $value;
+					$this->headers[ strtolower( $name ) ] = $value;
 				}
 			} else {
 				$this->entries[ $original ] = $translation;
