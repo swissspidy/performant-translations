@@ -14,8 +14,8 @@ include dirname(__FILE__) . '/class-ginger-mo-translation-compat.php';
 // All the WordPress magic:
 Ginger_MO_Translation_Compat::overwrite_wordpress();
 
-/*
-PHP testing
+//*
+//PHP testing
 
 Ginger_MO::instance()->load( __DIR__ . '/example-php-translation.php', 'testtextdomain' );
 
@@ -23,7 +23,7 @@ var_dump( Ginger_MO::instance()->translate( "singular", "context", 'testtextdoma
 var_dump( Ginger_MO::instance()->translate_plural( array( "plural0", "plural1" ), 1, false, 'testtextdomain' ) );
 
 die();
-*/
+//*/
 
 /*
 Ginger_MO::instance()->fallback_to_default_textdomain( false );

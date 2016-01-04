@@ -12,27 +12,6 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$this->use_mb_substr = function_exists('mb_substr') && ( (ini_get( 'mbstring.func_overload' ) & 2) != 0 );
 	}
 
-	public function get_plural_form( $number ) {
-		static $num_plurals = 1;
-		static $plural_func = null;
-		if ( null === $plural_func ) {
-			if ( ! $this->flag_parsed ) {
-				$this->parse_file();
-			}
-			$this->plural_func = false;
-			if ( isset( $this->headers['plural-forms'] ) ) {
-				$forms = Ginger_MO::generate_plural_forms_function( $this->headers['plural-forms'] );
-				$this->num_plurals = $forms['num_plurals'];
-				$this->plural_func = $forms['plural_func'];
-			}
-		}
-
-		$result = $plural_func ? $plural_func( $number ) : (int) ( $number !== 1 );
-
-		// Some plural form functions return indexes higher than allowed by the language
-		return min( $result, $num_plurals );
-	}
-
 	protected function detect_endian_and_validate_file() {
 		$magic_marker = 0x950412de;
 

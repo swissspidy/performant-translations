@@ -82,19 +82,6 @@ class Ginger_MO {
 		}
 	}
 
-	static public function generate_plural_forms_function( $plural_form ) {
-		$num_plurals = 1;
-		$plural_func = false;
-		// Validate that the plural form function is legit
-		// This should/could use a more strict plural matching (such as validating it's a valid expression)
-		if ( $plural_form && preg_match( '#^nplurals=(\d+);\s*plural=([n><!=\s()?%&|:0-9-]+);?$#i', $plural_form, $match ) ) {
-			$num_plurals = (int) $match[1] - 1; // indexed from 1
-			$nexpression =  str_replace( 'n', '$n', preg_replace( '#\s+#', '', $match[2] ) );
-			$plural_func = create_function( '$n', "return (int)($nexpression);" );
-		}
-		return compact( 'num_plurals', 'plural_func' );
-	}
-
 	private function locate_translation( $string, $textdomain = null ) {
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;

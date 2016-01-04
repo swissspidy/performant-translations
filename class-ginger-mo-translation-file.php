@@ -54,7 +54,7 @@ class Ginger_MO_Translation_File {
 
 		// Incase a plural form is specified as a header, but no function included, build one.
 		if ( ! $this->plural_form_function && isset( $this->headers['plural-forms'] ) ) {
-			$this->plural_form_function = Ginger_MO::generate_plural_forms_function( $this->headers['plural-forms'] );
+			$this->plural_form_function = $this->generate_plural_forms_function( $this->headers['plural-forms'] );
 		}
 
 		if ( $this->plural_form_function && is_callable( $this->plural_form_function ) ) {
@@ -63,5 +63,17 @@ class Ginger_MO_Translation_File {
 
 		// Default plural form matches English, only "One" is considered singular.
 		return ( $number == 1 ? 0 : 1 );
+	}
+
+	protected function generate_plural_forms_function( $plural_form ) {
+		$plural_func = false;
+		// Validate that the plural form function is legit
+		// This should/could use a more strict plural matching (such as validating it's a valid expression)
+		if ( $plural_form && preg_match( '#^nplurals=(\d+);\s*plural=([n><!=\s()?%&|:0-9-]+);?$#i', $plural_form, $match ) ) {
+			$num_plurals = (int) $match[1] - 1; // indexed from 1
+			$nexpression =  str_replace( 'n', '$n', preg_replace( '#\s+#', '', $match[2] ) );
+			$plural_func = create_function( '$n', "return min( $num_plurals, (int)($nexpression) );" );
+		}
+		return $plural_func;
 	}
 }
