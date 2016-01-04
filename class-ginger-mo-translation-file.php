@@ -1,17 +1,17 @@
 <?php
 
 class Ginger_MO_Translation_File {
-	protected $headers     = array();
-	protected $flag_parsed = false;
-	protected $flag_error  = false;
-	protected $file        = '';
-	protected $entries     = array(); // [ "Original" => "Translation" ]
+	protected $headers  = array();
+	protected $parsed   = false;
+	protected $error    = false;
+	protected $file     = '';
+	protected $entries  = array(); // [ "Original" => "Translation" ]
 
 	private $plural_form_function = '';
 
 	protected function __construct( $file ) {
 		$this->file = $file;
-		$this->flag_error = ! is_readable( $file );
+		$this->error = ! is_readable( $file );
 	}
 
 	static function create( $file ) {
@@ -29,18 +29,18 @@ class Ginger_MO_Translation_File {
 	}
 
 	public function headers() {
-		if ( ! $this->flag_parsed ) {
+		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
 		return $this->headers;
 	}
 
 	public function error() {
-		return $this->flag_error;
+		return $this->error;
 	}
 
 	public function translate( $string ) {
-		if ( ! $this->flag_parsed ) {
+		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
 
@@ -48,7 +48,7 @@ class Ginger_MO_Translation_File {
 	}
 
 	public function get_plural_form( $number ) {
-		if ( ! $this->flag_parsed ) {
+		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
 

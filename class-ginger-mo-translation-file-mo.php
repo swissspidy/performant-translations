@@ -4,8 +4,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	// used for unpack(), little endian = V, big endian = N
 	protected $uint32 = false;
 	protected $use_mb_substr = false;
-
-	protected $file_contents       = null;
+	protected $file_contents = null;
 
 	protected function __construct( $file ) {
 		parent::__construct( $file );
@@ -27,7 +26,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		} elseif ( $little === $magic_marker ) {
 			return 'V';
 		} else {
-			$this->flag_error = "Magic Marker doesn't exist";
+			$this->error = "Magic Marker doesn't exist";
 			return false;
 		}
 	}
@@ -41,7 +40,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	}
 
 	protected function parse_file() {
-		$this->flag_parsed = true;
+		$this->parsed = true;
 
 		$this->file_contents = file_get_contents( $this->file );
 
