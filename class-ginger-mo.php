@@ -20,7 +20,14 @@ class Ginger_MO {
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
-		$this->loaded_translations[ $textdomain ][] = $moe;
+
+		if ( ! isset( $this->loaded_translations[ $textdomain ] ) ) {
+			$this->loaded_translations[ $textdomain ] = array();
+		}
+
+		// Prefix translations to ensure that last-loaded takes preference
+		array_unshift( $this->loaded_translations[ $textdomain ], $moe );
+
 		return true;
 	}
 
