@@ -14,7 +14,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 			unset( $data[''] );
 		}
 
-		// Support JED JSON files
+		// Support JED JSON files which wrap po2json
 		if ( isset( $data['locale_data']['messages'] ) ) {
 			$data = $data['locale_data']['messages'];
 		}
