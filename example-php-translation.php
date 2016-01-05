@@ -2,15 +2,31 @@
 /**
  * This is an example PHP translation file for Ginger MO.
  * It specifies a custom plural form callback which is identical to english, although it doesn't need to.
- * An error within this file will most definately cause a WSOD for the WordPress site :(
+ * An error within this file will most definately cause a WSOD for the calling functions.
+ *
+ * The main benefits of using this format over MO files is that it's much faster to parse, and also cacheable by PHP opcode caches.
  */
 
-function plural_forms_24w3487639867k95836( $number ) {
+/*
+ * A custom plural forms callback for the translations provided within this file.
+ * The function name should be prefixed with information about what it's applying to to be unique.
+ * The function name should be suffixed with enough random data to ensure that multiple translations for the same textdomain/locale can be used.
+ */
+function exmple_translation_plural_forms_24w3487639867k95836( $number ) {
 	return (int) ( 1 === $number );
 }
 
 return array(
-	'plural_form_function' => 'plural_forms_24w3487639867k95836',
+	/*
+	 * A callback which specifies how to determine the plural form for the translation.
+	 * If not specified, any `Plural-Form` header will be used to generate the appropriate plural forms instead.
+	 * If neither are available, then English plural forms `( $number === 1 )` will be applied.
+	 */
+	'plural_form_function' => 'exmple_translation_plural_forms_24w3487639867k95836',
+
+	/*
+	 * Standard PO headers can be added, although not needed or used.
+	 */
 	'headers' => array(
 		'PO-Revision-Date' => '2015-08-01 14:38:19+0000',
 		'MIME-Version' => '1.0',
@@ -19,6 +35,7 @@ return array(
 		'X-Generator' => 'GlotPress/1.0-alpha-1100',
 		'Project-Id-Version' => 'Administration',
 	),
+
 	/*
 	 * Strings are stored as they are in a standard gettext .mo file.
 	 * Originals are the Array key, Translation the value.
