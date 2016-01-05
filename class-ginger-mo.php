@@ -117,5 +117,4 @@ class Ginger_MO {
 
 		return $moes;
 	}
-
 }
