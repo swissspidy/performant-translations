@@ -14,14 +14,25 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 			unset( $data[''] );
 		}
 
+		// Support JED JSON files
+		if ( isset( $data['locale_data']['messages'] ) ) {
+			$data = $data['locale_data']['messages'];
+		}
+
 		foreach ( $data as $key => $item ) {
-			if ( null !== $item[0] ) {
-				// Plurals
-				$key .= "\0" . $item[0];
-				$this->entries[ $key ] = array_slice( $item, 1 );
+			if ( ! is_array( $item ) ) {
+				// Straight Key => Value translations
+				$this->entries[ $key ] = $item;
 			} else {
-				// Singular
-				$this->entries[ $key ] = $item[1];
+				// Po2json format
+				if ( null !== $item[0] ) {
+					// Plurals
+					$key .= "\0" . $item[0];
+					$this->entries[ $key ] = array_slice( $item, 1 );
+				} else {
+					// Singular
+					$this->entries[ $key ] = $item[1];
+				}
 			}
 		}
 
