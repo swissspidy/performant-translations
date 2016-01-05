@@ -20,6 +20,8 @@ class Ginger_MO_Translation_File {
 			$moe = new Ginger_MO_Translation_File_MO( $file );
 		} elseif ( '.php' == substr( $file, -4 ) ) {
 			$moe = new Ginger_MO_Translation_File_PHP( $file );
+		} elseif ( '.json' == substr( $file, -5 ) ) {
+			$moe = new Ginger_MO_Translation_File_JSON( $file );
 		}
 
 		if ( ! $moe || $moe->error() ) {

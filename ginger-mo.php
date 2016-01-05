@@ -9,13 +9,25 @@ include dirname(__FILE__) . '/class-ginger-mo.php';
 include dirname(__FILE__) . '/class-ginger-mo-translation-file.php';
 include dirname(__FILE__) . '/class-ginger-mo-translation-file-mo.php';
 include dirname(__FILE__) . '/class-ginger-mo-translation-file-php.php';
+include dirname(__FILE__) . '/class-ginger-mo-translation-file-json.php';
 include dirname(__FILE__) . '/class-ginger-mo-translation-compat.php';
 
 // All the WordPress magic:
 Ginger_MO_Translation_Compat::overwrite_wordpress();
 
 /*
-//PHP testing
+// JSON testing
+
+Ginger_MO::instance()->load( __DIR__ . '/example-json-translation.json', 'testtextdomain' );
+
+var_dump( Ginger_MO::instance()->translate( "singular", "context", 'testtextdomain') );
+var_dump( Ginger_MO::instance()->translate_plural( array( "plural0", "plural1" ), 1, false, 'testtextdomain' ) );
+
+die();
+//*/
+
+/*
+// PHP testing
 
 Ginger_MO::instance()->load( __DIR__ . '/example-php-translation.php', 'testtextdomain' );
 
