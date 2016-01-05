@@ -4,8 +4,6 @@ class Ginger_MO {
 	protected $default_textdomain = 'default';
 	protected $loaded_translations = array(); // [ Textdomain => [ .., .. ] ]
 
-	protected $fallback_to_default_textdomain = false;
-
 	public static function instance() {
 		static $instance = false;
 		return $instance ? $instance : $instance = new Ginger_MO();
@@ -29,13 +27,6 @@ class Ginger_MO {
 		array_unshift( $this->loaded_translations[ $textdomain ], $moe );
 
 		return true;
-	}
-
-	public function fallback_to_default_textdomain( $set = null ) {
-		if ( null !== $set ) {
-			$this->fallback_to_default_textdomain = $set;
-		}
-		return $this->fallback_to_default_textdomain;
 	}
 
 	public function unload( $textdomain, $mo = null ) {	
@@ -118,10 +109,6 @@ class Ginger_MO {
 		$moes = array();
 		if ( isset( $this->loaded_translations[ $textdomain ] ) ) {
 			$moes = $this->loaded_translations[ $textdomain ];
-		}
-
-		if ( $this->fallback_to_default_textdomain && $textdomain != $this->default_textdomain ) {
-			$moes = array_merge( $moes, $this->get_mo_files( $this->default_textdomain ) );
 		}
 
 		return $moes;

@@ -38,8 +38,6 @@ die();
 //*/
 
 /*
-Ginger_MO::instance()->fallback_to_default_textdomain( false );
-
 
 add_action( 'init', function() {
 
