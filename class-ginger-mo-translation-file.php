@@ -7,14 +7,14 @@ class Ginger_MO_Translation_File {
 	protected $file     = '';
 	protected $entries  = array(); // [ "Original" => "Translation" ]
 
-	private $plural_form_function = '';
+	protected $plural_form_function = '';
 
 	protected function __construct( $file ) {
 		$this->file = $file;
 		$this->error = ! is_readable( $file );
 	}
 
-	static function create( $file ) {
+	public static function create( $file ) {
 		$moe = false;
 		if ( '.mo' == substr( $file, -3 ) ) {
 			$moe = new Ginger_MO_Translation_File_MO( $file );

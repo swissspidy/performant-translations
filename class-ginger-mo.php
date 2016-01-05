@@ -1,12 +1,12 @@
 <?php
 
 class Ginger_MO {
-	private $default_textdomain = 'default';
-	private $loaded_translations = array(); // [ Textdomain => [ .., .. ] ]
+	protected $default_textdomain = 'default';
+	protected $loaded_translations = array(); // [ Textdomain => [ .., .. ] ]
 
-	private $fallback_to_default_textdomain = false;
+	protected $fallback_to_default_textdomain = false;
 
-	static function instance() {
+	public static function instance() {
 		static $instance = false;
 		return $instance ? $instance : $instance = new Ginger_MO();
 	}
@@ -82,7 +82,7 @@ class Ginger_MO {
 		}
 	}
 
-	private function locate_translation( $string, $textdomain = null ) {
+	protected function locate_translation( $string, $textdomain = null ) {
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
