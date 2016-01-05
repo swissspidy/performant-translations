@@ -14,7 +14,7 @@ include dirname(__FILE__) . '/class-ginger-mo-translation-compat.php';
 // All the WordPress magic:
 Ginger_MO_Translation_Compat::overwrite_wordpress();
 
-//*
+/*
 //PHP testing
 
 Ginger_MO::instance()->load( __DIR__ . '/example-php-translation.php', 'testtextdomain' );
