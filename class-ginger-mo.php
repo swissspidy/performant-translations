@@ -39,6 +39,9 @@ class Ginger_MO {
 	}
 
 	public function unload( $textdomain, $mo = null ) {	
+		if ( ! $this->is_loaded( $textdomain ) ) {
+			return false;
+		}
 		if ( $mo ) {
 			foreach ( $this->loaded_translations[ $textdomain ] as $i => $moe ) {
 				if ( $mo === $moe ) {

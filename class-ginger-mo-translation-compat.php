@@ -23,17 +23,13 @@ class Ginger_MO_Translation_Compat implements ArrayAccess {
 		do_action( 'load_textdomain', $domain, $mofile );
 		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
 
-		Ginger_MO::instance()->load( $mofile, $domain );
-
-		return true;
+		return Ginger_MO::instance()->load( $mofile, $domain );
 	}
 
 	public function unload_textdomain( $return, $domain ) {
 		do_action( 'unload_textdomain', $domain );
 
-		Ginger_MO::instance()->unload( $domain );
-
-		return true;
+		return Ginger_MO::instance()->unload( $domain );
 	}
 
 	public static function overwrite_wordpress() {
