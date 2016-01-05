@@ -12,7 +12,7 @@
  * The function name should be prefixed with information about what it's applying to to be unique.
  * The function name should be suffixed with enough random data to ensure that multiple translations for the same textdomain/locale can be used.
  */
-function exmple_translation_plural_forms_24w3487639867k95836( $number ) {
+function example_translation_plural_forms_24w3487639867k95836( $number ) {
 	return (int) ( 1 === $number );
 }
 
@@ -22,7 +22,7 @@ return array(
 	 * If not specified, any `Plural-Form` header will be used to generate the appropriate plural forms instead.
 	 * If neither are available, then English plural forms `( $number === 1 )` will be applied.
 	 */
-	'plural_form_function' => 'exmple_translation_plural_forms_24w3487639867k95836',
+	'plural_form_function' => 'example_translation_plural_forms_24w3487639867k95836',
 
 	/*
 	 * Standard PO headers can be added, although not needed or used.
