@@ -23,7 +23,7 @@ return array(
 	 * Strings are stored as they are in a standard gettext .mo file.
 	 * Originals are the Array key, Translation the value.
 	 * - Singular strings are as-is
-	 * - Plural forms are separated by \0
+	 * - Plural forms are separated by \0, or alternatively as a PHP array
 	 * - Context is before the original, with \4 following it
 	 */
 	'entries' => array(
