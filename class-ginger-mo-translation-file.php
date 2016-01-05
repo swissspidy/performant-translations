@@ -67,6 +67,7 @@ class Ginger_MO_Translation_File {
 
 	protected function generate_plural_forms_function( $plural_form ) {
 		$plural_func = false;
+
 		// Validate that the plural form function is legit
 		// This should/could use a more strict plural matching (such as validating it's a valid expression)
 		if ( $plural_form && preg_match( '#^nplurals=(\d+);\s*plural=([n><!=\s()?%&|:0-9-]+);?$#i', $plural_form, $match ) ) {
@@ -74,6 +75,7 @@ class Ginger_MO_Translation_File {
 			$nexpression =  str_replace( 'n', '$n', preg_replace( '#\s+#', '', $match[2] ) );
 			$plural_func = create_function( '$n', "return min( $num_plurals, (int)($nexpression) );" );
 		}
+
 		return $plural_func;
 	}
 }
