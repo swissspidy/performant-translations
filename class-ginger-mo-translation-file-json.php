@@ -9,14 +9,14 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 			return;
 		}
 
-		if ( isset( $data[''] ) ) {
-			$this->headers = array_change_key_case( $data[''], CASE_LOWER );
-			unset( $data[''] );
-		}
-
 		// Support JED JSON files which wrap po2json
 		if ( isset( $data['locale_data']['messages'] ) ) {
 			$data = $data['locale_data']['messages'];
+		}
+
+		if ( isset( $data[''] ) ) {
+			$this->headers = array_change_key_case( $data[''], CASE_LOWER );
+			unset( $data[''] );
 		}
 
 		foreach ( $data as $key => $item ) {
@@ -24,7 +24,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 				// Straight Key => Value translations
 				$this->entries[ $key ] = $item;
 			} else {
-				// Po2json format
+				// po2json format
 				if ( null !== $item[0] ) {
 					// Plurals
 					$key .= "\0" . $item[0];
