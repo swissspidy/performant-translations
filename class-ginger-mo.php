@@ -75,14 +75,13 @@ class Ginger_MO {
 			$num = ( $number == 1 ? 0 : 1 );
 		}
 
-		if ( isset( $t[ $num ] ) ) {
-			return $t[ $num ];
-		} else {
-			return $t[ count( $t ) -1 ]; // Just return the highest plural form.
-		}
+		return $t[ $num ];
 	}
 
 	protected function locate_translation( $string, $textdomain = null ) {
+		if ( ! $this->loaded_translations ) {
+			return false;
+		}
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
