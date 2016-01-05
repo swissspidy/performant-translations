@@ -28,12 +28,12 @@ return array(
 	 * Standard PO headers can be added, although not needed or used.
 	 */
 	'headers' => array(
-		'PO-Revision-Date' => '2015-08-01 14:38:19+0000',
+		'PO-Revision-Date' => '2016-01-05 18:45:32+1000',
 		'MIME-Version' => '1.0',
 		'Content-Type' => 'text/plain; charset=UTF-8',
 		'Content-Transfer-Encoding' => '8bit',
 		'X-Generator' => 'GlotPress/1.0-alpha-1100',
-		'Project-Id-Version' => 'Administration',
+		'Project-Id-Version' => 'Example Project',
 	),
 
 	/*
