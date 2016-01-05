@@ -2,7 +2,7 @@
 
 class Ginger_MO {
 	private $default_textdomain = 'default';
-	private $loaded_mo_files = array(); // [ Textdomain => [ .., .. ] ]
+	private $loaded_translations = array(); // [ Textdomain => [ .., .. ] ]
 
 	private $fallback_to_default_textdomain = false;
 
@@ -20,7 +20,7 @@ class Ginger_MO {
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
-		$this->loaded_mo_files[ $textdomain ][] = $moe;
+		$this->loaded_translations[ $textdomain ][] = $moe;
 		return true;
 	}
 
@@ -33,21 +33,21 @@ class Ginger_MO {
 
 	public function unload( $textdomain, $mo = null ) {	
 		if ( $mo ) {
-			foreach ( $this->loaded_mo_files[ $textdomain ] as $i => $moe ) {
+			foreach ( $this->loaded_translations[ $textdomain ] as $i => $moe ) {
 				if ( $mo === $moe ) {
-					unset( $this->loaded_mo_files[ $textdomain ][ $i ] );
+					unset( $this->loaded_translations[ $textdomain ][ $i ] );
 					return true;
 				}
 			}
 			return true;
 		}
 
-		unset( $this->loaded_mo_files[ $textdomain ] );
+		unset( $this->loaded_translations[ $textdomain ] );
 		return true;
 	}
 
 	public function is_loaded( $textdomain ) {
-		return !empty( $this->loaded_mo_files[ $textdomain ] );
+		return !empty( $this->loaded_translations[ $textdomain ] );
 	}
 
 	public function translate( $text, $context, $textdomain = null ) {
@@ -107,8 +107,8 @@ class Ginger_MO {
 
 	protected function get_mo_files( $textdomain = null ) {
 		$moes = array();
-		if ( isset( $this->loaded_mo_files[ $textdomain ] ) ) {
-			$moes = $this->loaded_mo_files[ $textdomain ];
+		if ( isset( $this->loaded_translations[ $textdomain ] ) ) {
+			$moes = $this->loaded_translations[ $textdomain ];
 		}
 
 		if ( $this->fallback_to_default_textdomain && $textdomain != $this->default_textdomain ) {
