@@ -57,7 +57,11 @@ class Ginger_MO {
 		}
 
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
-		return $translation ? $translation['entries'] : $text;
+		if ( ! $translation ) {
+			return false;
+		}
+
+		return $translation['entries'];
 	}
 
 	public function translate_plural( $plurals, $number, $context, $textdomain = null ) {
@@ -67,15 +71,12 @@ class Ginger_MO {
 		$text = implode( "\0", $plurals );
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
 
-		if ( $translation ) {
-			$t = is_array( $translation['entries'] ) ? $translation['entries'] : explode( "\0", $translation['entries'] );
-			$num = $translation['source']->get_plural_form( $number );
-		} else {
-			$t = $plurals;
-			// Fallback to english grammer
-			$num = ( $number == 1 ? 0 : 1 );
+		if ( ! $translation ) {
+			return false;
 		}
 
+		$t = is_array( $translation['entries'] ) ? $translation['entries'] : explode( "\0", $translation['entries'] );
+		$num = $translation['source']->get_plural_form( $number );
 		return $t[ $num ];
 	}
 
@@ -110,7 +111,6 @@ class Ginger_MO {
 		if ( isset( $this->loaded_translations[ $textdomain ] ) ) {
 			$moes = $this->loaded_translations[ $textdomain ];
 		}
-
 		return $moes;
 	}
 }

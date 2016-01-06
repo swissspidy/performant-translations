@@ -50,10 +50,22 @@ class Ginger_MO_Translation_Compat_Provider {
 	}
 
 	public function translate_plural( $single, $plural, $number = 1, $context = '' ) {
-		return Ginger_MO::instance()->translate_plural( array( $single, $plural ), $number, $context, $this->textdomain );
+		$translation = Ginger_MO::instance()->translate_plural( array( $single, $plural ), $number, $context, $this->textdomain );
+		if ( $translation ) {
+			return $translation;
+		}
+
+		// Fall back to the original with English grammar rules.
+		$translation = ( $number == 1 ? $single : $plural );
 	}
 
 	public function translate( $text, $context = '' ) {
-		return Ginger_MO::instance()->translate( $text, $context, $this->textdomain );
+		$translation = Ginger_MO::instance()->translate( $text, $context, $this->textdomain );
+		if ( $translation ) {
+			return $translation;	
+		}
+
+		// Fall back to the original.
+		return $text;
 	}
 }
