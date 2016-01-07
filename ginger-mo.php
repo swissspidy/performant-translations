@@ -7,9 +7,6 @@
 
 include dirname(__FILE__) . '/class-ginger-mo.php';
 include dirname(__FILE__) . '/class-ginger-mo-translation-file.php';
-include dirname(__FILE__) . '/class-ginger-mo-translation-file-mo.php';
-include dirname(__FILE__) . '/class-ginger-mo-translation-file-php.php';
-include dirname(__FILE__) . '/class-ginger-mo-translation-file-json.php';
 include dirname(__FILE__) . '/class-ginger-mo-translation-compat.php';
 
 // All the WordPress magic:
