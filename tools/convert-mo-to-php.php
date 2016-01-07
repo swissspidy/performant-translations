@@ -44,7 +44,7 @@ class Ginger_MO_Tool_MO_to_PHP extends Ginger_MO_Translation_File_MO {
 			$num_plurals = (int) $match[1] - 1; // indexed from 1
 			$nexpression =  str_replace( 'n', '$n', trim( $match[2] ) );
 			$plural_form_function = 'plural_forms_' . preg_replace( '![^a-z_-]!i', '_', basename( $this->file ) ) . '_' . sha1( uniqid( rand(), true ) );
-			$plural_func = "function {$plural_form_function}( \$n ) { return max( {$num_plurals}, (int)( {$nexpression} ) ); }";
+			$plural_func = "function {$plural_form_function}( \$n ) { return (int)( {$nexpression} ); }";
 		}
 
 		if ( $plural_func ) {

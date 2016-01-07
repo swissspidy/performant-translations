@@ -74,10 +74,11 @@ class Ginger_MO_Translation_File {
 		// This should/could use a more strict plural matching (such as validating it's a valid expression)
 		if ( $plural_form && preg_match( '#^nplurals=(\d+);\s*plural=([n><!=\s()?%&|:0-9-]+);?$#i', $plural_form, $match ) ) {
 			$num_plurals = (int) $match[1] - 1; // indexed from 1
-			$nexpression =  str_replace( 'n', '$n', preg_replace( '#\s+#', '', $match[2] ) );
-			$plural_func = create_function( '$n', "return max( $num_plurals, (int)($nexpression) );" );
+			$nexpression =  str_replace( 'n', '$n', $match[2] );
+			$plural_func = create_function( '$n', "return (int)($nexpression);" );
 		}
 
 		return $plural_func;
 	}
+
 }
