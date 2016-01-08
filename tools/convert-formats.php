@@ -9,8 +9,8 @@ if ( ! isset( $opts['source'] ) || ! isset( $opts['destination'] ) ) {
 	echo "--destination Specifies the output file.\n";
 	echo "--overwrite   Include to overwrite any existing destination file.\n\n";
 
-	echo "Any supported file format may be provided as both input an output.\n";
-	echo "For example, convert from a .mo to .php, or .php to a .json\n\n";
+	echo "Any supported file format may be provided for both the source and destination.\n";
+	echo "For example, you can convert from a .mo to .php, or .php to a .json file with ease.\n\n";
 	exit(1);
 }
 if ( ! isset( $opts['overwrite'] ) && file_exists( $opts['destination'] ) ) {
