@@ -56,7 +56,7 @@ class Ginger_MO_Translation_Compat_Provider {
 		}
 
 		// Fall back to the original with English grammar rules.
-		$translation = ( $number == 1 ? $single : $plural );
+		return ( $number == 1 ? $single : $plural );
 	}
 
 	public function translate( $text, $context = '' ) {
