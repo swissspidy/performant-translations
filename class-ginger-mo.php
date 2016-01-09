@@ -10,6 +10,10 @@ class Ginger_MO {
 	}
 
 	public function load( $translation_file, $textdomain = null ) {
+		if ( ! class_exists( 'Ginger_MO_Translation_File' ) ) {
+			include dirname( __FILE__ ) . '/class-ginger-mo-translation-file.php';
+		}
+
 		$moe = Ginger_MO_Translation_File::create( $translation_file );
 		if ( ! $moe ) {
 			return false;
