@@ -128,7 +128,7 @@ class Ginger_MO_Translation_File {
 	}
 
 	protected function parse_file() {}
-	protected function create_file( $headers, $entries ) {
+	protected function create_file( $headers, $entries, $source ) {
 		$this->error = "Format not supported.";
 		return false;
 	}
