@@ -57,7 +57,7 @@ class Ginger_MO {
 			foreach ( $this->loaded_translations[ $textdomain ] as $i => $moe ) {
 				if ( $mo === $moe ) {
 					unset( $this->loaded_translations[ $textdomain ][ $i ] );
-					unset( $this->loaded_files[ $moe->file ][ $textdomain ] );
+					unset( $this->loaded_files[ $moe->get_file() ][ $textdomain ] );
 					return true;
 				}
 			}
@@ -65,7 +65,7 @@ class Ginger_MO {
 		}
 
 		foreach ( $this->loaded_translations[ $textdomain ] as $moe ) {
-			unset( $this->loaded_files[ $moe->file ][ $textdomain ] );
+			unset( $this->loaded_files[ $moe->get_file() ][ $textdomain ] );
 		}
 
 		unset( $this->loaded_translations[ $textdomain ] );
