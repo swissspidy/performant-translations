@@ -66,6 +66,10 @@ class Ginger_MO_Translation_File {
 		return $this->error;
 	}
 
+	public function get_file() {
+		return $this->file;
+	}
+
 	public function translate( $string ) {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
