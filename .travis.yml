@@ -1,0 +1,14 @@
+sudo: false
+language: php
+php:
+- 5.2
+- 5.3
+- 5.4
+- 5.5
+- 5.6
+- hhvm
+- 7.0
+- nightly
+notifications:
+  slack:
+    secure: r6GZSQn1PhTQvkMNWHdl6cfnYyToxYd+0BWfASZLqhb4Sqhn+hiDACci8oSMSUsOw9vemP26ksHfnP8qtFg/zJIv3AeHEVWY7VJwdVJvGrQLRJin7I5EUE0cZu9RslL6876TcAudk2kLGlCUp9WTw93Nm25Iw6oY3aKCKUqRv8W9R8/EkwI4qPmMgwD5vYMHihX4E4QruT9+ASFFtSZUoXWoviwAzoU8QZt/fTu9mMYW1bYCnQHVOhnhMjcFZXkls7VGJ5GZinStEFbCsfMB+UYvRLBO1tbpr5yNjCeQRplN3TRbdD5+My5CzgRx8H+pv75RU1FmPepsNvew8E+9vkXN1R8cK26hBK70JJEHKuUkXgRagpYOXTUJlEBXYKijCetFVJiNPCLeuDJDTZNe6DNh/stUtbMJrxj2Q4iJ6DGTkGosXGjx4q7Hq+gVSqG343+/+QxwQxk0/v1qXrM2YcL5GxLnL2vUt21IdRlm3oIXe3Z3eyOc7rh9HX3oglSFkGubYL/njfnJJqsGpOTLJOw0wiTDs/1JCkeGlDzBbCub15d7//I4jPILJlHZAIiedQqb5okViTuD/SzH5FkuSoI8k6Wg5AdI7tgaIFChkn0aPv8TCNiVfd29PUzU//wYpPtxsH4JsUqlcpvkC/lsysFK5XfiitFGY3AZz+/EPZc=
