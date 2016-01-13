@@ -2,7 +2,8 @@
 
 class Ginger_MO {
 	protected $default_textdomain = 'default';
-	protected $loaded_translations = array(); // [ Textdomain => [ .., .. ] ]
+	protected $loaded_translations = array(); // [ Textdomain => [ $object1, $object2 ] ]
+	protected $loaded_files = array(); // [ /path/to/file.mo => $object ]
 
 	public static function instance() {
 		static $instance = false;
@@ -14,13 +15,27 @@ class Ginger_MO {
 			include dirname( __FILE__ ) . '/class-ginger-mo-translation-file.php';
 		}
 
-		$moe = Ginger_MO_Translation_File::create( $translation_file );
-		if ( ! $moe ) {
+		if ( ! $textdomain ) {
+			$textdomain = $this->default_textdomain;
+		}
+
+		$translation_file = realpath( $translation_file );
+		if ( !empty( $this->loaded_files[ $translation_file ][ $textdomain ] ) ) {
+			if ( $this->loaded_files[ $translation_file ][ $textdomain ] && ! $this->loaded_files[ $translation_file ][ $textdomain ]->error() ) {
+				return true;
+			}
 			return false;
 		}
 
-		if ( ! $textdomain ) {
-			$textdomain = $this->default_textdomain;
+		if ( !empty( $this->loaded_files[ $translation_file ] ) ) {
+			$moe = reset( $this->loaded_files[ $translation_file ] );
+		} else {
+			$moe = Ginger_MO_Translation_File::create( $translation_file );
+		}
+		$this->loaded_files[ $translation_file ][ $textdomain ] = $moe;
+
+		if ( ! $moe ) {
+			return false;
 		}
 
 		if ( ! isset( $this->loaded_translations[ $textdomain ] ) ) {
@@ -37,17 +52,24 @@ class Ginger_MO {
 		if ( ! $this->is_loaded( $textdomain ) ) {
 			return false;
 		}
+
 		if ( $mo ) {
 			foreach ( $this->loaded_translations[ $textdomain ] as $i => $moe ) {
 				if ( $mo === $moe ) {
 					unset( $this->loaded_translations[ $textdomain ][ $i ] );
+					unset( $this->loaded_files[ $moe->file ][ $textdomain ] );
 					return true;
 				}
 			}
 			return true;
 		}
 
+		foreach ( $this->loaded_translations[ $textdomain ] as $moe ) {
+			unset( $this->loaded_files[ $moe->file ][ $textdomain ] );
+		}
+
 		unset( $this->loaded_translations[ $textdomain ] );
+
 		return true;
 	}
 
