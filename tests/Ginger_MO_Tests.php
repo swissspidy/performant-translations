@@ -5,11 +5,25 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_no_files_loaded_returns_false() {
-		$this->assertFalse( Ginger_MO::instance()->translate( "singular" ) );
-		$this->assertFalse( ginger_MO::instance()->translate_plural( array( "plural0", "plural1" ), 1 ) );
+		$instance = new Ginger_MO;
+		$this->assertFalse( $instance->translate( "singular" ) );
+		$this->assertFalse( $instance->translate_plural( array( "plural0", "plural1" ), 1 ) );
 	}
 
-	function _test_load_simple_json_file() {
+	function test_unload_entire_textdomain() {
+		$instance = new Ginger_MO;
+		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
+		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest' ) );
+		$this->assertTrue( $instance->is_loaded( 'unittest' ) );
+
+		$this->assertSame( 'translation', $instance->translate( 'original', null, 'unittest' ) );
+
+		$this->assertTrue( $instance->unload( 'unittest' ) );
+		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
+		$this->assertFalse( $instance->translate( 'original', null, 'unittest' ) );
+	}
+
+	function test_load_simple_json_file() {
 		$instance = new Ginger_MO;
 		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.json', 'unittest' ) );
 
