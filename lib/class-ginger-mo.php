@@ -83,6 +83,7 @@ class Ginger_MO {
 		}
 
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
+
 		if ( ! $translation ) {
 			return false;
 		}
