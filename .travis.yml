@@ -1,13 +1,30 @@
 sudo: false
 language: php
-php:
-- 5.2
-- 5.3
-- 5.4
-- 5.5
-- 5.6
-- hhvm
-- 7.0
+matrix:
+ include:
+ - php: hhvm
+   env: PHP_MBSTRING_OVERLOAD=0
+ - php: 7.0
+   env: PHP_MBSTRING_OVERLOAD=0
+ - php: 5.6
+   env: PHP_MBSTRING_OVERLOAD=0
+ - php: 5.6
+   env: PHP_MBSTRING_OVERLOAD=7
+ - php: 5.5
+   env: PHP_MBSTRING_OVERLOAD=0
+ - php: 5.4
+   env: PHP_MBSTRING_OVERLOAD=0
+ - php: 5.3
+   env: PHP_MBSTRING_OVERLOAD=0
+ - php: 5.2
+   env: PHP_MBSTRING_OVERLOAD=0
+
+# php is configured directly, as phpunit doesn't allow mbstring.func_overload to pass through using -d
+before_script:
+ - |
+   if [[ "$PHP_MBSTRING_OVERLOAD" -ne "0" ]]; then
+     echo "mbstring.func_overload=$PHP_MBSTRING_OVERLOAD" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    fi
 
 script:
   - phpunit --coverage-clover=coverage.xml
