@@ -77,7 +77,7 @@ class Ginger_MO {
 		return !empty( $this->loaded_translations[ $textdomain ] );
 	}
 
-	public function translate( $text, $context, $textdomain = null ) {
+	public function translate( $text, $context = null, $textdomain = null ) {
 		if ( $context ) {
 			$context .= "\4";
 		}
@@ -90,7 +90,7 @@ class Ginger_MO {
 		return $translation['entries'];
 	}
 
-	public function translate_plural( $plurals, $number, $context, $textdomain = null ) {
+	public function translate_plural( $plurals, $number, $context = null, $textdomain = null ) {
 		if ( $context ) {
 			$context .= "\4";
 		}
