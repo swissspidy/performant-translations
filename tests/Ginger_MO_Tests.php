@@ -48,6 +48,13 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 		$this->_test_simple_translation_files( $instance );
 	}
 
+	function test_load_simple_mo_file() {
+		$instance = new Ginger_MO;
+		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
+
+		$this->_test_simple_translation_files( $instance );
+	}
+
 	/*
 	 * The simple-*.* files do not specify a textdomain, therefor, English plural rules apply.
 	 * These files all contain the same strings.
