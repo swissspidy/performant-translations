@@ -42,6 +42,10 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 	 * These files all contain the same strings.
 	 */
 	function _test_simple_translation_files( $ginger_mo ) {
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
+		$this->assertFalse( $ginger_mo->is_loaded( 'textdomain not loaded' ) );
+
 		$this->assertFalse( $ginger_mo->translate( "string that doesn't exist", null, 'unittest' ) );
 		$this->assertFalse( $ginger_mo->translate( 'original', null, 'textdomain not loaded' ) );
 
