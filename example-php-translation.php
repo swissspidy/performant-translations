@@ -12,9 +12,11 @@
  * The function name should be prefixed with information about what it's applying to to be unique.
  * The function name should be suffixed with enough random data to ensure that multiple translations for the same textdomain/locale can be used.
  */
+if ( ! function_exists( 'example_translation_plural_forms_24w3487639867k95836' ) ) :
 function example_translation_plural_forms_24w3487639867k95836( $number ) {
 	return (int) ( 1 === $number );
 }
+endif;
 
 return array(
 	/*
