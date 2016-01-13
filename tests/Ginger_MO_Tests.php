@@ -10,7 +10,6 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 	}
 
 	function _test_load_simple_json_file() {
-		// File file doesn't specufy a text domain, it's just English plural rules apply
 		$instance = new Ginger_MO;
 		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.json', 'unittest' ) );
 
@@ -19,7 +18,6 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 
 	function test_load_simple_jed_json_file() {
 		$instance = new Ginger_MO;
-		// File file doesn't specufy a text domain, it's just English plural rules apply
 		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple-jed.json', 'unittest' ) );
 
 		$this->_test_simple_translation_files( $instance );
@@ -27,7 +25,6 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 
 	function test_load_simple_po2json_file() {
 		$instance = new Ginger_MO;
-		// File file doesn't specufy a text domain, it's just English plural rules apply
 		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple-po2json.json', 'unittest' ) );
 
 		$this->_test_simple_translation_files( $instance );
@@ -35,12 +32,15 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 
 	function test_load_simple_php_file() {
 		$instance = new Ginger_MO;
-		// File file doesn't specufy a text domain, it's just English plural rules apply
 		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest' ) );
 
 		$this->_test_simple_translation_files( $instance );
 	}
 
+	/*
+	 * The simple-*.* files do not specify a textdomain, therefor, English plural rules apply.
+	 * These files all contain the same strings.
+	 */
 	function _test_simple_translation_files( $ginger_mo ) {
 		$this->assertFalse( $ginger_mo->translate( "string that doesn't exist", null, 'unittest' ) );
 		$this->assertFalse( $ginger_mo->translate( 'original', null, 'textdomain not loaded' ) );
