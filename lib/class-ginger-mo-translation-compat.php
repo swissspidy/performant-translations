@@ -1,5 +1,5 @@
 <?php
-
+// Compatibility & Implementation for WordPress
 class Ginger_MO_Translation_Compat implements ArrayAccess {
 
 	public function offsetExists( $domain ) {

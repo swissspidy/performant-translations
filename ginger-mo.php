@@ -5,9 +5,9 @@
  * This is a POC plugin and includes the ability to hook into WordPress.
  */
 
-include dirname(__FILE__) . '/class-ginger-mo.php';
-include dirname(__FILE__) . '/class-ginger-mo-translation-file.php';
-include dirname(__FILE__) . '/class-ginger-mo-translation-compat.php';
+include dirname(__FILE__) . '/lib/class-ginger-mo.php';
+include dirname(__FILE__) . '/lib/class-ginger-mo-translation-file.php';
+include dirname(__FILE__) . '/lib/class-ginger-mo-translation-compat.php';
 
 // All the WordPress magic:
 Ginger_MO_Translation_Compat::overwrite_wordpress();

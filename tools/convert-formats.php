@@ -1,5 +1,5 @@
 <?php
-include dirname( dirname(__FILE__) ) . '/class-ginger-mo-translation-file.php';
+include dirname( dirname(__FILE__) ) . '/lib/class-ginger-mo-translation-file.php';
 
 $opts = getopt( '', array( 'source:', 'destination:', 'overwrite::' ) );
 
