@@ -1,8 +1,5 @@
 <?php
 class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
-	function testWorks() {
-		$this->assertTrue( true );
-	}
 
 	function test_no_files_loaded_returns_false() {
 		$instance = new Ginger_MO;
