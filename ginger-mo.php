@@ -23,13 +23,16 @@ var_dump( Ginger_MO::instance()->translate_plural( array( "plural0", "plural1" )
 die();
 //*/
 
-/*
+//*
 // PHP testing
 
 Ginger_MO::instance()->load( __DIR__ . '/example-php-translation.php', 'testtextdomain' );
+Ginger_MO::instance()->load( __DIR__ . '/example-php-translation.php', 'testtextdomain' );
+Ginger_MO::instance()->load( __DIR__ . '/example-php-translation.php', 'otherdomain' );
 
 var_dump( Ginger_MO::instance()->translate( "singular", "context", 'testtextdomain') );
 var_dump( Ginger_MO::instance()->translate_plural( array( "plural0", "plural1" ), 1, false, 'testtextdomain' ) );
+var_dump( Ginger_MO::instance()->translate( "singular", "context", 'otherdomain') );
 
 die();
 //*/
