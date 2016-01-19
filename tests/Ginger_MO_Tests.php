@@ -227,7 +227,7 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 
 
 class Testable_Ginger_MO_Translation_File extends Ginger_MO_Translation_File {
-	public function get_testable_instance() {
+	static public function get_testable_instance() {
 		return new Testable_Ginger_MO_Translation_File( 'dummy-data' );
 	}
 
