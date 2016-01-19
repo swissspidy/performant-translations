@@ -6,14 +6,14 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	protected $use_mb_substr = false;
 	protected $file_contents = null;
 
-	protected function __construct( $file ) {
-		parent::__construct( $file );
+	const MAGIC_MARKER = 0x950412de;
+
+	protected function __construct( $file, $context ) {
+		parent::__construct( $file, $context );
 		$this->use_mb_substr = function_exists('mb_substr') && ( (ini_get( 'mbstring.func_overload' ) & 2) != 0 );
 	}
 
 	protected function detect_endian_and_validate_file() {
-		$magic_marker = 0x950412de;
-
 		$header = $this->read( 0, 4 );
 
 		$big = unpack( 'N', $header );
@@ -21,9 +21,9 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$little = unpack( 'V', $header );
 		$little = reset( $little );
 
-		if ( $big === $magic_marker ) {
+		if ( $big === self::MAGIC_MARKER ) {
 			return 'N';
-		} elseif ( $little === $magic_marker ) {
+		} elseif ( $little === self::MAGIC_MARKER ) {
 			return 'V';
 		} else {
 			$this->error = "Magic Marker doesn't exist";
