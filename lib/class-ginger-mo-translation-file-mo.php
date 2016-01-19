@@ -3,19 +3,15 @@
 class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	// used for unpack(), little endian = V, big endian = N
 	protected $uint32 = false;
-	protected $use_mb_substr = false;
-	protected $file_contents = null;
-
+	protected $use_mb_functions = false;
 	const MAGIC_MARKER = 0x950412de;
 
 	protected function __construct( $file, $context ) {
 		parent::__construct( $file, $context );
-		$this->use_mb_substr = function_exists('mb_substr') && ( (ini_get( 'mbstring.func_overload' ) & 2) != 0 );
+		$this->use_mb_functions = function_exists('mb_substr') && ( (ini_get( 'mbstring.func_overload' ) & 2) != 0 );
 	}
 
-	protected function detect_endian_and_validate_file() {
-		$header = $this->read( 0, 4 );
-
+	protected function detect_endian_and_validate_file( $header ) {
 		$big = unpack( 'N', $header );
 		$big = reset( $big );
 		$little = unpack( 'V', $header );
@@ -31,25 +27,17 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		}
 	}
 
-	protected function read( $from, $bytes ) {
-		if ( $this->use_mb_substr ) {
-			return mb_substr( $this->file_contents, $from, $bytes, '8bit' );
-		} else {
-			return substr( $this->file_contents, $from, $bytes );
-		}
-	}
-
 	protected function parse_file() {
 		$this->parsed = true;
 
-		$this->file_contents = file_get_contents( $this->file );
+		$file_contents = file_get_contents( $this->file );
 
-		$this->uint32 = $this->detect_endian_and_validate_file( $this->read( 0, 4 ) );
+		$this->uint32 = $this->detect_endian_and_validate_file( $this->substr( $file_contents, 0, 4 ) );
 		if ( ! $this->uint32 ) {
 			return false;
 		}
 
-		$offsets = $this->read( 4, 24 );
+		$offsets = $this->substr( $file_contents, 4, 24 );
 		if ( ! $offsets ) {
 			return false;
 		}
@@ -60,15 +48,15 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$offsets['translations_length'] = $offsets['hash_addr'] - $offsets['translations_addr'];
 
 		// Load the Originals
-		$original_data = str_split( $this->read( $offsets['originals_addr'], $offsets['originals_length'] ), 8 );
-		$translations_data = str_split( $this->read( $offsets['translations_addr'], $offsets['translations_length'] ), 8 );
+		$original_data = str_split( $this->substr( $file_contents, $offsets['originals_addr'], $offsets['originals_length'] ), 8 );
+		$translations_data = str_split( $this->substr( $file_contents, $offsets['translations_addr'], $offsets['translations_length'] ), 8 );
 
 		foreach ( array_keys( $original_data ) as $i ) {
 			$o = unpack( "{$this->uint32}length/{$this->uint32}pos", $original_data[ $i ] );
 			$t = unpack( "{$this->uint32}length/{$this->uint32}pos", $translations_data[ $i ] );
 
-			$original = $this->read( $o['pos'], $o['length'] );
-			$translation = $this->read( $t['pos'], $t['length'] );
+			$original = $this->substr( $file_contents, $o['pos'], $o['length'] );
+			$translation = $this->substr( $file_contents, $t['pos'], $t['length'] );
 			$translation = rtrim( $translation, "\0" ); // GlotPress bug
 
 			// Metadata about the MO file is stored in the first translation entry.
@@ -82,8 +70,6 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 				$this->entries[ $original ] = $translation;
 			}
 		}
-
-		unset( $this->file_contents, $original_data, $translations_data );
 
 		return true;
 	}
@@ -111,18 +97,44 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 
 		$o_entries = $t_entries = $o_addr = $t_addr = '';
 		foreach ( $entries as $original => $translations ) {
-			$o_addr .= pack( $this->uint32 . '*', strlen( $original ), $entry_offsets );
-			$entry_offsets += strlen( $original ) + 1;
+			$o_addr .= pack( $this->uint32 . '*', $this->strlen( $original ), $entry_offsets );
+			$entry_offsets += $this->strlen( $original ) + 1;
 			$o_entries .= $original . pack('x');
 		}
 
 		foreach ( $entries as $original => $translations ) {
-			$t_addr .= pack( $this->uint32 . '*', strlen( $translations ), $entry_offsets );
-			$entry_offsets += strlen( $translations ) + 1;
+			$t_addr .= pack( $this->uint32 . '*', $this->strlen( $translations ), $entry_offsets );
+			$entry_offsets += $this->strlen( $translations ) + 1;
 			$t_entries .= $translations . pack('x');
 		}
 
 		return (bool) file_put_contents( $this->file, $file_header . $o_addr . $t_addr . $o_entries . $t_entries );
+	}
+
+	/**
+	 * Helper method for when mbstring.func_overload is in force.
+	 *
+	 * @ignore
+	 */
+	protected function substr( $string, $from, $bytes ) {
+		if ( $this->use_mb_functions ) {
+			return mb_substr( $string, $from, $bytes, '8bit' );
+		} else {
+			return substr( $string, $from, $bytes );
+		}
+	}
+
+	/**
+	 * Helper method for when mbstring.func_overload is in force.
+	 *
+	 * @ignore
+	 */
+	protected function strlen( $string ) {
+		if ( $this->use_mb_functions ) {
+			return mb_strlen( $string, '8bit' );
+		} else {
+			return strlen( $string );
+		}
 	}
 
 }
