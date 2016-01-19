@@ -128,10 +128,45 @@ class Ginger_MO_Translation_File {
 		// Validate that the plural form function is legit
 		// This should/could use a more strict plural matching (such as validating it's a valid expression)
 		if ( $plural_form && preg_match( '#^nplurals=(\d+);\s*plural=([n><!=\s()?%&|:0-9-]+);?$#i', $plural_form, $match ) ) {
-			$nexpression =  str_replace( 'n', '$n', $match[2] );
+			$nexpression = str_replace( 'n', '$n', $this->add_parenthese_to_plural_exression( $match[2] ) );
 			$plural_func_contents = "return (int)($nexpression);";
 		}
 		return $plural_func_contents;
+	}
+
+	/**
+	 * Adds parentheses to the inner parts of ternary operators in
+	 * plural expressions, because PHP evaluates ternary oerators from left to right
+	 *
+	 * Borrowed from WordPress POMO
+	 *
+	 * @param string $expression the expression without parentheses
+	 * @return string the expression with parentheses added
+	 */
+	protected function add_parenthese_to_plural_exression( $expression ) {
+		$expression .= ';';
+		$res = '';
+		$depth = 0;
+		for ( $i = 0; $i < strlen( $expression ); $i++ ) {
+			$char = substr( $expression, $i, 1 );
+			switch ( $char ) {
+				case '?':
+					$res .= ' ? (';
+					$depth++;
+					break;
+				case ':':
+					$res .= ') : (';
+					break;
+				case ';':
+					$res .= ' ' . str_repeat(')', $depth) . ';';
+					$depth = 0;
+					break;
+				default:
+					$res .= $char;
+			}
+		}
+
+		return rtrim( $res, ';' );
 	}
 
 	protected function parse_file() {}
