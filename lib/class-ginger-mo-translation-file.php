@@ -14,12 +14,12 @@ class Ginger_MO_Translation_File {
 
 		if ( 'write' == $context ) {
 			if ( file_exists( $file ) ) {
-				$this->error = ! is_writable( $file );
+				$this->error = is_writable( $file ) ?  false : "File is not writable";
 			} elseif ( ! is_writable( dirname( $file ) ) ) {
-				$this->error = true;
+				$this->error = "Directory not writable";
 			}
 		} elseif ( ! is_readable( $file ) ) {
-			$this->error = true;
+			$this->error = "File not readable";
 		}
 	}
 
