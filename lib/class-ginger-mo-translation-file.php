@@ -23,9 +23,12 @@ class Ginger_MO_Translation_File {
 		}
 	}
 
-	public static function create( $file, $context = 'read' ) {
-		$extension = substr( $file, strrpos( $file, '.' )+1 );
-		switch ( $extension ) {
+	public static function create( $file, $context = 'read', $filetype = null ) {
+		if ( ! $filetype ) {
+			$filetype = substr( $file, strrpos( $file, '.' )+1 );
+		}
+
+		switch ( $filetype ) {
 			case 'mo':
 				if ( ! class_exists( 'Ginger_MO_Translation_File_MO' ) ) {
 					include dirname(__FILE__) . '/class-ginger-mo-translation-file-mo.php';
