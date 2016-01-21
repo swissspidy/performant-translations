@@ -83,6 +83,13 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$entries = array_merge( array( '' => $headers_string ), $entries );
 		$entry_count = count( $entries );
 
+		// Flatten any plurals into a combined string
+		foreach ( $entries as $i => $entry ) {
+			if ( is_array( $entry ) ) {
+				$entries[ $i ] = implode( "\0", $entry );
+			}
+		}
+
 		if ( ! $this->uint32 ) {
 			$this->uint32 = 'V';
 		}
