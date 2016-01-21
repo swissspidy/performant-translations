@@ -6,7 +6,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		$data = json_decode( $data, true );
 
 		if ( ! $data || ! is_array( $data ) ) {
-			$this->error = json_last_error_msg() ? ( 'JSON Error: ' . json_last_error_msg() ) : true;
+			$this->error = json_last_error() ? ( 'JSON Error: ' . ( function_exists( 'json_last_error_msg' ) ? json_last_error_msg() : (int)json_last_error() ) ) : true;
 			return;
 		}
 
