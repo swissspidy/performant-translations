@@ -31,6 +31,12 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$this->parsed = true;
 
 		$file_contents = file_get_contents( $this->file );
+		$file_length = $this->strlen( $file_contents );
+
+		if ( $file_length < 24 ) {
+			$this->error = 'Invalid Data.';
+			return false;
+		}
 
 		$this->uint32 = $this->detect_endian_and_validate_file( $this->substr( $file_contents, 0, 4 ) );
 		if ( ! $this->uint32 ) {
@@ -46,6 +52,16 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 
 		$offsets['originals_length'] = $offsets['translations_addr'] - $offsets['originals_addr'];
 		$offsets['translations_length'] = $offsets['hash_addr'] - $offsets['translations_addr'];
+
+		if ( $offsets['rev'] > 0 ) {
+			$this->error = 'Unsupported Revision.';
+			return false;
+		}
+
+		if ( $offsets['translations_addr'] > $file_length || $offsets['originals_addr'] > $file_length ) {
+			$this->error = 'Invalid Data.';
+			return false;
+		}
 
 		// Load the Originals
 		$original_data = str_split( $this->substr( $file_contents, $offsets['originals_addr'], $offsets['originals_length'] ), 8 );
