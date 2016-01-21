@@ -262,6 +262,11 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 		*/
 	}
 
+	// PHPUnit + PHP 5.2 doesn't appear to support this natively.
+	static function assertNotFalse( $value ) {
+		parent::assertTrue( false !== $value );
+	}
+
 }
 
 
