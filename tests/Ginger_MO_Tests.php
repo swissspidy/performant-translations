@@ -20,9 +20,13 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertFalse( $instance->translate( 'original', null, 'unittest' ) );
 	}
 
-	function test_invalid_mo_file() {
-		// Attempt to load a .json as a .mo file, this should fail parsing
-		$instance = Ginger_MO_Translation_File::create( GINGER_MO_TEST_DATA . 'example-simple.json', 'read', 'mo' );
+	/**
+	 * @dataProvider dataprovider_invalid_files
+	 */
+	function test_invalid_files( $type, $file_contents, $expected_error = null ) {
+		$file = $this->temp_file( $file_contents );
+
+		$instance = Ginger_MO_Translation_File::create( $file, 'read', $type );
 
 		// Not an error condition until it attempts to parse the file.
 		$this->assertFalse( $instance->error() );
@@ -31,23 +35,25 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$instance->headers();
 
 		$this->assertNotFalse( $instance->error() );
-		$this->assertSame( "Magic Marker doesn't exist", $instance->error() );
+
+		if ( $expected_error ) {
+			$this->assertSame( $expected_error, $instance->error() );
+		}
 	}
 
-	function test_invalid_mo_with_marker() {
-		$file = $this->tmpnam();
-		file_put_contents( $file, Ginger_MO_Translation_File_MO::MAGIC_MARKER );
-
-		$instance = Ginger_MO_Translation_File::create( $file, 'read', 'mo' );
-
-		// Not an error condition until it attempts to parse the file.
-		$this->assertFalse( $instance->error() );
-
-		// Trigger parsing.
-		$instance->headers();
-
-		$this->assertNotFalse( $instance->error() );
-
+	function dataprovider_invalid_files() {
+		return array(
+			// filetype, file ( contents ) [, expected error string ]
+			array( 'php', '' ),
+			array( 'php', '<?php // This is a php file without a payload' ),
+			array( 'json', '' ),
+			array( 'json', 'Random data in a file' ),
+			array( 'mo', '', "Invalid Data." ),
+			array( 'mo', 'Random data in a file long enough to be a real header', "Magic Marker doesn't exist" ),
+			array( 'mo', pack( 'V*', 0x950412de ), 'Invalid Data.' ),
+			array( 'mo', pack( 'V*', 0x950412de ) . "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 'Unsupported Revision.' ),
+			array( 'mo', pack( 'V*', 0x950412de, 0x0 ) . "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 'Invalid Data.' ),
+		);
 	}
 
 	function test_non_existent_file() {
