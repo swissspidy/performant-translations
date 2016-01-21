@@ -4,8 +4,8 @@ class Ginger_MO_TestCase extends PHPUnit_Framework_TestCase {
 	protected $temp_files = array();
 
 	// PHPUnit + PHP 5.2 doesn't appear to support this natively.
-	static function assertNotFalse( $value ) {
-		parent::assertTrue( false !== $value );
+	static function assertNotFalse( $value, $message = '' ) {
+		parent::assertTrue( false !== $value, $message );
 	}
 
 	// Create temporary files
