@@ -3,9 +3,6 @@
 class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	protected function parse_file() {
 		$data = file_get_contents( $this->file );
-		if ( '/' == $data[0] ) {
-			$data = substr( $data, strpos( $data, '{' ) );
-		}
 		$data = json_decode( $data, true );
 
 		if ( ! $data || ! is_array( $data ) ) {
