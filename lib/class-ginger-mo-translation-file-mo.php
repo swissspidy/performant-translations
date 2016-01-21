@@ -112,7 +112,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	}
 
 	/**
-	 * Helper method for when mbstring.func_overload is in force.
+	 * Helper method for when `mbstring.func_overload` is in force.
 	 *
 	 * @ignore
 	 */
@@ -125,7 +125,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	}
 
 	/**
-	 * Helper method for when mbstring.func_overload is in force.
+	 * Helper method for when `mbstring.func_overload` is in force.
 	 *
 	 * @ignore
 	 */
