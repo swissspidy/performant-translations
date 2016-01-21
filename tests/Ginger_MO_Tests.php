@@ -1,5 +1,5 @@
 <?php
-class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
+class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 	function test_no_files_loaded_returns_false() {
 		$instance = new Ginger_MO;
@@ -35,7 +35,7 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 	}
 
 	function test_invalid_mo_with_marker() {
-		$file = tempnam( GINGER_MO_TEST_DATA, 'unittest' );
+		$file = $this->tmpnam();
 		file_put_contents( $file, Ginger_MO_Translation_File_MO::MAGIC_MARKER );
 
 		$instance = Ginger_MO_Translation_File::create( $file, 'read', 'mo' );
@@ -45,8 +45,6 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 
 		// Trigger parsing.
 		$instance->headers();
-
-		unlink( $file );
 
 		$this->assertNotFalse( $instance->error() );
 
@@ -262,23 +260,4 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 		*/
 	}
 
-	// PHPUnit + PHP 5.2 doesn't appear to support this natively.
-	static function assertNotFalse( $value ) {
-		parent::assertTrue( false !== $value );
-	}
-
-}
-
-
-class Testable_Ginger_MO_Translation_File extends Ginger_MO_Translation_File {
-	static public function get_testable_instance() {
-		return new Testable_Ginger_MO_Translation_File( 'dummy-data' );
-	}
-
-	public function __call( $method, $args ) {
-		if ( is_callable( array( $this, $method ) ) ) {
-			return call_user_func_array( array( $this, $method ), $args );
-		}
-		return null;
-	}
 }
