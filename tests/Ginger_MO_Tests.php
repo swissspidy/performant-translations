@@ -57,46 +57,12 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
 	}
 
-	function test_load_simple_json_file() {
-		$instance = new Ginger_MO;
-		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.json', 'unittest' ) );
-
-		$this->_test_simple_translation_files( $instance );
-	}
-
-	function test_load_simple_jed_json_file() {
-		$instance = new Ginger_MO;
-		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple-jed.json', 'unittest' ) );
-
-		$this->_test_simple_translation_files( $instance );
-	}
-
-	function test_load_simple_po2json_file() {
-		$instance = new Ginger_MO;
-		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple-po2json.json', 'unittest' ) );
-
-		$this->_test_simple_translation_files( $instance );
-	}
-
-	function test_load_simple_php_file() {
-		$instance = new Ginger_MO;
-		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest' ) );
-
-		$this->_test_simple_translation_files( $instance );
-	}
-
-	function test_load_simple_mo_file() {
-		$instance = new Ginger_MO;
-		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
-
-		$this->_test_simple_translation_files( $instance );
-	}
-
-	/*
-	 * The simple-*.* files do not specify a textdomain, therefor, English plural rules apply.
-	 * These files all contain the same strings.
+	/**
+	 * @dataProvider dataprovider_simple_example_files
 	 */
-	function _test_simple_translation_files( $ginger_mo ) {
+	function test_simple_translation_files( $file ) {
+		$ginger_mo = new Ginger_MO;
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . $file, 'unittest' ) );
 
 		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
 		$this->assertFalse( $ginger_mo->is_loaded( 'textdomain not loaded' ) );
@@ -116,6 +82,15 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertSame( 'translation1 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 2, 'context', 'unittest' ) );
 	}
 
+	function dataprovider_simple_example_files() {
+		return array(
+			array( 'example-simple.json' ),
+			array( 'example-simple-jed.json' ),
+			array( 'example-simple-po2json.json' ),
+			array( 'example-simple.mo' ),
+			array( 'example-simple.php' ),
+		);
+	}
 
 	/**
 	 * @dataProvider plural_form_function_pairs
