@@ -28,14 +28,16 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 				// Straight Key => Value translations
 				$this->entries[ $key ] = $item;
 			} else {
-				// po2json format
-				if ( null !== $item[0] ) {
-					// Plurals
+				if ( null === $item[0] ) {
+					// Singular - po2json format
+					$this->entries[ $key ] = $item[1];
+				} elseif ( false !== strpos( $key, "\0" ) ) {
+					// Singular - Straight Key (plural\0plural) => [ plural, plural ] format
+					$this->entries[ $key ] = $item;
+				} else {
+					// Plurals - po2json format ( plural0 => [ plural1, translation0, translation1 ] )
 					$key .= "\0" . $item[0];
 					$this->entries[ $key ] = array_slice( $item, 1 );
-				} else {
-					// Singular
-					$this->entries[ $key ] = $item[1];
 				}
 			}
 		}
