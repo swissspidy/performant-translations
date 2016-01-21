@@ -51,12 +51,13 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		// Prefix as the first key.
 		$entries = array_merge( array( '' => $headers ), $entries );
 
-		$json_flags = 0;
 		if ( defined( 'JSON_PRETTY_PRINT' ) ) {
-			$json_flags |= JSON_PRETTY_PRINT;
+			$json = json_encode( (array) $entries, JSON_PRETTY_PRINT );
+		} else {
+			$json = json_encode( (array) $entries );
 		}
 
-		return (bool) file_put_contents( $this->file, json_encode( (array) $entries, $json_flags ) );
+		return (bool) file_put_contents( $this->file, $json );
 	}
 }
 
