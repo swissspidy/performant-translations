@@ -31,6 +31,9 @@ class Ginger_MO {
 			$moe = reset( $this->loaded_files[ $translation_file ] );
 		} else {
 			$moe = Ginger_MO_Translation_File::create( $translation_file );
+			if ( ! $moe || $moe->error() ) {
+				$moe = false;
+			}
 		}
 		$this->loaded_files[ $translation_file ][ $textdomain ] = $moe;
 

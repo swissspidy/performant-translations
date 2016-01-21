@@ -51,10 +51,6 @@ class Ginger_MO_Translation_File {
 				$moe = false;
 		}
 
-		if ( ! $moe || $moe->error() ) {
-			return false;
-		}
-
 		return $moe;
 	}
 
