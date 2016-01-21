@@ -65,6 +65,13 @@ class Ginger_MO_Translation_File {
 		return $this->headers;
 	}
 
+	public function entries() {
+		if ( ! $this->parsed ) {
+			$this->parse_file();
+		}
+		return $this->entries;
+	}
+
 	public function error() {
 		return $this->error;
 	}
