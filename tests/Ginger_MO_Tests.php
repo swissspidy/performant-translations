@@ -20,6 +20,45 @@ class Ginger_MO_Tests extends PHPUnit_Framework_TestCase {
 		$this->assertFalse( $instance->translate( 'original', null, 'unittest' ) );
 	}
 
+	function test_invalid_mo_file() {
+		// Attempt to load a .json as a .mo file, this should fail parsing
+		$instance = Ginger_MO_Translation_File::create( GINGER_MO_TEST_DATA . 'example-simple.json', 'read', 'mo' );
+
+		// Not an error condition until it attempts to parse the file.
+		$this->assertFalse( $instance->error() );
+
+		// Trigger parsing.
+		$instance->headers();
+
+		$this->assertNotFalse( $instance->error() );
+		$this->assertSame( "Magic Marker doesn't exist", $instance->error() );
+	}
+
+	function test_invalid_mo_with_marker() {
+		$file = tempnam( GINGER_MO_TEST_DATA, 'unittest' );
+		file_put_contents( $file, Ginger_MO_Translation_File_MO::MAGIC_MARKER );
+
+		$instance = Ginger_MO_Translation_File::create( $file, 'read', 'mo' );
+
+		// Not an error condition until it attempts to parse the file.
+		$this->assertFalse( $instance->error() );
+
+		// Trigger parsing.
+		$instance->headers();
+
+		unlink( $file );
+
+		$this->assertNotFalse( $instance->error() );
+
+	}
+
+	function test_non_existent_file() {
+		$instance = new Ginger_MO;
+	
+		$this->assertFalse( $instance->load( GINGER_MO_TEST_DATA . 'file-that-doesnt-exist.mo', 'unittest' ) );
+		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
+	}
+
 	function test_load_simple_json_file() {
 		$instance = new Ginger_MO;
 		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.json', 'unittest' ) );
