@@ -5,7 +5,8 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	/**
 	 * @dataProvider dataprovider_export_matrix
 	 */
-	function test_convert_format( $source_file, $destination_file, $destination_format ) {
+	function test_convert_format( $source_file, $destination_format ) {
+		$destination_file = $this->temp_file();
 		$source = Ginger_MO_Translation_File::create( $source_file, 'read' );
 		$destination = Ginger_MO_Translation_File::create( $destination_file, 'write', $destination_format );
 
@@ -62,7 +63,7 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 		$matrix = array();
 		foreach ( $sources as $s ) {
 			foreach ( $outputs as $output_format ) {
-				$matrix[] = array( GINGER_MO_TEST_DATA . $s, $this->tmpnam(), $output_format );
+				$matrix[] = array( GINGER_MO_TEST_DATA . $s, $output_format );
 			}
 		}
 
