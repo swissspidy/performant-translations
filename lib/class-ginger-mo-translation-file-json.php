@@ -38,7 +38,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 					$this->entries[ $key ] = $item;
 				} else {
 					// Plurals - po2json format ( plural0 => [ plural1, translation0, translation1 ] )
-					$key .= "\0" . $item[0];
+					$key                  .= "\0" . $item[0];
 					$this->entries[ $key ] = array_slice( $item, 1 );
 				}
 			}
@@ -62,4 +62,3 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		return (bool) file_put_contents( $this->file, $json );
 	}
 }
-

@@ -1,33 +1,29 @@
 <?php
 
 class Ginger_MO {
-	protected $default_textdomain = 'default';
+	protected $default_textdomain  = 'default';
 	protected $loaded_translations = array(); // [ Textdomain => [ $object1, $object2 ] ]
-	protected $loaded_files = array(); // [ /path/to/file.mo => $object ]
+	protected $loaded_files        = array(); // [ /path/to/file.mo => $object ]
 
 	public static function instance() {
-		static $instance = false;
+		static $instance                         = false;
 		return $instance ? $instance : $instance = new Ginger_MO();
 	}
 
 	public function load( $translation_file, $textdomain = null ) {
-		if ( ! class_exists( 'Ginger_MO_Translation_File' ) ) {
-			include dirname( __FILE__ ) . '/class-ginger-mo-translation-file.php';
-		}
-
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
 
 		$translation_file = realpath( $translation_file );
-		if ( !empty( $this->loaded_files[ $translation_file ][ $textdomain ] ) ) {
+		if ( ! empty( $this->loaded_files[ $translation_file ][ $textdomain ] ) ) {
 			if ( $this->loaded_files[ $translation_file ][ $textdomain ] && ! $this->loaded_files[ $translation_file ][ $textdomain ]->error() ) {
 				return true;
 			}
 			return false;
 		}
 
-		if ( !empty( $this->loaded_files[ $translation_file ] ) ) {
+		if ( ! empty( $this->loaded_files[ $translation_file ] ) ) {
 			$moe = reset( $this->loaded_files[ $translation_file ] );
 		} else {
 			$moe = Ginger_MO_Translation_File::create( $translation_file );
@@ -51,7 +47,7 @@ class Ginger_MO {
 		return true;
 	}
 
-	public function unload( $textdomain, $mo = null ) {	
+	public function unload( $textdomain, $mo = null ) {
 		if ( ! $this->is_loaded( $textdomain ) ) {
 			return false;
 		}
@@ -77,7 +73,7 @@ class Ginger_MO {
 	}
 
 	public function is_loaded( $textdomain ) {
-		return !empty( $this->loaded_translations[ $textdomain ] );
+		return ! empty( $this->loaded_translations[ $textdomain ] );
 	}
 
 	public function translate( $text, $context = null, $textdomain = null ) {
@@ -98,19 +94,19 @@ class Ginger_MO {
 		if ( $context ) {
 			$context .= "\4";
 		}
-		$text = implode( "\0", $plurals );
+		$text        = implode( "\0", $plurals );
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
 
 		if ( ! $translation ) {
 			return false;
 		}
 
-		$t = is_array( $translation['entries'] ) ? $translation['entries'] : explode( "\0", $translation['entries'] );
+		$t   = is_array( $translation['entries'] ) ? $translation['entries'] : explode( "\0", $translation['entries'] );
 		$num = $translation['source']->get_plural_form( $number );
 		return $t[ $num ];
 	}
 
-	protected function locate_translation( $string, $textdomain = null ) {
+	protected function locate_translation( $singular, $textdomain = null ) {
 		if ( ! $this->loaded_translations ) {
 			return false;
 		}
@@ -120,10 +116,10 @@ class Ginger_MO {
 
 		// Find the translation in all loaded files for this text domain
 		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
-			if ( false !== ( $translation = $moe->translate( $string ) ) ) {
+			if ( false !== ( $translation = $moe->translate( $singular ) ) ) {
 				return array(
 					'entries' => $translation,
-					'source' => $moe
+					'source'  => $moe,
 				);
 			}
 			if ( $moe->error() ) {

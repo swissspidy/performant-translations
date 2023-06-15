@@ -13,9 +13,9 @@
  * The function name should be suffixed with enough random data to ensure that multiple translations for the same textdomain/locale can be used.
  */
 if ( ! function_exists( 'example_translation_plural_forms_24w3487639867k95836' ) ) :
-function example_translation_plural_forms_24w3487639867k95836( $number ) {
-	return (int) ( 1 === $number );
-}
+	function example_translation_plural_forms_24w3487639867k95836( $number ) {
+		return (int) ( 1 === $number );
+	}
 endif;
 
 return array(
@@ -29,13 +29,13 @@ return array(
 	/*
 	 * Standard PO headers can be added, although not needed or used.
 	 */
-	'headers' => array(
-		'PO-Revision-Date' => '2016-01-05 18:45:32+1000',
-		'MIME-Version' => '1.0',
-		'Content-Type' => 'text/plain; charset=UTF-8',
+	'headers'              => array(
+		'PO-Revision-Date'          => '2016-01-05 18:45:32+1000',
+		'MIME-Version'              => '1.0',
+		'Content-Type'              => 'text/plain; charset=UTF-8',
 		'Content-Transfer-Encoding' => '8bit',
-		'X-Generator' => 'GlotPress/1.0-alpha-1100',
-		'Project-Id-Version' => 'Example Project',
+		'X-Generator'               => 'GlotPress/1.0-alpha-1100',
+		'Project-Id-Version'        => 'Example Project',
 	),
 
 	/*
@@ -45,11 +45,11 @@ return array(
 	 * - Plural forms are separated by \0, or alternatively as a PHP array
 	 * - Context is before the original, with \4 following it
 	 */
-	'entries' => array(
-		"singular"                  => 'singular translation',
+	'entries'              => array(
+		'singular'                  => 'singular translation',
 		"context\4singular"         => 'singular translation with context',
 		"plural0\0plural1"          => "plural0 translation\0plural1 translation\0plural2 translation",
-		"array0\0array1"            => array( "array0 translation", "array1 translation", "array2 translation" ),
+		"array0\0array1"            => array( 'array0 translation', 'array1 translation', 'array2 translation' ),
 		"context\4plural0\0plural1" => "plural0 translation with context\0plural1 translation with context\0plural2 translation with context",
 	),
 );
