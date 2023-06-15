@@ -30,14 +30,8 @@
 
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="false">
-			<directory suffix=".php">./</directory>
-			<exclude>
-				<directory suffix=".php">bin</directory>
-				<directory suffix=".php">node_modules</directory>
-				<directory suffix=".php">tests</directory>
-				<directory suffix=".php">vendor</directory>
-				<file>ginger-mo.php</file>
-			</exclude>
+			<directory suffix=".php">./lib/</directory>
+			<file>ginger-mo.php</file>
 		</whitelist>
 	</filter>
 </phpunit>
