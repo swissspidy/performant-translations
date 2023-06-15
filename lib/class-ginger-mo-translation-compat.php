@@ -1,7 +1,7 @@
 <?php
 // Compatibility & Implementation for WordPress
 class Ginger_MO_Translation_Compat {
-	public static function load_textdomain( $return, $domain, $mofile ) {
+	public static function load_textdomain( $override, $domain, $mofile ) {
 		global $l10n;
 		do_action( 'load_textdomain', $domain, $mofile );
 		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
@@ -15,7 +15,7 @@ class Ginger_MO_Translation_Compat {
 		return $success;
 	}
 
-	public static function unload_textdomain( $return, $domain ) {
+	public static function unload_textdomain( $override, $domain ) {
 		global $l10n;
 
 		do_action( 'unload_textdomain', $domain );

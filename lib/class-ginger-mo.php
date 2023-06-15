@@ -116,7 +116,8 @@ class Ginger_MO {
 
 		// Find the translation in all loaded files for this text domain
 		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
-			if ( false !== ( $translation = $moe->translate( $singular ) ) ) {
+			$translation = $moe->translate( $singular );
+			if ( false !== $translation ) {
 				return array(
 					'entries' => $translation,
 					'source'  => $moe,
