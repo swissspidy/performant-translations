@@ -118,10 +118,18 @@ class Ginger_MO {
 		$headers = array();
 
 		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
-			$headers = array_merge( $headers, $moe->headers() );
+			foreach ( $moe->headers() as $header => $value ) {
+				$headers[ $this->normalize_header( $header ) ] = $value;
+			}
 		}
 
 		return $headers;
+	}
+
+	protected function normalize_header( $header ) {
+		$parts = explode( '-', $header );
+		$parts = array_map( 'ucfirst', $parts );
+		return implode( '-', $parts );
 	}
 
 	public function get_entries( $textdomain = null ) {

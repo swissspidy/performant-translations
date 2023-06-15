@@ -84,9 +84,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 
 					list( $name, $value ) = array_map( 'trim', explode( ':', $meta_line, 2 ) );
 
-					// TODO: consider normalizing using strtolower().
-					// Would break back compat for anyone accessing headers directly.
-					$this->headers[ $name ] = $value;
+					$this->headers[ strtolower( $name ) ] = $value;
 				}
 			} else {
 				$this->entries[ $original ] = $translation;
