@@ -81,8 +81,12 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 					if ( ! $meta_line ) {
 						continue;
 					}
-					list( $name, $value )                 = array_map( 'trim', explode( ':', $meta_line, 2 ) );
-					$this->headers[ strtolower( $name ) ] = $value;
+
+					list( $name, $value ) = array_map( 'trim', explode( ':', $meta_line, 2 ) );
+
+					// TODO: consider normalizing using strtolower().
+					// Would break back compat for anyone accessing headers directly.
+					$this->headers[ $name ] = $value;
 				}
 			} else {
 				$this->entries[ $original ] = $translation;

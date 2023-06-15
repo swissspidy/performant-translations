@@ -106,6 +106,43 @@ class Ginger_MO {
 		return $t[ $num ];
 	}
 
+	public function get_headers( $textdomain = null ) {
+		if ( ! $this->loaded_translations ) {
+			return array();
+		}
+
+		if ( ! $textdomain ) {
+			$textdomain = $this->default_textdomain;
+		}
+
+		$headers = array();
+
+		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
+			$headers = array_merge( $headers, $moe->headers() );
+		}
+
+		return $headers;
+	}
+
+	public function get_entries( $textdomain = null ) {
+		if ( ! $this->loaded_translations ) {
+			return array();
+		}
+
+		if ( ! $textdomain ) {
+			$textdomain = $this->default_textdomain;
+		}
+
+		$entries = array();
+
+		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
+			$entries = array_merge( $entries, $moe->entries() );
+		}
+
+		// TODO: Return Translation_Entry instances instead to maintain back compat.
+		return $entries;
+	}
+
 	protected function locate_translation( $singular, $textdomain = null ) {
 		if ( ! $this->loaded_translations ) {
 			return false;
