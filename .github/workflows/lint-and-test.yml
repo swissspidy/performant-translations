@@ -144,16 +144,11 @@ jobs:
                   PHP_VERSION: ${{ matrix.php }}
 
             - name: Run tests
-              run: |
-                  composer test
-                  composer test:multisite
+              run: composer test
               if: ${{ ! matrix.coverage }}
 
             - name: Run tests with coverage
-              run: |
-                  composer test:unit -- --coverage-clover coverage.xml
-                  composer test:integration -- --coverage-clover coverage.xml
-                  composer test:integration:multisite -- --coverage-clover coverage-multisite.xml
+              run: composer test:coverage
               if: ${{ matrix.coverage }}
 
             - name: Upload code coverage report
