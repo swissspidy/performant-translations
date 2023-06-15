@@ -151,8 +151,9 @@ jobs:
 
             - name: Run tests with coverage
               run: |
-                  composer test -- --coverage-clover coverage.xml
-                  composer test:multisite -- --coverage-clover coverage-multisite.xml
+                  composer test:unit -- --coverage-clover coverage.xml
+                  composer test:integration -- --coverage-clover coverage.xml
+                  composer test:integration:multisite -- --coverage-clover coverage-multisite.xml
               if: ${{ matrix.coverage }}
 
             - name: Upload code coverage report

@@ -7,7 +7,7 @@ class Ginger_MO_Translation_File {
 	protected $file    = '';
 	protected $entries = array(); // [ "Original" => "Translation" ]
 
-	protected $plural_form_function = '';
+	protected $plural_forms = '';
 
 	protected function __construct( $file, $context = 'read' ) {
 		$this->file = $file;
@@ -80,13 +80,13 @@ class Ginger_MO_Translation_File {
 			$this->parse_file();
 		}
 
-		// Incase a plural form is specified as a header, but no function included, build one.
-		if ( ! $this->plural_form_function && isset( $this->headers['plural-forms'] ) ) {
-			$this->plural_form_function = $this->generate_plural_forms_function( $this->headers['plural-forms'] );
+		// In case a plural form is specified as a header, but no function included, build one.
+		if ( ! $this->plural_forms && isset( $this->headers['plural-forms'] ) ) {
+			$this->plural_forms = $this->make_plural_form_function( $this->headers['plural-forms'] );
 		}
 
-		if ( $this->plural_form_function && is_callable( $this->plural_form_function ) ) {
-			return call_user_func( $this->plural_form_function, $number );
+		if ( $this->plural_forms && is_callable( $this->plural_forms ) ) {
+			return call_user_func( $this->plural_forms, $number );
 		}
 
 		// Default plural form matches English, only "One" is considered singular.
@@ -111,59 +111,14 @@ class Ginger_MO_Translation_File {
 		return ! $this->error;
 	}
 
-	protected function generate_plural_forms_function( $plural_form ) {
-		$plural_func_contents = $this->generate_plural_forms_function_content( $plural_form );
-		if ( ! $plural_func_contents ) {
-			return false;
+	public function make_plural_form_function( $expression ) {
+		try {
+			$handler = new Plural_Forms( rtrim( $expression, ';' ) );
+			return array( $handler, 'get' );
+		} catch ( Exception $e ) {
+			// Fall back to default plural-form function.
+			return $this->make_plural_form_function( 'n != 1' );
 		}
-
-		return create_function( '$n', $plural_func_contents );
-	}
-
-	protected function generate_plural_forms_function_content( $plural_form ) {
-		$plural_func_contents = false;
-		// Validate that the plural form function is legit
-		// This should/could use a more strict plural matching (such as validating it's a valid expression)
-		if ( $plural_form && preg_match( '#^nplurals=(\d+);\s*plural=([n><!=\s()?%&|:0-9-]+);?$#i', $plural_form, $match ) ) {
-			$nexpression          = str_replace( 'n', '$n', $this->add_parenthese_to_plural_exression( $match[2] ) );
-			$plural_func_contents = "return (int)($nexpression);";
-		}
-		return $plural_func_contents;
-	}
-
-	/**
-	 * Adds parentheses to the inner parts of ternary operators in
-	 * plural expressions, because PHP evaluates ternary oerators from left to right
-	 *
-	 * Borrowed from WordPress POMO
-	 *
-	 * @param string $expression the expression without parentheses
-	 * @return string the expression with parentheses added
-	 */
-	protected function add_parenthese_to_plural_exression( $expression ) {
-		$expression .= ';';
-		$res         = '';
-		$depth       = 0;
-		for ( $i = 0; $i < strlen( $expression ); $i++ ) {
-			$char = substr( $expression, $i, 1 );
-			switch ( $char ) {
-				case '?':
-					$res .= ' ? (';
-					++$depth;
-					break;
-				case ':':
-					$res .= ') : (';
-					break;
-				case ';':
-					$res  .= ' ' . str_repeat( ')', $depth ) . ';';
-					$depth = 0;
-					break;
-				default:
-					$res .= $char;
-			}
-		}
-
-		return rtrim( $res, ';' );
 	}
 
 	protected function parse_file() {}

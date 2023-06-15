@@ -25,10 +25,6 @@ class Ginger_MO_Translation_Compat {
 	}
 
 	public static function overwrite_wordpress() {
-		global $l10n;
-
-		$l10n = new Ginger_MO_Translation_Compat();
-
 		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 10, 2 );
 		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 10, 3 );
 	}

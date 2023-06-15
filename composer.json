@@ -33,7 +33,13 @@
 	"scripts": {
 		"format": "vendor/bin/phpcbf --report-summary --report-source .",
 		"lint": "vendor/bin/phpcs --report-summary --report-source .",
-		"test": "vendor/bin/phpunit",
-		"test:multisite": "vendor/bin/phpunit -c phpunit-multisite.xml.dist"
+		"test": [
+			"@test:unit",
+			"@test:integration",
+			"@test:integration:multisite"
+		],
+		"test:unit": "vendor/bin/phpunit",
+		"test:integration": "vendor/bin/phpunit -c phpunit-integration.xml.dist",
+		"test:integration:multisite": "vendor/bin/phpunit -c phpunit-integration-multisite.xml.dist"
 	}
 }
