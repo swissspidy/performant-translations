@@ -11,7 +11,7 @@ if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 	exit( 1 );
 }
 
-define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', dirname( dirname( __DIR__ ) ) . '/vendor/yoast/phpunit-polyfills' );
+define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', dirname( dirname( dirname( __DIR__ ) ) ) . '/vendor/yoast/phpunit-polyfills' );
 
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
@@ -20,7 +20,7 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __DIR__ ) ) . '/ginger-mo.php';
+	require dirname( dirname( dirname( __DIR__ ) ) ) . '/ginger-mo.php';
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
