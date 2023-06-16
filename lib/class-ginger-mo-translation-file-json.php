@@ -1,5 +1,13 @@
 <?php
+/**
+ * Class Ginger_MO_Translation_File_JSON.
+ *
+ * @package Ginger_MO
+ */
 
+/**
+ * Class Ginger_MO_Translation_File_JSON.
+ */
 class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	/**
 	 * Parses the file.
@@ -26,7 +34,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 			return;
 		}
 
-		// Support JED JSON files which wrap po2json
+		// Support JED JSON files which wrap po2json.
 		if ( isset( $data['domain'] ) && isset( $data['locale_data'][ $data['domain'] ] ) ) {
 			$data = $data['locale_data'][ $data['domain'] ];
 		}
@@ -38,17 +46,17 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 
 		foreach ( $data as $key => $item ) {
 			if ( is_string( $item ) ) {
-				// Straight Key => Value translations
+				// Straight Key => Value translations.
 				$this->entries[ $key ] = $item;
 			} elseif ( is_array( $item ) ) {
 				if ( null === $item[0] ) {
-					// Singular - po2json format
+					// Singular - po2json format.
 					$this->entries[ $key ] = $item[1];
 				} elseif ( false !== strpos( $key, "\0" ) ) {
-					// Singular - Straight Key (plural\0plural) => [ plural, plural ] format
+					// Singular - Straight Key (plural\0plural) => [ plural, plural ] format.
 					$this->entries[ $key ] = $item;
 				} else {
-					// Plurals - po2json format ( plural0 => [ plural1, translation0, translation1 ] )
+					// Plurals - po2json format ( plural0 => [ plural1, translation0, translation1 ] ).
 					$key                  .= "\0" . $item[0];
 					$this->entries[ $key ] = array_slice( $item, 1 );
 				}
@@ -66,7 +74,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_file( $headers, $entries ) {
-		// json headers are lowercase
+		// json headers are lowercase.
 		$headers = array_change_key_case( $headers );
 		// Prefix as the first key.
 		$entries = array_merge( array( '' => $headers ), $entries );

@@ -1,7 +1,17 @@
 <?php
-// Compatibility & Implementation for WordPress
+/**
+ * Compatibility & Implementation for WordPress.
+ *
+ * @package Ginger_MO
+ */
+
+/**
+ * Class Ginger_MO_Translation_Compat.
+ */
 class Ginger_MO_Translation_Compat {
 	/**
+	 * Loads a text domain.
+	 *
 	 * @param bool   $override Whether to override. Unused.
 	 * @param string $domain Text domain.
 	 * @param string $mofile File name.
@@ -22,6 +32,8 @@ class Ginger_MO_Translation_Compat {
 	}
 
 	/**
+	 * Unloads text domain.
+	 *
 	 * @param bool   $override Whether to override. Unused.
 	 * @param string $domain Text domain.
 	 * @return bool True on success, false otherwise.

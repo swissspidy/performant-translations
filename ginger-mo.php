@@ -11,6 +11,8 @@
  * Text Domain: ginger-mo
  * Requires at least: 6.2
  * Requires PHP: 5.6
+ *
+ * @package Ginger_MO
  */
 
 /*
@@ -27,7 +29,7 @@ require __DIR__ . '/lib/class-ginger-mo-translation-file-php.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-compat-provider.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-compat.php';
 
-// All the WordPress magic:
+// All the WordPress magic.
 Ginger_MO_Translation_Compat::overwrite_wordpress();
 
 /*

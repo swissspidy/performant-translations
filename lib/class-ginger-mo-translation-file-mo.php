@@ -1,5 +1,13 @@
 <?php
+/**
+ * Class Ginger_MO_Translation_File_MO.
+ *
+ * @package Ginger_MO
+ */
 
+/**
+ * Class Ginger_MO_Translation_File_MO.
+ */
 class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	/**
 	 * Endian value.
@@ -13,6 +21,8 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	protected $uint32 = false;
 
 	/**
+	 * The magic number of the GNU message catalog format.
+	 *
 	 * @var int
 	 */
 	const MAGIC_MARKER = 0x950412de;
@@ -58,14 +68,16 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			return false;
 		}
 
-		if ( $big === self::MAGIC_MARKER ) {
+		if ( self::MAGIC_MARKER === $big ) {
 			return 'N';
-		} elseif ( $little === self::MAGIC_MARKER ) {
-			return 'V';
-		} else {
-			$this->error = "Magic Marker doesn't exist";
-			return false;
 		}
+
+		if ( self::MAGIC_MARKER === $little ) {
+			return 'V';
+		}
+
+		$this->error = "Magic Marker doesn't exist";
+		return false;
 	}
 
 	/**
@@ -82,7 +94,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			return false;
 		}
 
-		$file_length   = strlen( $file_contents );
+		$file_length = strlen( $file_contents );
 
 		if ( $file_length < 24 ) {
 			$this->error = 'Invalid Data.';
@@ -118,7 +130,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			return false;
 		}
 
-		// Load the Originals
+		// Load the Originals.
 		$original_data     = str_split( substr( $file_contents, $offsets['originals_addr'], $offsets['originals_length'] ), 8 );
 		$translations_data = str_split( substr( $file_contents, $offsets['translations_addr'], $offsets['translations_length'] ), 8 );
 
@@ -128,7 +140,8 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 
 			$original    = substr( $file_contents, $o['pos'], $o['length'] );
 			$translation = substr( $file_contents, $t['pos'], $t['length'] );
-			$translation = rtrim( $translation, "\0" ); // GlotPress bug
+			$translation = rtrim( $translation, "\0" );
+			// GlotPress bug.
 
 			// Metadata about the MO file is stored in the first translation entry.
 			if ( '' === $original ) {
@@ -144,7 +157,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			} else {
 				$this->entries[ $original ] = $translation;
 			}
-		}
+		}//end foreach
 
 		return true;
 	}
@@ -152,7 +165,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	/**
 	 * Writes translations to file.
 	 *
-	 * @param array<string, string>       $headers Headers.
+	 * @param array<string, string>          $headers Headers.
 	 * @param array<string, string|string[]> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
@@ -165,7 +178,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$entries     = array_merge( array( '' => $headers_string ), $entries );
 		$entry_count = count( $entries );
 
-		// Flatten any plurals into a combined string
+		// Flatten any plurals into a combined string.
 		foreach ( $entries as $i => $entry ) {
 			if ( is_array( $entry ) ) {
 				$entries[ $i ] = implode( "\0", $entry );
@@ -176,7 +189,8 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			$this->uint32 = 'V';
 		}
 
-		$bytes_for_entries = $entry_count * 4 * 2; // Pair of 32bit ints per entry.
+		$bytes_for_entries = $entry_count * 4 * 2;
+		// Pair of 32bit ints per entry.
 		$originals_addr    = 28; /* header */
 		$translations_addr = $originals_addr + $bytes_for_entries;
 		$hash_addr         = $translations_addr + $bytes_for_entries;
@@ -184,7 +198,15 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 
 		$file_header = pack( $this->uint32 . '*', self::MAGIC_MARKER, 0 /* rev */, $entry_count, $originals_addr, $translations_addr, 0 /* hash_length */, $hash_addr );
 
-		$o_entries = $t_entries = $o_addr = $t_addr = '';
+		if ( ! $file_header ) {
+			$file_header = '';
+		}
+
+		$o_entries = '';
+		$t_entries = '';
+		$o_addr    = '';
+		$t_addr    = '';
+
 		foreach ( $entries as $original => $translations ) {
 			$o_addr        .= pack( $this->uint32 . '*', strlen( $original ), $entry_offsets );
 			$entry_offsets += strlen( $original ) + 1;

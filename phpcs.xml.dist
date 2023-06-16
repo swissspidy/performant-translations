@@ -38,13 +38,34 @@
 		</properties>
 	</rule>
 
+	<!-- Do not apply filename rules for unit tests -->
+	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>tests/*</exclude-pattern>
+	</rule>
+
+	<!-- Ignore prefix requirement for test class -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound">
+		<exclude-pattern>tests/phpunit/unit/includes/Testable_Ginger_MO_Translation_File.php</exclude-pattern>
+	</rule>
+
+	<!-- Ignore comments requirements for main plugin file -->
+	<rule ref="Squiz.Commenting">
+		<exclude-pattern>ginger-mo.php</exclude-pattern>
+	</rule>
+
+	<!-- Do not apply hook name rules to compat file -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound">
+		<exclude-pattern>lib/class-ginger-mo-translation-compat.php</exclude-pattern>
+	</rule>
+
 	<!-- Test for PHP 5.6+ compatibility. -->
 	<config name="testVersion" value="5.6-"/>
 
-	<exclude-pattern>*/build/*</exclude-pattern>
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/tools/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/*/bootstrap.php</exclude-pattern>
-	<exclude-pattern>*/tests/e2e/plugins/*</exclude-pattern>
-	<exclude-pattern>*/tests/phpunit/data/*</exclude-pattern>
+	<exclude-pattern>*/tests/phpunit/unit/data/*</exclude-pattern>
 </ruleset>

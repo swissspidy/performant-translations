@@ -1,17 +1,12 @@
 <?php
 
-namespace tests;
-
-use Ginger_MO_Translation_File;
-use includes\Ginger_MO_TestCase;
-
 class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 
 
 	/**
 	 * @dataProvider dataprovider_export_matrix
 	 */
-	function test_convert_format( $source_file, $destination_format ) {
+	public function test_convert_format( $source_file, $destination_format ) {
 		$destination_file = $this->temp_file();
 		$source           = Ginger_MO_Translation_File::create( $source_file, 'read' );
 		$destination      = Ginger_MO_Translation_File::create( $destination_file, 'write', $destination_format );
@@ -32,7 +27,8 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 
 		$source_headers      = $source->headers();
 		$destination_headers = $destination_read->headers();
-		unset( $destination_headers['x-converter'] ); // We add this.
+		unset( $destination_headers['x-converter'] );
+		// We add this.
 
 		$this->assertEquals( $source_headers, $destination_headers );
 
@@ -55,7 +51,7 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 		}
 	}
 
-	function dataprovider_export_matrix() {
+	public function dataprovider_export_matrix() {
 		$sources = array(
 			'example-simple.json',
 			'example-simple-jed.json',

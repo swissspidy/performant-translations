@@ -1,4 +1,13 @@
 <?php
+/**
+ * Class Ginger_MO_Translation_Compat_Provider.
+ *
+ * @package Ginger_MO
+ */
+
+/**
+ * Class Ginger_MO_Translation_Compat_Provider.
+ */
 class Ginger_MO_Translation_Compat_Provider {
 	/**
 	 * Text domain.

@@ -1,5 +1,13 @@
 <?php
+/**
+ * Class Ginger_MO_Translation_File_PHP.
+ *
+ * @package Ginger_MO
+ */
 
+/**
+ * Class Ginger_MO_Translation_File_PHP.
+ */
 class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	/**
 	 * Parses the file.

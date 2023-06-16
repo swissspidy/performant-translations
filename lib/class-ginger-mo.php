@@ -1,5 +1,13 @@
 <?php
+/**
+ * Main functionality.
+ *
+ * @package Ginger_MO
+ */
 
+/**
+ * Class Ginger_MO.
+ */
 class Ginger_MO {
 	/**
 	 * Default text domain.
@@ -23,12 +31,18 @@ class Ginger_MO {
 	protected $loaded_files = array();
 
 	/**
+	 * Returns the Ginger_MO singleton.
+	 *
 	 * @return Ginger_MO
 	 */
 	public static function instance() {
 		static $instance;
 
-		return $instance ?: $instance = new Ginger_MO();
+		if ( ! $instance ) {
+			$instance = new Ginger_MO();
+		}
+
+		return $instance;
 	}
 
 	/**
@@ -66,7 +80,7 @@ class Ginger_MO {
 			$this->loaded_translations[ $textdomain ] = array();
 		}
 
-		// Prefix translations to ensure that last-loaded takes preference
+		// Prefix translations to ensure that last-loaded takes preference.
 		array_unshift( $this->loaded_translations[ $textdomain ], $moe );
 
 		return true;
@@ -239,7 +253,7 @@ class Ginger_MO {
 			$textdomain = $this->default_textdomain;
 		}
 
-		// Find the translation in all loaded files for this text domain
+		// Find the translation in all loaded files for this text domain.
 		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
 			$translation = $moe->translate( $singular );
 			if ( false !== $translation ) {
@@ -254,7 +268,7 @@ class Ginger_MO {
 			}
 		}
 
-		// Nothing could be found
+		// Nothing could be found.
 		return false;
 	}
 

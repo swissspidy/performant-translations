@@ -1,9 +1,5 @@
 <?php
 
-// Ginger_MO_Translation_File has some protected methods we want to test.
-namespace includes;
-use Ginger_MO_Translation_File;
-
 class Testable_Ginger_MO_Translation_File extends Ginger_MO_Translation_File {
 
 	public static function get_testable_instance() {
