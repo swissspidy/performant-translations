@@ -1,6 +1,7 @@
 vendor/
 build/
 phpcs.xml
+phpstan.neon
 phpunit.xml
 phpunit-multisite.xml
 .phpunit.cache/

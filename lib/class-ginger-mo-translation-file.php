@@ -1,14 +1,52 @@
 <?php
 
 class Ginger_MO_Translation_File {
+	/**
+	 * List of headers.
+	 *
+	 * @var array<string, string>
+	 */
 	protected $headers = array();
-	protected $parsed  = false;
-	protected $error   = false;
-	protected $file    = '';
-	protected $entries = array(); // [ "Original" => "Translation" ]
 
-	protected $plural_forms = '';
+	/**
+	 * Whether file has been parsed.
+	 *
+	 * @var bool
+	 */
+	protected $parsed = false;
 
+	/**
+	 * Error information.
+	 *
+	 * @var bool|string
+	 */
+	protected $error = false;
+
+	/**
+	 * File name.
+	 *
+	 * @var string
+	 */
+	protected $file = '';
+
+	/**
+	 * Translation entries.
+	 *
+	 * @var array<string, string>
+	 */
+	protected $entries = array();
+
+	/**
+	 * @var callable|null Plural forms.
+	 */
+	protected $plural_forms = null;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string         $file File to load.
+	 * @param 'read'|'write' $context Context.
+	 */
 	protected function __construct( $file, $context = 'read' ) {
 		$this->file = $file;
 
@@ -23,6 +61,12 @@ class Ginger_MO_Translation_File {
 		}
 	}
 
+	/**
+	 * @param string         $file File name.
+	 * @param 'read'|'write' $context Context.
+	 * @param string         $filetype File type.
+	 * @return false|Ginger_MO_Translation_File
+	 */
 	public static function create( $file, $context = 'read', $filetype = null ) {
 		if ( ! $filetype ) {
 			$filetype = substr( $file, strrpos( $file, '.' ) + 1 );
@@ -45,6 +89,11 @@ class Ginger_MO_Translation_File {
 		return $moe;
 	}
 
+	/**
+	 * Returns all headers.
+	 *
+	 * @return array<string, string> Headers.
+	 */
 	public function headers() {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
@@ -52,6 +101,11 @@ class Ginger_MO_Translation_File {
 		return $this->headers;
 	}
 
+	/**
+	 * Returns all entries.
+	 *
+	 * @return string[] Entries.
+	 */
 	public function entries() {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
@@ -59,14 +113,30 @@ class Ginger_MO_Translation_File {
 		return $this->entries;
 	}
 
+	/**
+	 * Returns the current error information.
+	 *
+	 * @return bool|string Error
+	 */
 	public function error() {
 		return $this->error;
 	}
 
+	/**
+	 * Returns the file name.
+	 *
+	 * @return string File name.
+	 */
 	public function get_file() {
 		return $this->file;
 	}
 
+	/**
+	 * Translates a given string.
+	 *
+	 * @param string $string String to translate.
+	 * @return false|string Translation on success, false otherwise.
+	 */
 	public function translate( $string ) {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
@@ -75,6 +145,11 @@ class Ginger_MO_Translation_File {
 		return isset( $this->entries[ $string ] ) ? $this->entries[ $string ] : false;
 	}
 
+	/**
+	 * Returns the plural form for a count.
+	 * @param int $number Count.
+	 * @return int Plural form.
+	 */
 	public function get_plural_form( $number ) {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
@@ -85,7 +160,7 @@ class Ginger_MO_Translation_File {
 			$this->plural_forms = $this->make_plural_form_function( $this->headers['plural-forms'] );
 		}
 
-		if ( $this->plural_forms && is_callable( $this->plural_forms ) ) {
+		if ( is_callable( $this->plural_forms ) ) {
 			return call_user_func( $this->plural_forms, $number );
 		}
 
@@ -108,9 +183,16 @@ class Ginger_MO_Translation_File {
 		$destination->create_file( $headers, $this->entries );
 		$this->error = $destination->error();
 
-		return ! $this->error;
+		return false === $this->error;
 	}
 
+	/**
+	 * Makes a function, which will return the right translation index, according to the
+	 * plural forms header
+	 *
+	 * @param string $expression
+	 * @return array{0: Plural_Forms, 1: 'get'} Plural forms function.
+	 */
 	public function make_plural_form_function( $expression ) {
 		try {
 			$handler = new Plural_Forms( rtrim( $expression, ';' ) );
@@ -121,8 +203,9 @@ class Ginger_MO_Translation_File {
 		}
 	}
 
-	protected function parse_file() {}
-	protected function create_file( $headers, $entries ) {
+	protected function parse_file() {} // TODO: Move to interface or make abstract.
+
+	protected function create_file( $headers, $entries ) { // TODO: Move to interface or make abstract.
 		$this->error = 'Format not supported.';
 		return false;
 	}

@@ -1,15 +1,43 @@
 <?php
 
 class Ginger_MO {
-	protected $default_textdomain  = 'default';
-	protected $loaded_translations = array(); // [ Textdomain => [ $object1, $object2 ] ]
-	protected $loaded_files        = array(); // [ /path/to/file.mo => $object ]
+	/**
+	 * Default text domain.
+	 *
+	 * @var string
+	 */
+	protected $default_textdomain = 'default';
 
+	/**
+	 * Map of loaded translations per text domain.
+	 *
+	 * @var array<string, Ginger_MO_Translation_File[]>
+	 */
+	protected $loaded_translations = array();
+
+	/**
+	 * List of loaded translation files.
+	 *
+	 * @var array<string,Ginger_MO_Translation_File>
+	 */
+	protected $loaded_files = array();
+
+	/**
+	 * @return false|Ginger_MO
+	 */
 	public static function instance() {
-		static $instance                         = false;
-		return $instance ? $instance : $instance = new Ginger_MO();
+		static $instance = false;
+
+		return $instance ?: $instance = new Ginger_MO();
 	}
 
+	/**
+	 * Loads a translation file.
+	 *
+	 * @param string $translation_file Translation file.
+	 * @param string $textdomain Text domain.
+	 * @return bool True on success, false otherwise.
+	 */
 	public function load( $translation_file, $textdomain = null ) {
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
@@ -17,10 +45,7 @@ class Ginger_MO {
 
 		$translation_file = realpath( $translation_file );
 		if ( ! empty( $this->loaded_files[ $translation_file ][ $textdomain ] ) ) {
-			if ( $this->loaded_files[ $translation_file ][ $textdomain ] && ! $this->loaded_files[ $translation_file ][ $textdomain ]->error() ) {
-				return true;
-			}
-			return false;
+			return $this->loaded_files[ $translation_file ][ $textdomain ]->error();
 		}
 
 		if ( ! empty( $this->loaded_files[ $translation_file ] ) ) {
@@ -47,6 +72,13 @@ class Ginger_MO {
 		return true;
 	}
 
+	/**
+	 * Unload all translation files or a specific one for a given text domain.
+	 *
+	 * @param string                     $textdomain Text domain.
+	 * @param Ginger_MO_Translation_File $mo Translation file.
+	 * @return bool True on success, false otherwise.
+	 */
 	public function unload( $textdomain, $mo = null ) {
 		if ( ! $this->is_loaded( $textdomain ) ) {
 			return false;
@@ -72,10 +104,24 @@ class Ginger_MO {
 		return true;
 	}
 
+	/**
+	 * Determines whether translations are loaded for a given text domain.
+	 *
+	 * @param string $textdomain Text domain.
+	 * @return bool True if there are any loaded translations, false otherwise.
+	 */
 	public function is_loaded( $textdomain ) {
 		return ! empty( $this->loaded_translations[ $textdomain ] );
 	}
 
+	/**
+	 * Translates a singular string.
+	 *
+	 * @param string      $text Text to translate.
+	 * @param string|null $context Optional. Context for the string.
+	 * @param string      $textdomain Text domain.
+	 * @return string|false Translation on success, false otherwise.
+	 */
 	public function translate( $text, $context = null, $textdomain = null ) {
 		if ( $context ) {
 			$context .= "\4";
@@ -90,6 +136,15 @@ class Ginger_MO {
 		return $translation['entries'];
 	}
 
+	/**
+	 * Translates plurals.
+	 *
+	 * @param array{0: string, 1: string} $plurals Pair of singular and plural translation.
+	 * @param int                         $number Number of items.
+	 * @param string|null                 $context Optional. Context for the string.
+	 * @param string                      $textdomain Text domain.
+	 * @return string|false Translation on success, false otherwise.
+	 */
 	public function translate_plural( $plurals, $number, $context = null, $textdomain = null ) {
 		if ( $context ) {
 			$context .= "\4";
@@ -106,6 +161,12 @@ class Ginger_MO {
 		return $t[ $num ];
 	}
 
+	/**
+	 * Returns all existing headers for a given text domain.
+	 *
+	 * @param string $textdomain Text domain.
+	 * @return array<string, string> Headers.
+	 */
 	public function get_headers( $textdomain = null ) {
 		if ( ! $this->loaded_translations ) {
 			return array();
@@ -126,6 +187,12 @@ class Ginger_MO {
 		return $headers;
 	}
 
+	/**
+	 * Normalizes header names to be capitalized.
+	 *
+	 * @param string $header Header name.
+	 * @return string Normalized header name.
+	 */
 	protected function normalize_header( $header ) {
 		$parts = explode( '-', $header );
 		$parts = array_map( 'ucfirst', $parts );

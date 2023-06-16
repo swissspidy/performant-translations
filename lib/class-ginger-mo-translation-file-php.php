@@ -8,7 +8,7 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 			return;
 		}
 
-		foreach ( array( 'headers', 'entries', 'plural_form_function' ) as $field ) {
+		foreach ( array( 'headers', 'entries' ) as $field ) {
 			if ( isset( $result[ $field ] ) ) {
 				$this->$field = $result[ $field ];
 			}

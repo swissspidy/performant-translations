@@ -1,0 +1,7 @@
+parameters:
+	level: 5
+	paths:
+		- ginger-mo.php
+		- lib/
+	bootstrapFiles:
+		- tests/phpstan/bootstrap.php

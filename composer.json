@@ -33,6 +33,10 @@
 	"scripts": {
 		"format": "vendor/bin/phpcbf --report-summary --report-source .",
 		"lint": "vendor/bin/phpcs --report-summary --report-source .",
+		"phpstan": [
+			"composer --working-dir=build-cs install",
+			"build-cs/vendor/bin/phpstan analyse --memory-limit=2048M"
+		],
 		"test": [
 			"@test:unit",
 			"@test:integration",

@@ -43,6 +43,9 @@ jobs:
             - name: Lint PHP
               run: composer lint
 
+            - name: PHPStan
+              run: composer phpstan
+
     unit-php:
         name: 'PHP ${{ matrix.php }} - WP ${{ matrix.wp }}'
         runs-on: ubuntu-latest
