@@ -32,7 +32,7 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Translation entries.
 	 *
-	 * @var array<string, string>
+	 * @var array<string, string[]|string>
 	 */
 	protected $entries = array();
 
@@ -147,6 +147,7 @@ class Ginger_MO_Translation_File {
 
 	/**
 	 * Returns the plural form for a count.
+	 *
 	 * @param int $number Count.
 	 * @return int Plural form.
 	 */
@@ -168,6 +169,12 @@ class Ginger_MO_Translation_File {
 		return ( $number == 1 ? 0 : 1 );
 	}
 
+	/**
+	 * Exports translations to file.
+	 *
+	 * @param Ginger_MO_Translation_File $destination Destination file.
+	 * @return bool True on success, false otherwise.
+	 */
 	public function export( Ginger_MO_Translation_File $destination ) {
 		if ( $destination->error() ) {
 			return false;
@@ -203,9 +210,22 @@ class Ginger_MO_Translation_File {
 		}
 	}
 
+	/**
+	 * Parses the file.
+	 *
+	 * @return void
+	 */
 	protected function parse_file() {} // TODO: Move to interface or make abstract.
 
-	protected function create_file( $headers, $entries ) { // TODO: Move to interface or make abstract.
+	/**
+	 * Writes translations to file.
+	 *
+	 * @param array<string, string> $headers Headers.
+	 * @param string[]              $entries Entries.
+	 * @return bool True on success, false otherwise.
+	 */
+	protected function create_file( $headers, $entries ) {
+		// TODO: Move to interface or make abstract.
 		$this->error = 'Format not supported.';
 		return false;
 	}

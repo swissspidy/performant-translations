@@ -1,8 +1,19 @@
 <?php
 
 class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
+	/**
+	 * Parses the file.
+	 *
+	 * @return void
+	 */
 	protected function parse_file() {
 		$data = file_get_contents( $this->file );
+
+		if ( ! $data ) {
+			$this->error = true;
+			return;
+		}
+
 		$data = json_decode( $data, true );
 
 		if ( ! $data || ! is_array( $data ) ) {
@@ -26,10 +37,10 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		}
 
 		foreach ( $data as $key => $item ) {
-			if ( ! is_array( $item ) ) {
+			if ( is_string( $item ) ) {
 				// Straight Key => Value translations
 				$this->entries[ $key ] = $item;
-			} else {
+			} elseif ( is_array( $item ) ) {
 				if ( null === $item[0] ) {
 					// Singular - po2json format
 					$this->entries[ $key ] = $item[1];
@@ -47,6 +58,13 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		$this->parsed = true;
 	}
 
+	/**
+	 * Writes translations to file.
+	 *
+	 * @param array<string, string> $headers Headers.
+	 * @param string[]              $entries Entries.
+	 * @return bool True on success, false otherwise.
+	 */
 	protected function create_file( $headers, $entries ) {
 		// json headers are lowercase
 		$headers = array_change_key_case( $headers );

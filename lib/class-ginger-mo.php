@@ -18,15 +18,15 @@ class Ginger_MO {
 	/**
 	 * List of loaded translation files.
 	 *
-	 * @var array<string,Ginger_MO_Translation_File>
+	 * @var array<string,array<string, Ginger_MO_Translation_File|false>>
 	 */
 	protected $loaded_files = array();
 
 	/**
-	 * @return false|Ginger_MO
+	 * @return Ginger_MO
 	 */
 	public static function instance() {
-		static $instance = false;
+		static $instance;
 
 		return $instance ?: $instance = new Ginger_MO();
 	}
@@ -199,6 +199,12 @@ class Ginger_MO {
 		return implode( '-', $parts );
 	}
 
+	/**
+	 * Returns all entries for a given text domain.
+	 *
+	 * @param string $textdomain Text domain.
+	 * @return string[] Entries.
+	 */
 	public function get_entries( $textdomain = null ) {
 		if ( ! $this->loaded_translations ) {
 			return array();
@@ -218,6 +224,13 @@ class Ginger_MO {
 		return $entries;
 	}
 
+	/**
+	 * Locates translation for a given string and text domain.
+	 *
+	 * @param string $singular Singular translation.
+	 * @param string $textdomain Text domain.
+	 * @return array{source: Ginger_MO_Translation_File, entries: string|string[]}|false Translations on success, false otherwise.
+	 */
 	protected function locate_translation( $singular, $textdomain = null ) {
 		if ( ! $this->loaded_translations ) {
 			return false;
@@ -245,11 +258,17 @@ class Ginger_MO {
 		return false;
 	}
 
+	/**
+	 * Returns all translation files for a given text domain.
+	 *
+	 * @param string $textdomain Text domain.
+	 * @return Ginger_MO_Translation_File[] List of translation files.
+	 */
 	protected function get_mo_files( $textdomain = null ) {
-		$moes = array();
 		if ( isset( $this->loaded_translations[ $textdomain ] ) ) {
-			$moes = $this->loaded_translations[ $textdomain ];
+			return $this->loaded_translations[ $textdomain ];
 		}
-		return $moes;
+
+		return array();
 	}
 }
