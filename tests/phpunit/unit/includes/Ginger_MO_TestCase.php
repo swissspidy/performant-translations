@@ -12,7 +12,7 @@ class Ginger_MO_TestCase extends \PHPUnit\Framework\TestCase {
 		return $file;
 	}
 
-	protected function __destruct() {
+	public function __destruct() {
 		foreach ( $this->temp_files as $file ) {
 			unlink( $file );
 		}
