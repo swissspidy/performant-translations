@@ -90,7 +90,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 
 		$file_contents = file_get_contents( $this->file );
 
-		if ( ! $file_contents ) {
+		if ( false === $file_contents ) {
 			return false;
 		}
 
