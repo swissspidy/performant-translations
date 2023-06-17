@@ -58,8 +58,13 @@ class Ginger_MO {
 		}
 
 		$translation_file = realpath( $translation_file );
+
+		if ( ! $translation_file ) {
+			return false;
+		}
+
 		if ( ! empty( $this->loaded_files[ $translation_file ][ $textdomain ] ) ) {
-			return $this->loaded_files[ $translation_file ][ $textdomain ]->error();
+			return false !== $this->loaded_files[ $translation_file ][ $textdomain ]->error();
 		}
 
 		if ( ! empty( $this->loaded_files[ $translation_file ] ) ) {
@@ -145,6 +150,10 @@ class Ginger_MO {
 
 		if ( ! $translation ) {
 			return false;
+		}
+
+		if ( is_array( $translation['entries'] ) ) {
+			return $translation['entries'][0];
 		}
 
 		return $translation['entries'];

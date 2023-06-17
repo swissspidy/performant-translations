@@ -53,6 +53,7 @@
 
 	<!-- Ignore comments requirements for main plugin file -->
 	<rule ref="Squiz.Commenting">
+		<exclude name="Squiz.Commenting.LongConditionClosingComment" />
 		<exclude-pattern>ginger-mo.php</exclude-pattern>
 	</rule>
 

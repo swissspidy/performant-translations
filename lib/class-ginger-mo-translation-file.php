@@ -40,7 +40,7 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Translation entries.
 	 *
-	 * @var array<string, string[]|string>
+	 * @var string[]
 	 */
 	protected $entries = array();
 
@@ -233,7 +233,7 @@ class Ginger_MO_Translation_File {
 	 * Writes translations to file.
 	 *
 	 * @param array<string, string> $headers Headers.
-	 * @param string[]              $entries Entries.
+	 * @param mixed                 $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_file( $headers, $entries ) {

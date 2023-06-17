@@ -138,10 +138,14 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			$o = unpack( "{$this->uint32}length/{$this->uint32}pos", $original_data[ $i ] );
 			$t = unpack( "{$this->uint32}length/{$this->uint32}pos", $translations_data[ $i ] );
 
+			if ( ! $o || ! $t ) {
+				continue;
+			}
+
 			$original    = substr( $file_contents, $o['pos'], $o['length'] );
 			$translation = substr( $file_contents, $t['pos'], $t['length'] );
-			$translation = rtrim( $translation, "\0" );
 			// GlotPress bug.
+			$translation = rtrim( $translation, "\0" );
 
 			// Metadata about the MO file is stored in the first translation entry.
 			if ( '' === $original ) {
@@ -157,7 +161,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			} else {
 				$this->entries[ $original ] = $translation;
 			}
-		}//end foreach
+		}
 
 		return true;
 	}
@@ -213,7 +217,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			$o_entries     .= $original . pack( 'x' );
 		}
 
-		foreach ( $entries as $original => $translations ) {
+		foreach ( $entries as $translations ) {
 			$t_addr        .= pack( $this->uint32 . '*', strlen( $translations ), $entry_offsets );
 			$entry_offsets += strlen( $translations ) + 1;
 			$t_entries     .= $translations . pack( 'x' );
