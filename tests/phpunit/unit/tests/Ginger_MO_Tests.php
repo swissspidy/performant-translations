@@ -92,8 +92,6 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	public function dataprovider_simple_example_files() {
 		return array(
 			array( 'example-simple.json' ),
-			array( 'example-simple-jed.json' ),
-			array( 'example-simple-po2json.json' ),
 			array( 'example-simple.mo' ),
 			array( 'example-simple.php' ),
 		);

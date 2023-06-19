@@ -152,15 +152,16 @@ class Ginger_MO {
 			return false;
 		}
 
-		if ( is_array( $translation['entries'] ) ) {
-			return $translation['entries'][0];
-		}
-
-		return $translation['entries'];
+		return $translation['entries'][0];
 	}
 
 	/**
 	 * Translates plurals.
+	 *
+	 * Checks both singular+plural combinations as well as just singulars,
+	 * in case the translation file does not store the plural.
+	 *
+	 * @todo Revisit this.
 	 *
 	 * @param array{0: string, 1: string} $plurals Pair of singular and plural translation.
 	 * @param int                         $number Number of items.
@@ -172,16 +173,21 @@ class Ginger_MO {
 		if ( $context ) {
 			$context .= "\4";
 		}
+
 		$text        = implode( "\0", $plurals );
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
 
 		if ( ! $translation ) {
-			return false;
+			$text        = $plurals[0];
+			$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
+
+			if ( ! $translation ) {
+				return false;
+			}
 		}
 
-		$t   = is_array( $translation['entries'] ) ? $translation['entries'] : explode( "\0", $translation['entries'] );
 		$num = $translation['source']->get_plural_form( $number );
-		return $t[ $num ];
+		return $translation['entries'][ $num ];
 	}
 
 	/**
@@ -226,7 +232,7 @@ class Ginger_MO {
 	 * Returns all entries for a given text domain.
 	 *
 	 * @param string $textdomain Text domain.
-	 * @return string[] Entries.
+	 * @return array<string, string> Entries.
 	 */
 	public function get_entries( $textdomain = null ) {
 		if ( ! $this->loaded_translations ) {
@@ -252,7 +258,7 @@ class Ginger_MO {
 	 *
 	 * @param string $singular Singular translation.
 	 * @param string $textdomain Text domain.
-	 * @return array{source: Ginger_MO_Translation_File, entries: string|string[]}|false Translations on success, false otherwise.
+	 * @return array{source: Ginger_MO_Translation_File, entries: string[]}|false Translations on success, false otherwise.
 	 */
 	protected function locate_translation( $singular, $textdomain = null ) {
 		if ( ! $this->loaded_translations ) {
@@ -267,7 +273,7 @@ class Ginger_MO {
 			$translation = $moe->translate( $singular );
 			if ( false !== $translation ) {
 				return array(
-					'entries' => $translation,
+					'entries' => explode( "\0", $translation ),
 					'source'  => $moe,
 				);
 			}

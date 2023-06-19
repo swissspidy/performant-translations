@@ -29,7 +29,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 			if ( function_exists( 'json_last_error_msg' ) ) {
 				$this->error = 'JSON Error: ' . json_last_error_msg();
 			} elseif ( function_exists( 'json_last_error' ) ) {
-				$this->error = 'JSON Error code: ' . (int) json_last_error();
+				$this->error = 'JSON Error code: ' . json_last_error();
 			}
 			return;
 		}
@@ -40,26 +40,15 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		}
 
 		if ( isset( $data[''] ) ) {
-			$this->headers = array_change_key_case( $data[''], CASE_LOWER );
+			$this->headers = array_change_key_case( $data[''] );
 			unset( $data[''] );
 		}
 
 		foreach ( $data as $key => $item ) {
 			if ( is_string( $item ) ) {
-				// Straight Key => Value translations.
-				$this->entries[ $key ] = $item;
+				$this->entries[ (string) $key ] = $item;
 			} elseif ( is_array( $item ) ) {
-				if ( null === $item[0] ) {
-					// Singular - po2json format.
-					$this->entries[ $key ] = $item[1];
-				} elseif ( false !== strpos( $key, "\0" ) ) {
-					// Singular - Straight Key (plural\0plural) => [ plural, plural ] format.
-					$this->entries[ $key ] = $item;
-				} else {
-					// Plurals - po2json format ( plural0 => [ plural1, translation0, translation1 ] ).
-					$key                  .= "\0" . $item[0];
-					$this->entries[ $key ] = array_slice( $item, 1 );
-				}
+				$this->entries[ (string) $key ] = implode( "\0", $item );
 			}
 		}
 

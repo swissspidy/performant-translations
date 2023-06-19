@@ -54,8 +54,6 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	public function dataprovider_export_matrix() {
 		$sources = array(
 			'example-simple.json',
-			'example-simple-jed.json',
-			'example-simple-po2json.json',
 			'example-simple.mo',
 			'example-simple.php',
 		);

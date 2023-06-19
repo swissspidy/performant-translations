@@ -40,7 +40,7 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Translation entries.
 	 *
-	 * @var string[]
+	 * @var array<string, string>
 	 */
 	protected $entries = array();
 
@@ -116,12 +116,14 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Returns all entries.
 	 *
-	 * @return string[] Entries.
+	 * @return array<string, string> Entries.
+	 * @phstan-return array<string, non-empty-array<string>> Entries.
 	 */
 	public function entries() {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
+
 		return $this->entries;
 	}
 
@@ -147,7 +149,7 @@ class Ginger_MO_Translation_File {
 	 * Translates a given string.
 	 *
 	 * @param string $text String to translate.
-	 * @return false|string Translation on success, false otherwise.
+	 * @return false|string Translation(s) on success, false otherwise.
 	 */
 	public function translate( $text ) {
 		if ( ! $this->parsed ) {
@@ -174,7 +176,13 @@ class Ginger_MO_Translation_File {
 		}
 
 		if ( is_callable( $this->plural_forms ) ) {
-			return call_user_func( $this->plural_forms, $number );
+			/**
+			 * Plural form.
+			 *
+			 * @phpstan-var int $result Plural form.
+			 */
+			$result = call_user_func( $this->plural_forms, $number );
+			return $result;
 		}
 
 		// Default plural form matches English, only "One" is considered singular.
@@ -210,7 +218,7 @@ class Ginger_MO_Translation_File {
 	 * plural forms header
 	 *
 	 * @param string $expression Plural form expression.
-	 * @return array{0: Plural_Forms, 1: 'get'} Plural forms function.
+	 * @return callable(int $num): int Plural forms function.
 	 */
 	public function make_plural_form_function( $expression ) {
 		try {

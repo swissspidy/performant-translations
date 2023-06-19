@@ -159,7 +159,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 					$this->headers[ strtolower( $name ) ] = $value;
 				}
 			} else {
-				$this->entries[ $original ] = $translation;
+				$this->entries[ (string) $original ] = $translation;
 			}
 		}
 
@@ -169,8 +169,8 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	/**
 	 * Writes translations to file.
 	 *
-	 * @param array<string, string>          $headers Headers.
-	 * @param array<string, string|string[]> $entries Entries.
+	 * @param array<string, string>   $headers Headers.
+	 * @param array<string, string[]> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_file( $headers, $entries ) {
@@ -211,16 +211,17 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$o_addr    = '';
 		$t_addr    = '';
 
-		foreach ( $entries as $original => $translations ) {
+		foreach ( array_keys( $entries ) as $original ) {
 			$o_addr        .= pack( $this->uint32 . '*', strlen( $original ), $entry_offsets );
 			$entry_offsets += strlen( $original ) + 1;
 			$o_entries     .= $original . pack( 'x' );
 		}
 
 		foreach ( $entries as $translations ) {
-			$t_addr        .= pack( $this->uint32 . '*', strlen( $translations ), $entry_offsets );
-			$entry_offsets += strlen( $translations ) + 1;
-			$t_entries     .= $translations . pack( 'x' );
+			$translation    = is_array( $translations ) ? implode( "\0", $translations ) : $translations;
+			$t_addr        .= pack( $this->uint32 . '*', strlen( $translation ), $entry_offsets );
+			$entry_offsets += strlen( $translation ) + 1;
+			$t_entries     .= $translation . pack( 'x' );
 		}
 
 		return (bool) file_put_contents( $this->file, $file_header . $o_addr . $t_addr . $o_entries . $t_entries );
