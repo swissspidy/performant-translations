@@ -3,4 +3,4 @@
 
 # See https://docs.codecov.com/docs/ignoring-paths
 ignore:
-    - inc/default-filters.php
+    - ginger-mo.php

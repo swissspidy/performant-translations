@@ -1,6 +1,17 @@
 <?php
 
 class Ginger_MO_Tests extends Ginger_MO_TestCase {
+	/**
+	 * @covers Ginger_MO::instance
+	 */
+	public function test_get_instance() {
+		$instance  = Ginger_MO::instance();
+		$instance2 = Ginger_MO::instance();
+
+		$this->assertInstanceOf( Ginger_MO::class, $instance );
+		$this->assertInstanceOf( Ginger_MO::class, $instance2 );
+		$this->assertSame( $instance, $instance2 );
+	}
 
 	public function test_no_files_loaded_returns_false() {
 		$instance = new Ginger_MO();
@@ -8,6 +19,18 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertFalse( $instance->translate_plural( array( 'plural0', 'plural1' ), 1 ) );
 	}
 
+	/**
+	 * @covers Ginger_MO::unload()
+	 */
+	public function test_unload_not_loaded() {
+		$instance = new Ginger_MO();
+		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
+		$this->assertFalse( $instance->unload( 'unittest' ) );
+	}
+
+	/**
+	 * @covers Ginger_MO::unload()
+	 */
 	public function test_unload_entire_textdomain() {
 		$instance = new Ginger_MO();
 		$this->assertFalse( $instance->is_loaded( 'unittest' ) );

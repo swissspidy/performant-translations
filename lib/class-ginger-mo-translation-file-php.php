@@ -88,8 +88,6 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	 * Like {@see var_export()} but "minified", using short array syntax
 	 * and no newlines.
 	 *
-	 * @since 0.0.1
-	 *
 	 * @param mixed $value       The variable you want to export.
 	 * @param bool  $return_only Optional. Whether to return the variable representation instead of outputting it. Default false.
 	 * @return string|void The variable representation or void.
