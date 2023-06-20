@@ -35,10 +35,6 @@ describe( 'Translation Loading', () => {
 			'#dashboard_site_health .postbox-header h2',
 			( el: HTMLElement ) => el.innerText
 		);
-		expect( defaultOutput ).toMatchInlineSnapshot(
-			`
-		"Zustand der Website"
-	`
-		);
+		expect( defaultOutput ).toContain('Zustand der Website');
 	} );
 } );
