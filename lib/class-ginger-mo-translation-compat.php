@@ -44,6 +44,23 @@ class Ginger_MO_Translation_Compat {
 			// Unset Noop_Translations reference in get_translations_for_domain.
 			unset( $l10n[ $domain ] );
 			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
+
+			/**
+			 * Filters whether existing MO files should be automatically converted to PHP files.
+			 *
+			 * Only runs when no corresponding PHP translation file exists yet.
+			 *
+			 * Useful for testing/debugging.
+			 *
+			 * @param bool $convert Whether to convert MO files to PHP files. Default true.
+			 */
+			$convert = apply_filters( 'ginger_mo_convert_to_php_files', true );
+
+			if ( $convert ) {
+				$source      = Ginger_MO_Translation_File::create( $mofile );
+				$destination = Ginger_MO_Translation_File::create( $php_mo, 'write' );
+				$source->export( $destination );
+			}
 		}
 
 		return $success;
