@@ -200,9 +200,6 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Build plugin
-              run: npm run build
-
             - name: Configure WordPress version
               run: |
                   if [[ $WP_VERSION == 'trunk' ]]; then
