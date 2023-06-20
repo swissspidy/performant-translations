@@ -57,9 +57,10 @@ class Ginger_MO_Translation_Compat {
 			$convert = apply_filters( 'ginger_mo_convert_to_php_files', true );
 
 			if ( $convert ) {
-				$source = Ginger_MO_Translation_File::create( $mofile );
-				if ( $source ) {
-					$source->export( Ginger_MO_Translation_File::create( $php_mo, 'write' ) );
+				$source      = Ginger_MO_Translation_File::create( $mofile );
+				$destination = Ginger_MO_Translation_File::create( $php_mo, 'write' );
+				if ( $source && $destination ) {
+					$source->export( $destination );
 				}
 			}
 		}
