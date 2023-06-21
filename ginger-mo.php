@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Ginger MO
  * Plugin URI:  https://github.com/swissspidy/ginger-mo
- * Description: A minimal .mo reader (with support for PHP & JSON representations), Multiple text domains, and multiple loaded locales in the future. Ginger-MO, Not quite Gold.
+ * Description: A minimal .mo reader (with support for PHP & JSON representations), multiple text domains, and multiple loaded locales in the future.
  * Version:     0.0.1
  * Author:      Pascal Birchler
  * Author URI:  https://pascalbirchler.com
