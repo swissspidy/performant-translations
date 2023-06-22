@@ -219,7 +219,7 @@ jobs:
             # and https://github.com/WordPress/gutenberg/tree/trunk/packages/env#installing-a-plugin-or-theme-on-the-development-instance
             - name: Prepare tests
               run: |
-                  WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -1)
+                  WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -i.bak)
                   cd $WP_ENV_DIR
                   mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
@@ -278,10 +278,10 @@ jobs:
               run: |
                   cp wp-tests-config-sample.php wp-tests-config.php
 
-                  sed -1 "s/youremptytestdbnamehere/$DB_NAME/" wp-tests-config.php
-                  sed -1 "s/yourusernamehere/$DB_USER/" wp-tests-config.php
-                  sed -1 "s/yourpasswordhere/$DB_PASS/" wp-tests-config.php
-                  sed -1 "s|localhost|${DB_HOST}|" wp-tests-config.php
+                  sed -i.bak "s/youremptytestdbnamehere/$DB_NAME/" wp-tests-config.php
+                  sed -i.bak "s/yourusernamehere/$DB_USER/" wp-tests-config.php
+                  sed -i.bak "s/yourpasswordhere/$DB_PASS/" wp-tests-config.php
+                  sed -i.bak "s|localhost|${DB_HOST}|" wp-tests-config.php
 
                   cat wp-tests-config.php
               env:
