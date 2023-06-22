@@ -101,7 +101,7 @@ class Ginger_MO_Translation_Compat {
 	 * @return void
 	 */
 	public static function overwrite_wordpress() {
-		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 10, 2 );
-		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 10, 3 );
+		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 2 );
+		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 3 );
 	}
 }
