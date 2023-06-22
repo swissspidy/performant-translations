@@ -340,6 +340,7 @@ class Ginger_MO {
 		if ( ! $this->loaded_translations ) {
 			return false;
 		}
+
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}

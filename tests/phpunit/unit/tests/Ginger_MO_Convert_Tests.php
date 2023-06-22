@@ -27,8 +27,6 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 
 		$source_headers      = $source->headers();
 		$destination_headers = $destination_read->headers();
-		unset( $destination_headers['x-converter'] );
-		// We add this.
 
 		$this->assertEquals( $source_headers, $destination_headers );
 

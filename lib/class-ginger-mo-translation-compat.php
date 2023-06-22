@@ -30,6 +30,11 @@ class Ginger_MO_Translation_Compat {
 			$locale = determine_locale();
 		}
 
+		// Ensures the correct locale is set as the current one,
+		// even if the "locale" filter is used in WordPress to change
+		// the locale.
+		Ginger_MO::instance()->set_locale( $locale );
+
 		/** This action is documented in wp-includes/l10n.php */
 		do_action( 'load_textdomain', $domain, $mofile );
 
@@ -94,17 +99,18 @@ class Ginger_MO_Translation_Compat {
 			return $override;
 		}
 
-		// Since we support multiple locales, we don't actually need to unload
-		// reloadable text domains.
-		if ( $reloadable ) {
-			return true;
-		}
-
 		/** This action is documented in wp-includes/l10n.php */
 		do_action( 'unload_textdomain', $domain );
 
 		unset( $l10n[ $domain ] );
-		return Ginger_MO::instance()->unload( $domain );
+
+		// Since we support multiple locales, we don't actually need to unload
+		// reloadable text domains.
+		if ( ! $reloadable ) {
+			return Ginger_MO::instance()->unload( $domain );
+		}
+
+		return true;
 	}
 
 	/**
@@ -113,7 +119,7 @@ class Ginger_MO_Translation_Compat {
 	 * @return void
 	 */
 	public static function init() {
-		Ginger_MO::instance()->set_locale( get_locale() );
+		Ginger_MO::instance()->set_locale( determine_locale() );
 	}
 
 	/**
