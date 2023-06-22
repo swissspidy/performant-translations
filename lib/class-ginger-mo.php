@@ -176,8 +176,12 @@ class Ginger_MO {
 			return true;
 		}
 
-		foreach ( $this->loaded_translations as $locale => $translations ) {
-			foreach ( $translations[ $textdomain ] as $moe ) {
+		foreach ( $this->loaded_translations as $locale => $domains ) {
+			if ( ! isset( $domains[ $textdomain ] ) ) {
+				continue;
+			}
+
+			foreach ( $domains[ $textdomain ] as $moe ) {
 				unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
 			}
 
