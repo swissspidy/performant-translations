@@ -278,15 +278,31 @@ jobs:
               run: |
                   cp wp-tests-config-sample.php wp-tests-config.php
 
-                  sed $ioption "s/youremptytestdbnamehere/$DB_NAME/" wp-tests-config.php
-                  sed $ioption "s/yourusernamehere/$DB_USER/" wp-tests-config.php
-                  sed $ioption "s/yourpasswordhere/$DB_PASS/" wp-tests-config.php
-                  sed $ioption "s|localhost|${DB_HOST}|" wp-tests-config.php
+                  sed -1 "s/youremptytestdbnamehere/$DB_NAME/" wp-tests-config.php
+                  sed -1 "s/yourusernamehere/$DB_USER/" wp-tests-config.php
+                  sed -1 "s/yourpasswordhere/$DB_PASS/" wp-tests-config.php
+                  sed -1 "s|localhost|${DB_HOST}|" wp-tests-config.php
+
+                  cat wp-tests-config.php
               env:
                   DB_NAME: wordpress_test
                   DB_USER: root
                   DB_PASSWORD: ''
                   DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
+
+            - name: Check out Ginger-MO
+              uses: actions/checkout@v3
+              with:
+                  path: 'src/wp-content/plugins'
+
+            - name: Debug
+              run: |
+                  ls src/wp-content/plugins
+                  src/wp-content/plugins/ginger-mo
+
+            - name: Load Ginger-MO for tests
+              run: |
+                  echo "require dirname( __DIR__, 3 ) . '/src/wp-content/plugins/ginger-mo/ginger-mo.php';" >> tests/phpunit/includes/bootstrap.php
 
             - name: Run tests
               run: vendor/bin/phpunit --group=l10n,i18n
