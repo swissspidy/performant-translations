@@ -237,7 +237,7 @@ jobs:
                   path: artifacts
 
     core-php:
-        name: 'WP core integration tests'
+        name: 'WP core tests'
         runs-on: ubuntu-latest
         services:
             mysql:
