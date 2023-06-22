@@ -57,6 +57,15 @@ class Ginger_MO {
 	}
 
 	/**
+	 * Returns the current locale.
+	 *
+	 * @return string Locale.
+	 */
+	public function get_locale( $locale ) {
+		return $this->current_locale;
+	}
+
+	/**
 	 * Sets the current locale.
 	 *
 	 * @param string $locale Locale.
@@ -112,7 +121,7 @@ class Ginger_MO {
 			$this->loaded_translations[ $locale ][ $textdomain ] = array();
 		}
 
-		// Prefix translations to ensure that last-loaded takes preference.
+		// Ensure that last-loaded translation takes preference.
 		array_unshift( $this->loaded_translations[ $locale ][ $textdomain ], $moe );
 
 		return true;
@@ -144,8 +153,8 @@ class Ginger_MO {
 				return true;
 			}
 
-			foreach ( $this->loaded_translations as $locale => $translations ) {
-				foreach ( $translations[ $textdomain ] as $i => $moe ) {
+			foreach ( $this->loaded_translations as $locale => $domains ) {
+				foreach ( $domains[ $textdomain ] as $i => $moe ) {
 					if ( $mo === $moe ) {
 						unset( $this->loaded_translations[ $locale ][ $textdomain ][ $i ] );
 						unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
@@ -332,7 +341,7 @@ class Ginger_MO {
 		}
 
 		// Find the translation in all loaded files for this text domain.
-		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
+		foreach ( $this->get_mo_files( $textdomain, $locale ) as $moe ) {
 			$translation = $moe->translate( $singular );
 			if ( false !== $translation ) {
 				return array(
@@ -342,7 +351,7 @@ class Ginger_MO {
 			}
 			if ( $moe->error() ) {
 				// Unload this file, something is wrong.
-				$this->unload( $textdomain, $moe );
+				$this->unload( $textdomain, $moe, $locale );
 			}
 		}
 

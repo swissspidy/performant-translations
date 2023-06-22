@@ -108,6 +108,15 @@ class Ginger_MO_Translation_Compat {
 	}
 
 	/**
+	 * Sets the current locale on init.
+	 *
+	 * @return void
+	 */
+	public static function init() {
+		Ginger_MO::instance()->set_locale( get_locale() );
+	}
+
+	/**
 	 * Updates the locale whenever it is changed in WordPress.
 	 *
 	 * @param string $locale The new locale.
@@ -126,6 +135,7 @@ class Ginger_MO_Translation_Compat {
 		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
 		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
 
+		add_action( 'init', array( __CLASS__, 'init' ) );
 		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
 	}
 }
