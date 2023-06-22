@@ -61,7 +61,7 @@ class Ginger_MO {
 	 *
 	 * @return string Locale.
 	 */
-	public function get_locale( $locale ) {
+	public function get_locale() {
 		return $this->current_locale;
 	}
 
