@@ -17,16 +17,27 @@ class Ginger_MO {
 	protected $default_textdomain = 'default';
 
 	/**
-	 * Map of loaded translations per text domain.
+	 * Current locale.
 	 *
-	 * @var array<string, Ginger_MO_Translation_File[]>
+	 * @var string
+	 */
+	protected $current_locale = 'en_US';
+
+	/**
+	 * Map of loaded translations per locale and text domain.
+	 *
+	 * [ Locale => [ Textdomain => [ .., .. ] ] ]
+	 *
+	 * @var array<string, array<string, Ginger_MO_Translation_File[]>>
 	 */
 	protected $loaded_translations = array();
 
 	/**
 	 * List of loaded translation files.
 	 *
-	 * @var array<string,array<string, Ginger_MO_Translation_File|false>>
+	 * [ Filename => [ Locale => [ Textdomain => Ginger_MO_Translation_File ] ] ]
+	 *
+	 * @var array<string,array<string, array<string, Ginger_MO_Translation_File|false>>>
 	 */
 	protected $loaded_files = array();
 
@@ -46,15 +57,30 @@ class Ginger_MO {
 	}
 
 	/**
+	 * Sets the current locale.
+	 *
+	 * @param string $locale Locale.
+	 * @return void
+	 */
+	public function set_locale( $locale ) {
+		$this->current_locale = $locale;
+	}
+
+	/**
 	 * Loads a translation file.
 	 *
 	 * @param string $translation_file Translation file.
-	 * @param string $textdomain Text domain.
+	 * @param string $textdomain       Text domain.
+	 * @param string $locale           Optional. Locale. Default current locale.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function load( $translation_file, $textdomain = null ) {
+	public function load( $translation_file, $textdomain = null, $locale = null ) {
 		if ( ! $textdomain ) {
 			$textdomain = $this->default_textdomain;
+		}
+
+		if ( ! $locale ) {
+			$locale = $this->current_locale;
 		}
 
 		$translation_file = realpath( $translation_file );
@@ -63,30 +89,31 @@ class Ginger_MO {
 			return false;
 		}
 
-		if ( ! empty( $this->loaded_files[ $translation_file ][ $textdomain ] ) ) {
-			return false !== $this->loaded_files[ $translation_file ][ $textdomain ]->error();
+		if ( ! empty( $this->loaded_files[ $translation_file ][ $locale ][ $textdomain ] ) ) {
+			return false !== $this->loaded_files[ $translation_file ][ $locale ][ $textdomain ]->error();
 		}
 
 		if ( ! empty( $this->loaded_files[ $translation_file ] ) ) {
-			$moe = reset( $this->loaded_files[ $translation_file ] );
+			$moe = reset( $this->loaded_files[ $translation_file ][ $locale ] );
 		} else {
 			$moe = Ginger_MO_Translation_File::create( $translation_file );
 			if ( ! $moe || $moe->error() ) {
 				$moe = false;
 			}
 		}
-		$this->loaded_files[ $translation_file ][ $textdomain ] = $moe;
+
+		$this->loaded_files[ $translation_file ][ $locale ][ $textdomain ] = $moe;
 
 		if ( ! $moe ) {
 			return false;
 		}
 
-		if ( ! isset( $this->loaded_translations[ $textdomain ] ) ) {
-			$this->loaded_translations[ $textdomain ] = array();
+		if ( ! isset( $this->loaded_translations[ $locale ][ $textdomain ] ) ) {
+			$this->loaded_translations[ $locale ][ $textdomain ] = array();
 		}
 
 		// Prefix translations to ensure that last-loaded takes preference.
-		array_unshift( $this->loaded_translations[ $textdomain ], $moe );
+		array_unshift( $this->loaded_translations[ $locale ][ $textdomain ], $moe );
 
 		return true;
 	}
@@ -95,30 +122,58 @@ class Ginger_MO {
 	 * Unload all translation files or a specific one for a given text domain.
 	 *
 	 * @param string                     $textdomain Text domain.
-	 * @param Ginger_MO_Translation_File $mo Translation file.
+	 * @param Ginger_MO_Translation_File $mo         Translation file.
+	 * @param string                     $locale     Optional. Locale. Default current locale.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function unload( $textdomain, $mo = null ) {
-		if ( ! $this->is_loaded( $textdomain ) ) {
+	public function unload( $textdomain, $mo = null, $locale = null ) {
+		if ( ! $this->is_loaded( $textdomain, $locale ) ) {
 			return false;
 		}
 
 		if ( $mo ) {
-			foreach ( $this->loaded_translations[ $textdomain ] as $i => $moe ) {
-				if ( $mo === $moe ) {
-					unset( $this->loaded_translations[ $textdomain ][ $i ] );
-					unset( $this->loaded_files[ $moe->get_file() ][ $textdomain ] );
-					return true;
+			if ( $locale ) {
+				foreach ( $this->loaded_translations[ $locale ][ $textdomain ] as $i => $moe ) {
+					if ( $mo === $moe ) {
+						unset( $this->loaded_translations[ $locale ][ $textdomain ][ $i ] );
+						unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
+						return true;
+					}
+				}
+
+				return true;
+			}
+
+			foreach ( $this->loaded_translations as $locale => $translations ) {
+				foreach ( $translations[ $textdomain ] as $i => $moe ) {
+					if ( $mo === $moe ) {
+						unset( $this->loaded_translations[ $locale ][ $textdomain ][ $i ] );
+						unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
+						return true;
+					}
 				}
 			}
+
 			return true;
 		}
 
-		foreach ( $this->loaded_translations[ $textdomain ] as $moe ) {
-			unset( $this->loaded_files[ $moe->get_file() ][ $textdomain ] );
+		if ( $locale ) {
+			foreach ( $this->loaded_translations[ $locale ][ $textdomain ] as $moe ) {
+				unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
+			}
+
+			unset( $this->loaded_translations[ $locale ][ $textdomain ] );
+
+			return true;
 		}
 
-		unset( $this->loaded_translations[ $textdomain ] );
+		foreach ( $this->loaded_translations as $locale => $translations ) {
+			foreach ( $translations[ $textdomain ] as $moe ) {
+				unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
+			}
+
+			unset( $this->loaded_translations[ $locale ][ $textdomain ] );
+		}
 
 		return true;
 	}
@@ -127,26 +182,32 @@ class Ginger_MO {
 	 * Determines whether translations are loaded for a given text domain.
 	 *
 	 * @param string $textdomain Text domain.
+	 * @param string $locale     Optional. Locale. Default current locale.
 	 * @return bool True if there are any loaded translations, false otherwise.
 	 */
-	public function is_loaded( $textdomain ) {
-		return ! empty( $this->loaded_translations[ $textdomain ] );
+	public function is_loaded( $textdomain, $locale = null ) {
+		if ( ! $locale ) {
+			$locale = $this->current_locale;
+		}
+
+		return ! empty( $this->loaded_translations[ $locale ][ $textdomain ] );
 	}
 
 	/**
 	 * Translates a singular string.
 	 *
-	 * @param string      $text Text to translate.
-	 * @param string|null $context Optional. Context for the string.
+	 * @param string      $text       Text to translate.
+	 * @param string|null $context    Optional. Context for the string.
 	 * @param string      $textdomain Text domain.
+	 * @param string      $locale     Optional. Locale. Default current locale.
 	 * @return string|false Translation on success, false otherwise.
 	 */
-	public function translate( $text, $context = null, $textdomain = null ) {
+	public function translate( $text, $context = null, $textdomain = null, $locale = null ) {
 		if ( $context ) {
 			$context .= "\4";
 		}
 
-		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
+		$translation = $this->locate_translation( "{$context}{$text}", $textdomain, $locale );
 
 		if ( ! $translation ) {
 			return false;
@@ -163,23 +224,24 @@ class Ginger_MO {
 	 *
 	 * @todo Revisit this.
 	 *
-	 * @param array{0: string, 1: string} $plurals Pair of singular and plural translation.
-	 * @param int                         $number Number of items.
-	 * @param string|null                 $context Optional. Context for the string.
+	 * @param array{0: string, 1: string} $plurals    Pair of singular and plural translation.
+	 * @param int                         $number     Number of items.
+	 * @param string|null                 $context    Optional. Context for the string.
 	 * @param string                      $textdomain Text domain.
+	 * @param string                      $locale     Optional. Locale. Default current locale.
 	 * @return string|false Translation on success, false otherwise.
 	 */
-	public function translate_plural( $plurals, $number, $context = null, $textdomain = null ) {
+	public function translate_plural( $plurals, $number, $context = null, $textdomain = null, $locale = null ) {
 		if ( $context ) {
 			$context .= "\4";
 		}
 
 		$text        = implode( "\0", $plurals );
-		$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
+		$translation = $this->locate_translation( "{$context}{$text}", $textdomain, $locale );
 
 		if ( ! $translation ) {
 			$text        = $plurals[0];
-			$translation = $this->locate_translation( "{$context}{$text}", $textdomain );
+			$translation = $this->locate_translation( "{$context}{$text}", $textdomain, $locale );
 
 			if ( ! $translation ) {
 				return false;
@@ -256,11 +318,12 @@ class Ginger_MO {
 	/**
 	 * Locates translation for a given string and text domain.
 	 *
-	 * @param string $singular Singular translation.
+	 * @param string $singular   Singular translation.
 	 * @param string $textdomain Text domain.
+	 * @param string $locale     Optional. Locale. Default current locale.
 	 * @return array{source: Ginger_MO_Translation_File, entries: string[]}|false Translations on success, false otherwise.
 	 */
-	protected function locate_translation( $singular, $textdomain = null ) {
+	protected function locate_translation( $singular, $textdomain = null, $locale = null ) {
 		if ( ! $this->loaded_translations ) {
 			return false;
 		}
@@ -291,11 +354,16 @@ class Ginger_MO {
 	 * Returns all translation files for a given text domain.
 	 *
 	 * @param string $textdomain Text domain.
+	 * @param string $locale     Optional. Locale. Default current locale.
 	 * @return Ginger_MO_Translation_File[] List of translation files.
 	 */
-	protected function get_mo_files( $textdomain = null ) {
-		if ( isset( $this->loaded_translations[ $textdomain ] ) ) {
-			return $this->loaded_translations[ $textdomain ];
+	protected function get_mo_files( $textdomain = null, $locale = null ) {
+		if ( ! $locale ) {
+			$locale = $this->current_locale;
+		}
+
+		if ( isset( $this->loaded_translations[ $locale ][ $textdomain ] ) ) {
+			return $this->loaded_translations[ $locale ][ $textdomain ];
 		}
 
 		return array();
