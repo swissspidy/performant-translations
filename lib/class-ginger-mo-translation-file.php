@@ -86,19 +86,14 @@ class Ginger_MO_Translation_File {
 
 		switch ( $filetype ) {
 			case 'mo':
-				$moe = new Ginger_MO_Translation_File_MO( $file, $context );
-				break;
+				return new Ginger_MO_Translation_File_MO( $file, $context );
 			case 'php':
-				$moe = new Ginger_MO_Translation_File_PHP( $file, $context );
-				break;
+				return new Ginger_MO_Translation_File_PHP( $file, $context );
 			case 'json':
-				$moe = new Ginger_MO_Translation_File_JSON( $file, $context );
-				break;
+				return new Ginger_MO_Translation_File_JSON( $file, $context );
 			default:
-				$moe = false;
+				return false;
 		}
-
-		return $moe;
 	}
 
 	/**

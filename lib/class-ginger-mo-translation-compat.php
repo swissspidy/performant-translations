@@ -48,6 +48,7 @@ class Ginger_MO_Translation_Compat {
 		if ( $success ) {
 			// Unset Noop_Translations reference in get_translations_for_domain.
 			unset( $l10n[ $domain ] );
+
 			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
 
 			return $success;
@@ -58,6 +59,7 @@ class Ginger_MO_Translation_Compat {
 		if ( $success ) {
 			// Unset Noop_Translations reference in get_translations_for_domain.
 			unset( $l10n[ $domain ] );
+
 			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
 
 			/**

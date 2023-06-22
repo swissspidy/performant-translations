@@ -102,7 +102,7 @@ class Ginger_MO {
 			return false !== $this->loaded_files[ $translation_file ][ $locale ][ $textdomain ]->error();
 		}
 
-		if ( ! empty( $this->loaded_files[ $translation_file ] ) ) {
+		if ( ! empty( $this->loaded_files[ $translation_file ][ $locale ] ) ) {
 			$moe = reset( $this->loaded_files[ $translation_file ][ $locale ] );
 		} else {
 			$moe = Ginger_MO_Translation_File::create( $translation_file );
