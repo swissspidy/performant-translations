@@ -219,7 +219,7 @@ jobs:
             # and https://github.com/WordPress/gutenberg/tree/trunk/packages/env#installing-a-plugin-or-theme-on-the-development-instance
             - name: Prepare tests
               run: |
-                  WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -i.bak)
+                  WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -1)
                   cd $WP_ENV_DIR
                   mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
@@ -290,15 +290,10 @@ jobs:
                   DB_PASSWORD: ''
                   DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
 
-            - name: Check out Ginger-MO
+            - name: Checkout Ginger-MO
               uses: actions/checkout@v3
               with:
-                  path: 'src/wp-content/plugins'
-
-            - name: Debug
-              run: |
-                  ls src/wp-content/plugins
-                  src/wp-content/plugins/ginger-mo
+                  path: 'src/wp-content/plugins/ginger-mo'
 
             - name: Load Ginger-MO for tests
               run: |
