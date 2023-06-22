@@ -20,6 +20,11 @@ class Ginger_MO_Translation_Compat {
 	public static function load_textdomain( $override, $domain, $mofile ) {
 		global $l10n;
 
+		// Another override is already in progress, prevent conflicts.
+		if ( $override ) {
+			return $override;
+		}
+
 		/** This action is documented in wp-includes/l10n.php */
 		do_action( 'load_textdomain', $domain, $mofile );
 
@@ -78,6 +83,11 @@ class Ginger_MO_Translation_Compat {
 	public static function unload_textdomain( $override, $domain ) {
 		global $l10n;
 
+		// Another override is already in progress, prevent conflicts.
+		if ( $override ) {
+			return $override;
+		}
+
 		/** This action is documented in wp-includes/l10n.php */
 		do_action( 'unload_textdomain', $domain );
 
@@ -91,7 +101,7 @@ class Ginger_MO_Translation_Compat {
 	 * @return void
 	 */
 	public static function overwrite_wordpress() {
-		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 10, 2 );
-		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 10, 3 );
+		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 2 );
+		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 3 );
 	}
 }
