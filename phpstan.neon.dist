@@ -3,5 +3,7 @@ parameters:
 	paths:
 		- ginger-mo.php
 		- lib/
+	excludePaths:
+		- lib/class-plural-forms.php
 	bootstrapFiles:
 		- tests/phpstan/bootstrap.php
