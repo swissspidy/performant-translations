@@ -2,6 +2,7 @@
 
 $root = dirname( dirname( dirname( __DIR__ ) ) ) . '/';
 
+require $root . 'lib/class-plural-forms.php';
 require $root . 'lib/class-ginger-mo.php';
 require $root . 'lib/class-ginger-mo-translation-file.php';
 require $root . 'lib/class-ginger-mo-translation-file-json.php';
