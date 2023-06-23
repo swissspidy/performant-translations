@@ -4,6 +4,15 @@
  * @coversDefaultClass Ginger_MO_Translation_Compat_Provider
  */
 class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
+	public function tear_down() {
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.php' );
+		}
+
+		if ( file_exists( DIR_TESTDATA . '/pomo/plural.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/plural.php' );
+		}
+	}
 	/**
 	 * @covers ::__get
 	 * @covers ::make_entry

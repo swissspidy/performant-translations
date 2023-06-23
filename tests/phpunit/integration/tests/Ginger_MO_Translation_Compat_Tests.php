@@ -4,6 +4,12 @@
  * @coversDefaultClass Ginger_MO_Translation_Compat
  */
 class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
+	public function tear_down() {
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.php' );
+		}
+	}
+
 	/**
 	 * @covers ::overwrite_wordpress
 	 */
@@ -58,6 +64,29 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 			'Actual translation entries do not match expected ones'
 		);
 	}
+
+
+	/**
+	 * @covers ::load_textdomain
+	 */
+	public function test_load_textdomain_creates_and_reads_php_files() {
+		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.php' );
+
+		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
+		$this->assertTrue( $unload_mo_successful );
+		$this->assertTrue( $file_exists );
+		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
+		$this->assertTrue( $unload_php_successful );
+	}
+
 
 	/**
 	 * @covers ::unload_textdomain
