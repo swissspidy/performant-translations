@@ -300,4 +300,4 @@ jobs:
                   echo "require dirname( __DIR__, 3 ) . '/src/wp-content/plugins/ginger-mo/ginger-mo.php';" >> tests/phpunit/includes/bootstrap.php
 
             - name: Run tests
-              run: vendor/bin/phpunit --group=l10n,i18n
+              run: vendor/bin/phpunit --group=l10n,i18n,pomo
