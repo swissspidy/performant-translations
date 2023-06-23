@@ -5,6 +5,14 @@
  */
 class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	/**
+	 * @covers ::overwrite_wordpress
+	 */
+	public function test_overwrite_wordpress() {
+		$this->assertSame( 100, has_filter( 'override_load_textdomain', array( Ginger_MO_Translation_Compat::class, 'load_textdomain' ) ) );
+		$this->assertSame( 100, has_filter( 'override_unload_textdomain', array( Ginger_MO_Translation_Compat::class, 'unload_textdomain' ) ) );
+	}
+
+	/**
 	 * @covers ::load_textdomain
 	 */
 	public function test_load_textdomain() {
