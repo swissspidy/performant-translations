@@ -4,8 +4,10 @@
 		"phpcompatibility/php-compatibility": "^9.3",
 		"phpstan/phpstan": "^1.10",
 		"phpstan/extension-installer": "^1.2",
+		"phpstan/phpstan-phpunit": "^1.2",
 		"slevomat/coding-standard": "^8.9",
 		"szepeviktor/phpstan-wordpress": "^1.1",
+		"swissspidy/phpstan-no-private": "^0.2",
 		"wp-coding-standards/wpcs": "dev-develop#fca9d9e"
 	},
 	"config": {

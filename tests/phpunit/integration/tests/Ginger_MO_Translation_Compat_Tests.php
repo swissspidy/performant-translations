@@ -20,6 +20,8 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::load_textdomain
+	 * @covers Ginger_MO::get_entries
+	 * @covers Ginger_MO::get_headers
 	 */
 	public function test_load_textdomain() {
 		global $l10n;
@@ -90,6 +92,8 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::unload_textdomain
+	 * @covers Ginger_MO::get_entries
+	 * @covers Ginger_MO::get_headers
 	 */
 	public function test_unload_textdomain() {
 		global $l10n;

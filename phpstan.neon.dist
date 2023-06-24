@@ -3,6 +3,8 @@ parameters:
 	paths:
 		- ginger-mo.php
 		- lib/
+		- tests/phpunit/unit/includes
+		- tests/phpunit/unit/tests
 	excludePaths:
 		- lib/class-plural-forms.php
 	bootstrapFiles:

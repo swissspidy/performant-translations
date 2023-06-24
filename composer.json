@@ -21,6 +21,9 @@
 		"wp-coding-standards/wpcs": "dev-develop",
 		"yoast/phpunit-polyfills": "^1.0.1"
 	},
+	"suggest": {
+		"ext-json": "Needed for supporting JSON translation files"
+	},
 	"minimum-stability": "dev",
 	"config": {
 		"allow-plugins": {
