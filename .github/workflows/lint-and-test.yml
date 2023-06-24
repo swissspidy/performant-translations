@@ -59,6 +59,11 @@ jobs:
             - name: Install dependencies
               run: composer install
 
+            # So PHPStan uses information from the latest version
+            - name: Update PHPUnit
+              run: |
+                  composer update --ignore-platform-reqs --no-interaction --no-scripts yoast/phpunit-polyfills --with-dependencies
+
             - name: Lint PHP
               run: composer lint
 
