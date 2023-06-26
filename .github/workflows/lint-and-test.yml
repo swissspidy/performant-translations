@@ -382,28 +382,17 @@ jobs:
                   comment-author: swissspidy
                   body-includes: Performance test results for
 
-            - name: Get comment body
-              id: get-comment-body
-              # Setting a multi-line output requires escaping line-feeds. See <https://github.community/t/set-output-truncates-multiline-strings/16852/3>.
-              run: |
-                  EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-                  echo "COMMENT_BODY<<$EOF" >> "$GITHUB_ENV"
-                  echo "Performance test results for ${{ github.event.pull_request.head.sha }} are in :bellhop_bell:!" >> "$GITHUB_ENV"
-                  echo "$EOF" >> "$GITHUB_ENV"
-                  cat tests/performance/specs/summary.md >> "$GITHUB_ENV"
-                  echo "$EOF" >> "$GITHUB_ENV"
-
-            - name: Create or update comment on PR with test results
+            - name: Comment on PR with test results
               uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   comment-id: ${{ steps.find-comment.outputs.comment-id }}
                   edit-mode: replace
-                  body: ${{ env.COMMENT_BODY }}
+                  body-path: tests/performance/specs/summary.md
 
             - name: Add workflow summary
               run: |
-                  echo $COMMENT_BODY >> $GITHUB_STEP_SUMMARY
+                  cat tests/performance/specs/summary.md $GITHUB_STEP_SUMMARY
 
             - name: Archive debug artifacts (screenshots, HTML snapshots)
               uses: actions/upload-artifact@v3

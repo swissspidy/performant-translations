@@ -11,7 +11,13 @@ class PerformanceResultsReporter {
 	}
 
 	onRunComplete( testContexts, testResults ) {
-		let summary = '';
+		let summary = `**Performance Test Results**\n\n`;
+
+		if ( process.env.GITHUB_SHA ) {
+			summary += `Performance test results for ${ process.env.GITHUB_SHA } are in 🛎️!\n\n`;
+		} else {
+			summary += `Performance test results are in 🛎️!\n\n`;
+		}
 
 		for ( const testResult of testResults.testResults ) {
 			const resultFile = getResultsFilename( testResult.testFilePath );
@@ -25,7 +31,7 @@ class PerformanceResultsReporter {
 			console.table( results );
 
 			summary += `**${ title }**\n\n`;
-			summary += `${ formatAsMarkdownTable( results ) }\n\n`;
+			summary += `${ formatAsMarkdownTable( results ) }\n`;
 		}
 
 		writeFileSync(
