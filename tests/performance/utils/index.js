@@ -42,8 +42,8 @@ function formatAsMarkdownTable( results ) {
 	}
 
 	function toCellText( v ) {
-		if ( v === true ) return '✔';
-		if ( ! v ) return '';
+		if ( v === true || v === 'true' ) return '✅';
+		if ( ! v  || v === 'false' ) return '';
 		return v?.toString() || String( v );
 	}
 
