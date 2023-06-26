@@ -352,7 +352,6 @@ jobs:
               run: |
                   npm run wp-env run tests-cli curl https://raw.githubusercontent.com/WordPress/theme-test-data/b9752e0533a5acbb876951a8cbb5bcc69a56474c/themeunittestdata.wordpress.xml -- --output /tmp/themeunittestdata.wordpress.xml
                   npm run wp-env run tests-cli wp import /tmp/themeunittestdata.wordpress.xml -- --authors=create
-                  rm themeunittestdata.wordpress.xml
 
             - name: Update permalink structure
               run: |
