@@ -1,12 +1,12 @@
-/**
- * WordPress dependencies
- */
+import { rmSync } from 'node:fs';
+import { join } from 'node:path';
 import {
+	visitAdminPage,
 	clearLocalStorage,
 	enablePageDialogAccept,
 	setBrowserViewport,
-	trashAllPosts,
 } from '@wordpress/e2e-test-utils';
+import { getResultsFilename } from '../utils';
 
 async function setupPage() {
 	await setBrowserViewport( 'large' );
@@ -15,22 +15,27 @@ async function setupPage() {
 	] );
 }
 
-// Before every test suite run, delete all content created by the test. This
-// ensures other posts/comments/etc. aren't dirtying tests and tests don't
-// depend on each other's side effects.
+async function closeFeaturePointers() {
+	const pointers = await page.$$( '.wp-pointer-buttons .close' );
+	for ( const pointer of pointers ) {
+		await pointer.click();
+	}
+}
+
 beforeAll( async () => {
+	rmSync( join( __dirname, '/../', '/specs/', 'summary.md' ), {
+		force: true,
+	} );
+	rmSync( getResultsFilename( expect.getState().testPath ), { force: true } );
+
 	enablePageDialogAccept();
 
-	await trashAllPosts();
+	await visitAdminPage( 'index.php' );
+	await closeFeaturePointers();
 	await clearLocalStorage();
 	await setupPage();
 } );
 
 afterEach( async () => {
-	// Clear localStorage between tests so that the next test starts clean.
 	await clearLocalStorage();
-	// Close the previous page entirely and create a new page, so that the next
-	// test isn't affected by page unload work.
-	await page.close();
-	page = await browser.newPage();
 } );

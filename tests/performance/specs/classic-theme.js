@@ -8,11 +8,11 @@ import { writeFileSync } from 'node:fs';
 import { getResultsFilename, median } from '../utils';
 import { resetLocale, setLocale } from '../../e2e-utils';
 
-describe( 'Server Timing - Twenty Twenty-Three', () => {
+describe( 'Server Timing - Twenty Twenty-One', () => {
 	const results = [];
 
 	beforeAll( async () => {
-		await activateTheme( 'twentytwentythree' );
+		await activateTheme( 'twentytwentyone' );
 	} );
 
 	afterAll( async () => {
@@ -39,7 +39,7 @@ describe( 'Server Timing - Twenty Twenty-Three', () => {
 		} );
 
 		it( 'Server Timing Metrics', async () => {
-			let result = {};
+			const result = {};
 
 			let i = TEST_RUNS;
 

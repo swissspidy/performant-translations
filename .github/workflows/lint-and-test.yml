@@ -199,7 +199,7 @@ jobs:
             - name: Setup Node
               uses: actions/setup-node@v3
               with:
-                  node-version: 15
+                  node-version-file: '.nvmrc'
                   cache: npm
 
             - name: Install dependencies
@@ -229,6 +229,8 @@ jobs:
                   mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language core install de_DE es_ES fr_FR it_IT
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language plugin update --all
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language theme update --all
                   cd -
 
             - name: Run tests
@@ -326,7 +328,7 @@ jobs:
             - name: Setup Node
               uses: actions/setup-node@v3
               with:
-                  node-version: 15
+                  node-version-file: '.nvmrc'
                   cache: npm
 
             - name: Install dependencies
@@ -348,13 +350,13 @@ jobs:
 
             - name: Import mock data
               run: |
-                  npm run wp-env run cli curl -O https://raw.githubusercontent.com/WordPress/theme-test-data/b9752e0533a5acbb876951a8cbb5bcc69a56474c/themeunittestdata.wordpress.xml
-                  npm run wp-env run cli wp import themeunittestdata.wordpress.xml --authors=create
+                  npm run wp-env run tests-cli curl -O https://raw.githubusercontent.com/WordPress/theme-test-data/b9752e0533a5acbb876951a8cbb5bcc69a56474c/themeunittestdata.wordpress.xml > themeunittestdata.wordpress.xml
+                  npm run wp-env run tests-cli wp import themeunittestdata.wordpress.xml -- --authors=create
                   rm themeunittestdata.wordpress.xml
 
             - name: Update permalink structure
               run: |
-                  npm run wp-env run cli wp rewrite structure '/%year%/%monthnum%/%postname%/'
+                  npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
 
             # Ensure the wp-content/languages folder exists and is writable.
             # See https://github.com/WordPress/gutenberg/issues/22515
@@ -366,10 +368,44 @@ jobs:
                   mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language core install de_DE es_ES fr_FR it_IT
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language plugin update --all
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language theme update --all
                   cd -
 
             - name: Run tests
               run: npm run test:performance
+
+            - name: Print performance tests results
+              run: 'node ./tests/performance/results.js'
+
+            - name: Check if a comment was already made
+              id: find-comment
+              uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1
+              with:
+                  issue-number: ${{ github.event.pull_request.number }}
+                  comment-author: swissspidy
+                  body-includes: Performance test results for
+
+            - name: Get comment body
+              id: get-comment-body
+              # Setting a multi-line output requires escaping line-feeds. See <https://github.community/t/set-output-truncates-multiline-strings/16852/3>.
+              run: |
+                  echo 'COMMENT_BODY<<EOF' >> $GITHUB_ENV
+                  echo 'Performance test results for ${{ github.event.pull_request.head.sha }} are in :bellhop_bell:!' >> $GITHUB_ENV
+                  cat tests/performance/specs/summary.md >> $GITHUB_ENV
+                  echo 'EOF' >> $GITHUB_ENV
+
+            - name: Create or update comment on PR with links to plugin builds
+              uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa
+              with:
+                  issue-number: ${{ github.event.pull_request.number }}
+                  comment-id: ${{ steps.find-comment.outputs.comment-id }}
+                  edit-mode: replace
+                  body: ${{ env.COMMENT_BODY }}
+
+            - name: Add workflow summary
+              run: |
+                  echo $COMMENT_BODY >> $GITHUB_STEP_SUMMARY
 
             - name: Archive debug artifacts (screenshots, HTML snapshots)
               uses: actions/upload-artifact@v3

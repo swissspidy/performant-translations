@@ -12,15 +12,18 @@
 		"url": "https://github.com/swissspidy/ginger-mo/issues"
 	},
 	"homepage": "https://github.com/swissspidy/ginger-mo#readme",
-	"dependencies": {},
 	"devDependencies": {
 		"@types/expect-puppeteer": "^5.0.3",
 		"@types/jest-environment-puppeteer": "^5.0.3",
 		"@wordpress/e2e-test-utils": "^10.6.0",
 		"@wordpress/env": "^8.2.0",
-		"@wordpress/scripts": "^26.6.0"
+		"@wordpress/scripts": "^26.6.0",
+		"glob": "^10.3.0",
+		"patch-package": "^7.0.0",
+		"tablemark": "^2.0.0"
 	},
 	"scripts": {
+		"postinstall": "patch-package",
 		"lint": "wp-scripts lint-js",
 		"format": "wp-scripts format",
 		"test:e2e": "wp-scripts test-e2e",
