@@ -390,7 +390,7 @@ jobs:
                   echo "COMMENT_BODY<<$EOF" >> "$GITHUB_ENV"
                   echo "Performance test results for ${{ github.event.pull_request.head.sha }} are in :bellhop_bell:!" >> "$GITHUB_ENV"
                   echo "$EOF" >> "$GITHUB_ENV"
-                  echo "$(cat tests/performance/specs/summary.md)" >> "$GITHUB_ENV"
+                  cat tests/performance/specs/summary.md >> "$GITHUB_ENV"
                   echo "$EOF" >> "$GITHUB_ENV"
 
             - name: Create or update comment on PR with test results
