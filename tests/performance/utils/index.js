@@ -43,7 +43,7 @@ function formatAsMarkdownTable( results ) {
 
 	function toCellText( v ) {
 		if ( v === true || v === 'true' ) return '✅';
-		if ( ! v  || v === 'false' ) return '';
+		if ( ! v || v === 'false' ) return '';
 		return v?.toString() || String( v );
 	}
 
