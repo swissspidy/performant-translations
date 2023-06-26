@@ -10,7 +10,7 @@ const jestE2EConfig = {
 	testMatch: [ '**/tests/performance/specs/**/*.[jt]s?(x)' ],
 	globals: {
 		// Number of requests to run per test.
-		TEST_RUNS: 2,
+		TEST_RUNS: 20,
 	},
 };
 
