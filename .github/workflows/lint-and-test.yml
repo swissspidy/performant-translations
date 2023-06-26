@@ -348,14 +348,14 @@ jobs:
                   chmod -R 767 ./ # TODO: Possibly integrate in wp-env
                   npm run wp-env start
 
+            - name: Update permalink structure
+              run: |
+                  npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
+
             - name: Import mock data
               run: |
                   npm run wp-env run tests-cli curl https://raw.githubusercontent.com/WordPress/theme-test-data/b9752e0533a5acbb876951a8cbb5bcc69a56474c/themeunittestdata.wordpress.xml -- --output /tmp/themeunittestdata.wordpress.xml
                   npm run wp-env run tests-cli wp import /tmp/themeunittestdata.wordpress.xml -- --authors=create
-
-            - name: Update permalink structure
-              run: |
-                  npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
 
             # Ensure the wp-content/languages folder exists and is writable.
             # See https://github.com/WordPress/gutenberg/issues/22515
