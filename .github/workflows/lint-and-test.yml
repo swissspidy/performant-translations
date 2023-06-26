@@ -374,9 +374,6 @@ jobs:
             - name: Run tests
               run: npm run test:performance
 
-            - name: Print performance tests results
-              run: 'node ./tests/performance/results.js'
-
             - name: Check if a comment was already made
               id: find-comment
               uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1
@@ -391,10 +388,11 @@ jobs:
               run: |
                   echo 'COMMENT_BODY<<EOF' >> $GITHUB_ENV
                   echo 'Performance test results for ${{ github.event.pull_request.head.sha }} are in :bellhop_bell:!' >> $GITHUB_ENV
+                  echo 'EOF' >> $GITHUB_ENV
                   cat tests/performance/specs/summary.md >> $GITHUB_ENV
                   echo 'EOF' >> $GITHUB_ENV
 
-            - name: Create or update comment on PR with links to plugin builds
+            - name: Create or update comment on PR with test results
               uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa
               with:
                   issue-number: ${{ github.event.pull_request.number }}
