@@ -1,0 +1,19 @@
+diff --git a/node_modules/@wordpress/api-fetch/build-module/utils/response.js b/node_modules/@wordpress/api-fetch/build-module/utils/response.js
+index e7adb1e..d6e9165 100644
+--- a/node_modules/@wordpress/api-fetch/build-module/utils/response.js
++++ b/node_modules/@wordpress/api-fetch/build-module/utils/response.js
+@@ -38,10 +38,14 @@ const parseJsonAndNormalizeError = response => {
+   };
+ 
+   if (!response || !response.json) {
++		console.log(response);
++		console.log((new Error()).stack);
+     throw invalidJsonError;
+   }
+ 
+   return response.json().catch(() => {
++		console.log(response);
++		console.log((new Error()).stack);
+     throw invalidJsonError;
+   });
+ };
