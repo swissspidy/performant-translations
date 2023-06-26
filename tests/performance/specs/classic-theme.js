@@ -21,7 +21,7 @@ describe( 'Server Timing - Twenty Twenty-One', () => {
 	} );
 
 	describe.each( [
-		[ 'en_US', false ],
+		[ 'en', false ],
 		[ 'de_DE', false ],
 		[ 'de_DE', true ],
 	] )( 'Locale: %s, Ginger-MO: %s', ( locale, installPlugin ) => {
