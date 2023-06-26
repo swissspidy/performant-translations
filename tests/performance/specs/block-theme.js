@@ -6,7 +6,7 @@ import {
 } from '@wordpress/e2e-test-utils';
 import { writeFileSync } from 'node:fs';
 import { getResultsFilename, median } from '../utils';
-import { resetLocale, setLocale } from '../../e2e-utils';
+import { setLocale } from '../../e2e-utils';
 
 describe( 'Server Timing - Twenty Twenty-Three', () => {
 	const results = [];
@@ -34,7 +34,7 @@ describe( 'Server Timing - Twenty Twenty-Three', () => {
 		} );
 
 		afterAll( async () => {
-			await resetLocale();
+			await setLocale( 'en' );
 			await deactivatePlugin( 'ginger-mo' );
 		} );
 
@@ -65,7 +65,7 @@ describe( 'Server Timing - Twenty Twenty-Three', () => {
 
 			results.push( {
 				Locale: locale,
-				'Ginger-MO': installPlugin ? '✅' : '',
+				'Ginger-MO': installPlugin ? 'Yes' : 'No',
 				...Object.fromEntries(
 					Object.entries( result ).map( ( [ key, value ] ) => [
 						key,

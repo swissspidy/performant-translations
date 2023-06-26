@@ -1,6 +1,6 @@
 import { visitAdminPage, getOption } from '@wordpress/e2e-test-utils';
 
-import { setLocale, resetLocale } from '../../e2e-utils';
+import { setLocale } from '../../e2e-utils';
 
 describe( 'Translation Loading', () => {
 	beforeAll( async () => {
@@ -8,7 +8,7 @@ describe( 'Translation Loading', () => {
 	} );
 
 	afterAll( async () => {
-		await resetLocale();
+		await setLocale( 'en' );
 	} );
 
 	it( 'should correctly translate strings', async () => {
