@@ -374,16 +374,9 @@ jobs:
             - name: Run tests
               run: npm run test:performance
 
-            - name: Check if summary exists
-              id: has_summary
-              uses: andstor/file-existence-action@v2
-              with:
-                  files: 'tests/performance/specs/summary.md'
-
             - name: Check if a comment was already made
               id: find-comment
               uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1
-              if: always() && steps.has_summary.outputs.files_exists == 'true'
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   comment-author: swissspidy
@@ -391,18 +384,17 @@ jobs:
 
             - name: Get comment body
               id: get-comment-body
-              if: always() && steps.has_summary.outputs.files_exists == 'true'
               # Setting a multi-line output requires escaping line-feeds. See <https://github.community/t/set-output-truncates-multiline-strings/16852/3>.
               run: |
-                  echo 'COMMENT_BODY<<EOF' >> $GITHUB_ENV
-                  echo 'Performance test results for ${{ github.event.pull_request.head.sha }} are in :bellhop_bell:!' >> $GITHUB_ENV
-                  echo 'EOF' >> $GITHUB_ENV
-                  cat tests/performance/specs/summary.md >> $GITHUB_ENV
-                  echo 'EOF' >> $GITHUB_ENV
+                  EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+                  echo "COMMENT_BODY<<$EOF" >> $GITHUB_ENV
+                  echo "Performance test results for ${{ github.event.pull_request.head.sha }} are in :bellhop_bell:!" >> $GITHUB_ENV
+                  echo "$EOF" >> $GITHUB_ENV
+                  echo "$(cat tests/performance/specs/summary.md)" >> $GITHUB_ENV
+                  echo "$EOF' >> $GITHUB_ENV"
 
             - name: Create or update comment on PR with test results
               uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa
-              if: always() && steps.has_summary.outputs.files_exists == 'true'
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   comment-id: ${{ steps.find-comment.outputs.comment-id }}
@@ -410,7 +402,6 @@ jobs:
                   body: ${{ env.COMMENT_BODY }}
 
             - name: Add workflow summary
-              if: always() && steps.has_summary.outputs.files_exists == 'true'
               run: |
                   echo $COMMENT_BODY >> $GITHUB_STEP_SUMMARY
 
