@@ -65,7 +65,7 @@ describe( 'Server Timing - Twenty Twenty-Three', () => {
 
 			results.push( {
 				Locale: locale,
-				'Ginger-MO': installPlugin ? 'Yes' : 'No',
+				'Ginger-MO': installPlugin,
 				...Object.fromEntries(
 					Object.entries( result ).map( ( [ key, value ] ) => [
 						key,
