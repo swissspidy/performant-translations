@@ -17,7 +17,7 @@
 		"@types/expect-puppeteer": "^5.0.3",
 		"@types/jest-environment-puppeteer": "^5.0.3",
 		"@wordpress/e2e-test-utils": "^10.6.0",
-		"@wordpress/env": "^8.1.1",
+		"@wordpress/env": "^8.2.0",
 		"@wordpress/scripts": "^26.6.0"
 	},
 	"scripts": {
@@ -26,6 +26,7 @@
 		"test:e2e": "wp-scripts test-e2e",
 		"test:e2e:help": "wp-scripts test-e2e --help",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e --puppeteer-devtools",
+		"test:performance": "wp-scripts test-e2e --config tests/performance/jest.config.js --runInBand",
 		"wp-env": "wp-env"
 	}
 }
