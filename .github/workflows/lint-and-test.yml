@@ -390,6 +390,7 @@ jobs:
                   comment-id: ${{ steps.find-comment.outputs.comment-id }}
                   edit-mode: replace
                   body-path: tests/performance/specs/summary.md
+                  token: ${{ secrets.PR_COMMENT_TOKEN }}
 
             - name: Add workflow summary
               run: |
