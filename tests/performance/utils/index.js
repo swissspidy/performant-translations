@@ -34,7 +34,7 @@ function getResultsFilename( fileName ) {
  *
  * @param {Array} results Test results.
  *
- * @returns {string} Markdown content.
+ * @return {string} Markdown content.
  */
 function formatAsMarkdownTable( results ) {
 	if ( ! results?.length ) {

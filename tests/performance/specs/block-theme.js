@@ -39,7 +39,7 @@ describe( 'Server Timing - Twenty Twenty-Three', () => {
 		} );
 
 		it( 'Server Timing Metrics', async () => {
-			let result = {};
+			const result = {};
 
 			let i = TEST_RUNS;
 

@@ -10,10 +10,10 @@ class PerformanceResultsReporter {
 		this._context = reporterContext;
 	}
 
-	onRunComplete( testContexts, results ) {
+	onRunComplete( testContexts, testResults ) {
 		let summary = '';
 
-		for ( const testResult of results.testResults ) {
+		for ( const testResult of testResults.testResults ) {
 			const resultFile = getResultsFilename( testResult.testFilePath );
 			const title = testResult.testResults[ 0 ]?.ancestorTitles[ 0 ];
 			const results = JSON.parse(

@@ -10,7 +10,7 @@
 	},
 	"overrides": [
 		{
-			"files": ["tests/e2e/**/*.js", "tests/performance/**/*.js"],
+			"files": ["tests/e2e/**/*.js", "tests/performance/**/*.js", "tests/e2e-utils/**/*.js"],
 			"extends": ["plugin:@wordpress/eslint-plugin/test-e2e"]
 		},
 		{
