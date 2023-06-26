@@ -43,7 +43,7 @@ jobs:
             - name: Install PHP dependencies
               uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
               with:
-                composer-options: '--prefer-dist --no-scripts'
+                  composer-options: '--prefer-dist --no-scripts'
 
             - name: Validate composer.json
               run: composer validate --no-check-all --strict
@@ -299,17 +299,10 @@ jobs:
               run: vendor/bin/phpunit --group=l10n,i18n,pomo
 
     performance-tests:
-        name: 'Performance Tests (${{ matrix.wp }})'
+        name: 'Performance Tests (trunk)'
         runs-on: ubuntu-latest
         continue-on-error: ${{ matrix.experimental == true }}
-        strategy:
-            fail-fast: false
-            matrix:
-                wp: ['latest']
-                experimental: [false]
-                include:
-                    - wp: 'trunk'
-                      experimental: true
+
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -325,10 +318,7 @@ jobs:
 
             - name: Configure WordPress version
               run: |
-                  if [[ $WP_VERSION == 'trunk' ]]; then
-                    echo "Using WordPress trunk"
-                    echo "{\"core\":\"WordPress/WordPress#master\"}" >> .wp-env.override.json
-                  fi
+                  echo "{\"core\":\"WordPress/WordPress#master\"}" >> .wp-env.override.json
               env:
                   WP_VERSION: ${{ matrix.wp }}
 
