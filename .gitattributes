@@ -1,6 +1,10 @@
 .github export-ignore
 bin export-ignore
+build-cs export-ignore
 tests export-ignore
 .* export-ignore
 codecov.yml export-ignore
 *.xml.dist export-ignore
+
+# Don't show files copied from WordPress core as source files in GitHub
+lib/class-plural-forms.php linguist-vendored

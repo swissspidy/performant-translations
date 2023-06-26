@@ -3,6 +3,8 @@
 class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	/**
 	 * @covers Ginger_MO::instance
+	 *
+	 * @return void
 	 */
 	public function test_get_instance() {
 		$instance  = Ginger_MO::instance();
@@ -13,6 +15,9 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertSame( $instance, $instance2 );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function test_no_files_loaded_returns_false() {
 		$instance = new Ginger_MO();
 		$this->assertFalse( $instance->translate( 'singular' ) );
@@ -21,6 +26,8 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 	/**
 	 * @covers Ginger_MO::unload()
+	 *
+	 * @return void
 	 */
 	public function test_unload_not_loaded() {
 		$instance = new Ginger_MO();
@@ -30,6 +37,8 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 	/**
 	 * @covers Ginger_MO::unload()
+	 *
+	 * @return void
 	 */
 	public function test_unload_entire_textdomain() {
 		$instance = new Ginger_MO();
@@ -45,12 +54,21 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @dataProvider dataprovider_invalid_files
+	 * @dataProvider data_invalid_files
+	 *
+	 * @param string $type
+	 * @param string $file_contents
+	 * @param string|bool $expected_error
+	 * @return void
 	 */
 	public function test_invalid_files( $type, $file_contents, $expected_error = null ) {
 		$file = $this->temp_file( $file_contents );
 
+		$this->assertNotFalse( $file );
+
 		$instance = Ginger_MO_Translation_File::create( $file, 'read', $type );
+
+		$this->assertInstanceOf( Ginger_MO_Translation_File::class, $instance );
 
 		// Not an error condition until it attempts to parse the file.
 		$this->assertFalse( $instance->error() );
@@ -65,9 +83,11 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		}
 	}
 
-	public function dataprovider_invalid_files() {
+	/**
+	 * @return array{0: array{0: string, 1: string|false, 2?: string}}
+	 */
+	public function data_invalid_files() {
 		return array(
-			// filetype, file ( contents ) [, expected error string ]
 			array( 'php', '' ),
 			array( 'php', '<?php // This is a php file without a payload' ),
 			array( 'json', '' ),
@@ -80,6 +100,9 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function test_non_existent_file() {
 		$instance = new Ginger_MO();
 
@@ -88,7 +111,10 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @dataProvider dataprovider_simple_example_files
+	 * @dataProvider data_simple_example_files
+	 *
+	 * @param string $file
+	 * @return void
 	 */
 	public function test_simple_translation_files( $file ) {
 		$ginger_mo = new Ginger_MO();
@@ -112,7 +138,10 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertSame( 'translation1 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 2, 'context', 'unittest' ) );
 	}
 
-	public function dataprovider_simple_example_files() {
+	/**
+	 * @return array<array{0: string}>
+	 */
+	public function data_simple_example_files() {
 		return array(
 			array( 'example-simple.json' ),
 			array( 'example-simple.mo' ),

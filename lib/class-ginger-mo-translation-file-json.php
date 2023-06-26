@@ -25,12 +25,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		$data = json_decode( $data, true );
 
 		if ( ! $data || ! is_array( $data ) ) {
-			$this->error = true;
-			if ( function_exists( 'json_last_error_msg' ) ) {
-				$this->error = 'JSON Error: ' . json_last_error_msg();
-			} elseif ( function_exists( 'json_last_error' ) ) {
-				$this->error = 'JSON Error code: ' . json_last_error();
-			}
+			$this->error = 'JSON Error: ' . json_last_error_msg();
 			return;
 		}
 
@@ -68,11 +63,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		// Prefix as the first key.
 		$entries = array_merge( array( '' => $headers ), $entries );
 
-		if ( defined( 'JSON_PRETTY_PRINT' ) ) {
-			$json = json_encode( (array) $entries, JSON_PRETTY_PRINT );
-		} else {
-			$json = json_encode( (array) $entries );
-		}
+		$json = json_encode( (array) $entries, JSON_PRETTY_PRINT );
 
 		return (bool) file_put_contents( $this->file, $json );
 	}

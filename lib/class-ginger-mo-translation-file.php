@@ -90,10 +90,15 @@ class Ginger_MO_Translation_File {
 			case 'php':
 				return new Ginger_MO_Translation_File_PHP( $file, $context );
 			case 'json':
-				return new Ginger_MO_Translation_File_JSON( $file, $context );
+				if ( function_exists( 'json_decode' ) ) {
+					return new Ginger_MO_Translation_File_JSON( $file, $context );
+				}
+				break;
 			default:
 				return false;
 		}
+
+		return false;
 	}
 
 	/**

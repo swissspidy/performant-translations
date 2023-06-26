@@ -261,7 +261,10 @@ class Ginger_MO {
 			}
 		}
 
-		$num = $translation['source']->get_plural_form( $number );
+		/* @var Ginger_MO_Translation_File $source */
+		$source = $translation['source'];
+		$num    = $source->get_plural_form( $number );
+
 		return $translation['entries'][ $num ];
 	}
 

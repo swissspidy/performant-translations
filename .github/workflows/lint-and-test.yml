@@ -59,6 +59,11 @@ jobs:
             - name: Install dependencies
               run: composer install
 
+            # So PHPStan uses information from the latest version
+            - name: Update PHPUnit
+              run: |
+                  composer update --ignore-platform-reqs --no-interaction --no-scripts yoast/phpunit-polyfills --with-dependencies
+
             - name: Lint PHP
               run: composer lint
 
@@ -300,4 +305,4 @@ jobs:
                   echo "require dirname( __DIR__, 3 ) . '/src/wp-content/plugins/ginger-mo/ginger-mo.php';" >> tests/phpunit/includes/bootstrap.php
 
             - name: Run tests
-              run: vendor/bin/phpunit --group=l10n,i18n
+              run: vendor/bin/phpunit --group=l10n,i18n,pomo
