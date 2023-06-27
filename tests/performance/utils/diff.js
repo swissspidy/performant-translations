@@ -53,10 +53,12 @@ if ( process.env.GITHUB_SHA ) {
 	summaryMarkdown += `Performance test results are in 🛎️!\n\n`;
 }
 
-summaryMarkdown += `Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n\n`
+summaryMarkdown += `Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n\n`;
 
 console.log( 'Performance Test Results\n' );
-console.log( 'Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n' );
+console.log(
+	'Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n'
+);
 
 const DELTA_VARIANCE = 2;
 
