@@ -31,11 +31,11 @@ class PerformanceResultsReporter {
 			console.log( 'Results for:', title );
 			console.table( results );
 
-			summaryJson.push({
+			summaryJson.push( {
 				file: resultFile,
 				title,
 				results,
-			})
+			} );
 
 			summaryMarkdown += `**${ title }**\n\n`;
 			summaryMarkdown += `${ formatAsMarkdownTable( results ) }\n`;
