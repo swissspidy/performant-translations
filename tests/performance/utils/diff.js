@@ -60,7 +60,8 @@ console.log(
 	'Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n'
 );
 
-const DELTA_VARIANCE = 2;
+const DELTA_VARIANCE = 0.5;
+const PERCENTAGE_VARIANCE = 2;
 
 for ( const { file, title, results } of afterStats ) {
 	const prevStat = beforeStats.find( ( s ) => s.file === file );
@@ -88,7 +89,12 @@ for ( const { file, title, results } of afterStats ) {
 			const percentage = Math.round( ( delta / value ) * 100 );
 
 			// Skip if there is not a significant delta.
-			if ( ! percentage || Math.abs( percentage ) <= DELTA_VARIANCE ) {
+			if (
+				! percentage ||
+				Math.abs( percentage ) <= PERCENTAGE_VARIANCE ||
+				! delta ||
+				Math.abs( delta ) <= DELTA_VARIANCE
+			) {
 				diffResult[ key ] = value;
 				continue;
 			}
