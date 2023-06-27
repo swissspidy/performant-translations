@@ -1,27 +1,14 @@
-import {
-	visitAdminPage,
-	setOption,
-	getOption,
-} from '@wordpress/e2e-test-utils';
+import { visitAdminPage, getOption } from '@wordpress/e2e-test-utils';
+
+import { setLocale } from '../../e2e-utils';
 
 describe( 'Translation Loading', () => {
 	beforeAll( async () => {
-		await visitAdminPage( 'options-general.php' );
-
-		const localesDropdown = await page.$( '#WPLANG' );
-		await localesDropdown.select( 'de_DE' );
-
-		await Promise.all( [
-			page.click( '#submit' ),
-			page.waitForNavigation( {
-				waitUntil: 'networkidle0',
-			} ),
-		] );
+		await setLocale( 'de_DE' );
 	} );
 
 	afterAll( async () => {
-		// Extra space just so page.type() types something to clear the input field.
-		await setOption( 'WPLANG', ' ' );
+		await setLocale( 'en' );
 	} );
 
 	it( 'should correctly translate strings', async () => {

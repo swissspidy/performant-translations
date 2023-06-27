@@ -1,0 +1,49 @@
+diff --git a/node_modules/@wordpress/e2e-test-utils/build/plugins.js b/node_modules/@wordpress/e2e-test-utils/build/plugins.js
+index 14ce537..b3f4701 100644
+--- a/node_modules/@wordpress/e2e-test-utils/build/plugins.js
++++ b/node_modules/@wordpress/e2e-test-utils/build/plugins.js
+@@ -17,7 +17,13 @@ var _restApi = require("./rest-api");
+ /**
+  * Internal dependencies
+  */
+-const pluginsMapPromise = async function getPluginsMap() {
++
++let pluginsMap = [];
++
++async function getPluginsMap() {
++	if (pluginsMap.length > 0) {
++		return pluginsMap;
++	}
+   const plugins = await (0, _restApi.rest)({
+     path: '/wp/v2/plugins'
+   });
+@@ -29,8 +35,10 @@ const pluginsMapPromise = async function getPluginsMap() {
+     map[(0, _changeCase.paramCase)(plugin.name)] = plugin.plugin;
+   }
+ 
++	pluginsMap = map;
++
+   return map;
+-}();
++};
+ /**
+  * Activates an installed plugin.
+  *
+@@ -39,7 +47,7 @@ const pluginsMapPromise = async function getPluginsMap() {
+ 
+ 
+ async function activatePlugin(slug) {
+-  const pluginsMap = await pluginsMapPromise;
++  const pluginsMap = await getPluginsMap();
+   const plugin = pluginsMap[slug];
+   await (0, _restApi.rest)({
+     method: 'PUT',
+@@ -57,7 +65,7 @@ async function activatePlugin(slug) {
+ 
+ 
+ async function deactivatePlugin(slug) {
+-  const pluginsMap = await pluginsMapPromise;
++  const pluginsMap = await getPluginsMap();
+   const plugin = pluginsMap[slug];
+   await (0, _restApi.rest)({
+     method: 'PUT',
