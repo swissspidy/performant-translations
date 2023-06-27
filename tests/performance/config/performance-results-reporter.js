@@ -11,14 +11,7 @@ class PerformanceResultsReporter {
 	}
 
 	onRunComplete( testContexts, testResults ) {
-		let summaryMarkdown = `**Performance Test Results**\n\n`;
 		const summaryJson = [];
-
-		if ( process.env.GITHUB_SHA ) {
-			summaryMarkdown += `Performance test results for ${ process.env.GITHUB_SHA } are in 🛎️!\n\n`;
-		} else {
-			summaryMarkdown += `Performance test results are in 🛎️!\n\n`;
-		}
 
 		for ( const testResult of testResults.testResults ) {
 			const resultFile = getResultsFilename( testResult.testFilePath );
@@ -36,15 +29,7 @@ class PerformanceResultsReporter {
 				title,
 				results,
 			} );
-
-			summaryMarkdown += `**${ title }**\n\n`;
-			summaryMarkdown += `${ formatAsMarkdownTable( results ) }\n`;
 		}
-
-		writeFileSync(
-			join( __dirname, '/../', '/specs/', 'summary.md' ),
-			summaryMarkdown
-		);
 
 		writeFileSync(
 			join( __dirname, '/../', '/specs/', 'summary.json' ),

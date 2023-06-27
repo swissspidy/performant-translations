@@ -32,7 +32,7 @@ function getResultsFilename( fileName ) {
 /**
  * Format test results as a Markdown table.
  *
- * @param {Array} results Test results.
+ * @param {Array<Record<string,string|number|boolean>>} results Test results.
  *
  * @return {string} Markdown content.
  */
