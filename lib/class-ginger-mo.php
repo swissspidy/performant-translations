@@ -94,8 +94,8 @@ class Ginger_MO {
 	/**
 	 * Unload all translation files or a specific one for a given text domain.
 	 *
-	 * @param string                     $textdomain Text domain.
-	 * @param Ginger_MO_Translation_File $mo Translation file.
+	 * @param string                            $textdomain Text domain.
+	 * @param Ginger_MO_Translation_File|string $mo         Translation file instance or file name.
 	 * @return bool True on success, false otherwise.
 	 */
 	public function unload( $textdomain, $mo = null ) {
@@ -105,7 +105,7 @@ class Ginger_MO {
 
 		if ( $mo ) {
 			foreach ( $this->loaded_translations[ $textdomain ] as $i => $moe ) {
-				if ( $mo === $moe ) {
+				if ( $mo === $moe || $mo === $moe->get_file() ) {
 					unset( $this->loaded_translations[ $textdomain ][ $i ] );
 					unset( $this->loaded_files[ $moe->get_file() ][ $textdomain ] );
 					return true;

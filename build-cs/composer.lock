@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b453f13d279c56de788a57f5ba618891",
+    "content-hash": "8fd2942244274dd81eb578bc06ff9f3c",
     "packages": [],
     "packages-dev": [
         {
@@ -129,6 +129,46 @@
                 "source": "https://github.com/php-stubs/wordpress-stubs/tree/v6.2.1"
             },
             "time": "2023-05-18T04:35:23+00:00"
+        },
+        {
+            "name": "php-stubs/wordpress-tests-stubs",
+            "version": "v6.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-stubs/wordpress-tests-stubs.git",
+                "reference": "175f395c814d9f52ebd2c1c64069a3b01ef764e8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-stubs/wordpress-tests-stubs/zipball/175f395c814d9f52ebd2c1c64069a3b01ef764e8",
+                "reference": "175f395c814d9f52ebd2c1c64069a3b01ef764e8",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php": "~7.3 || ~8.0",
+                "php-stubs/generator": "^0.8.0"
+            },
+            "suggest": {
+                "symfony/polyfill-php73": "Symfony polyfill backporting some PHP 7.3+ features to lower PHP versions",
+                "szepeviktor/phpstan-wordpress": "WordPress extensions for PHPStan"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "WordPress Tests function and class declaration stubs for static analysis.",
+            "homepage": "https://github.com/php-stubs/wordpress-tests-stubs",
+            "keywords": [
+                "PHPStan",
+                "static analysis",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/php-stubs/wordpress-tests-stubs/issues",
+                "source": "https://github.com/php-stubs/wordpress-tests-stubs/tree/v6.2.0"
+            },
+            "time": "2023-05-15T07:50:52+00:00"
         },
         {
             "name": "phpcompatibility/php-compatibility",
@@ -535,16 +575,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "8.13.0",
+            "version": "8.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "4166003e9ca097a67951ab434f321c90eb621c3e"
+                "reference": "a13c15e20f2d307a1ca8dec5313ec462a4466470"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/4166003e9ca097a67951ab434f321c90eb621c3e",
-                "reference": "4166003e9ca097a67951ab434f321c90eb621c3e",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/a13c15e20f2d307a1ca8dec5313ec462a4466470",
+                "reference": "a13c15e20f2d307a1ca8dec5313ec462a4466470",
                 "shasum": ""
             },
             "require": {
@@ -584,7 +624,7 @@
             ],
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/8.13.0"
+                "source": "https://github.com/slevomat/coding-standard/tree/8.13.1"
             },
             "funding": [
                 {
@@ -596,7 +636,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-23T08:32:09+00:00"
+            "time": "2023-06-25T12:52:34+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -899,7 +939,7 @@
                 "source": "https://github.com/WordPress/WordPress-Coding-Standards",
                 "wiki": "https://github.com/WordPress/WordPress-Coding-Standards/wiki"
             },
-            "time": "2023-06-23T16:38:13+00:00"
+            "time": "2023-06-26T15:25:42+00:00"
         }
     ],
     "aliases": [],

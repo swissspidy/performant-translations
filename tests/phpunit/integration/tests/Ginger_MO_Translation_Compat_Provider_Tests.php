@@ -4,6 +4,9 @@
  * @coversDefaultClass Ginger_MO_Translation_Compat_Provider
  */
 class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		if ( file_exists( DIR_TESTDATA . '/pomo/simple.php' ) ) {
 			$this->unlink( DIR_TESTDATA . '/pomo/simple.php' );
@@ -17,6 +20,8 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 	/**
 	 * @covers ::__get
 	 * @covers ::make_entry
+	 *
+	 * @return void
 	 */
 	public function test_get_entries() {
 		global $l10n;
@@ -54,6 +59,8 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 	/**
 	 * @covers ::__get
 	 * @covers ::make_entry
+	 *
+	 * @return void
 	 */
 	public function test_get_entries_plural() {
 		global $l10n;
@@ -91,6 +98,8 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::__get
+	 *
+	 * @return void
 	 */
 	public function test_get_headers() {
 		global $l10n;
@@ -117,6 +126,8 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::translate
+	 *
+	 * @return void
 	 */
 	public function test_translate() {
 		global $l10n;
@@ -138,6 +149,8 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::translate_plural
+	 *
+	 * @return void
 	 */
 	public function test_translate_plural() {
 		global $l10n;
@@ -161,6 +174,8 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::translate_plural
+	 *
+	 * @return void
 	 */
 	public function test_translate_plural_missing() {
 		global $l10n;
