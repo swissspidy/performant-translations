@@ -4,7 +4,7 @@ const jestE2EConfig = {
 	...config,
 	setupFilesAfterEnv: [ '<rootDir>/config/setup-performance-tests.js' ],
 	reporters: [
-		...config.reporters,
+		'github-actions',
 		'<rootDir>/config/performance-results-reporter.js',
 	],
 	testMatch: [ '**/tests/performance/specs/**/*.[jt]s?(x)' ],

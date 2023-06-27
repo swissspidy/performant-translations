@@ -11,12 +11,13 @@ class PerformanceResultsReporter {
 	}
 
 	onRunComplete( testContexts, testResults ) {
-		let summary = `**Performance Test Results**\n\n`;
+		let summaryMarkdown = `**Performance Test Results**\n\n`;
+		let summaryJson = [];
 
 		if ( process.env.GITHUB_SHA ) {
-			summary += `Performance test results for ${ process.env.GITHUB_SHA } are in 🛎️!\n\n`;
+			summaryMarkdown += `Performance test results for ${ process.env.GITHUB_SHA } are in 🛎️!\n\n`;
 		} else {
-			summary += `Performance test results are in 🛎️!\n\n`;
+			summaryMarkdown += `Performance test results are in 🛎️!\n\n`;
 		}
 
 		for ( const testResult of testResults.testResults ) {
@@ -30,13 +31,24 @@ class PerformanceResultsReporter {
 			console.log( 'Results for:', title );
 			console.table( results );
 
-			summary += `**${ title }**\n\n`;
-			summary += `${ formatAsMarkdownTable( results ) }\n`;
+			summaryJson.push({
+				file: resultFile,
+				title,
+				results,
+			})
+
+			summaryMarkdown += `**${ title }**\n\n`;
+			summaryMarkdown += `${ formatAsMarkdownTable( results ) }\n`;
 		}
 
 		writeFileSync(
 			join( __dirname, '/../', '/specs/', 'summary.md' ),
-			summary
+			summaryMarkdown
+		);
+
+		writeFileSync(
+			join( __dirname, '/../', '/specs/', 'summary.json' ),
+			JSON.stringify( summaryJson )
 		);
 	}
 }

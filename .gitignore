@@ -11,3 +11,4 @@ phpunit-multisite.xml
 .wp-env.override.json
 tests/performance/specs/*.results.json
 tests/performance/specs/summary.md
+tests/performance/specs/summary.json
