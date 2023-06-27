@@ -53,7 +53,10 @@ if ( process.env.GITHUB_SHA ) {
 	summaryMarkdown += `Performance test results are in 🛎️!\n\n`;
 }
 
-console.log( 'Performance Test Results' );
+summaryMarkdown += `Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n\n`
+
+console.log( 'Performance Test Results\n' );
+console.log( 'Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n' );
 
 const DELTA_VARIANCE = 2;
 
@@ -90,15 +93,14 @@ for ( const { file, title, results } of afterStats ) {
 
 			const prefix = delta > 0 ? '+' : '';
 
-			diffResult[ key ] = `${ value } (${ prefix }${ delta.toFixed(
+			diffResult[ key ] = `${ value } ms (${ prefix }${ delta.toFixed(
 				2
-			) } / ${ prefix }${ percentage }%)`;
+			) } ms / ${ prefix }${ percentage }%)`;
 		}
 
 		diffResults.push( diffResult );
 	}
 
-	console.log( '\n' );
 	console.log( 'Results for:', title );
 	console.table( diffResults );
 
