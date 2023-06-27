@@ -23,7 +23,7 @@ async function closeFeaturePointers() {
 }
 
 beforeAll( async () => {
-	rmSync( join( __dirname, '/../', '/specs/', 'summary.md' ), {
+	rmSync( join( __dirname, '/../', '/specs/', 'summary.json' ), {
 		force: true,
 	} );
 	rmSync( getResultsFilename( expect.getState().testPath ), { force: true } );

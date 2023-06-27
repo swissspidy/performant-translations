@@ -350,14 +350,37 @@ jobs:
                   cd -
 
             - name: Run tests
-              run: npm run test:performance
+              run: |
+                  npm run test:performance
+                  mv tests/performance/specs/summary.json ${{ runner.temp }}/summary_after.json
+
+            - name: Check out base commit
+              run: |
+                  git fetch -n origin $BASE_REF || git fetch -n origin $BASE_SHA
+                  git reset --hard $BASE_REF || git reset --hard $BASE_SHA
+              env:
+                  BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.event.base_ref }}
+                  BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+
+            - name: Run tests for base
+              run: |
+                  npm run test:performance
+                  mv tests/performance/specs/summary.json ${{ runner.temp }}/summary_before.json
+
+            - name: Reset to original commit
+              run: |
+                  git reset --hard $GITHUB_SHA
+
+            - name: Compare results with base
+              run: |
+                  node tests/performance/utils/diff.js ${{ runner.temp }}/summary_before.json ${{ runner.temp }}/summary_after.json
 
             - name: Check if a comment was already made
               id: find-comment
               uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1
               if: >
-                github.event.pull_request.number &&
-                github.event.pull_request.head.repo.fork == false
+                  github.event.pull_request.number &&
+                  github.event.pull_request.head.repo.fork == false
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   comment-author: swissspidy
@@ -366,8 +389,8 @@ jobs:
             - name: Comment on PR with test results
               uses: peter-evans/create-or-update-comment@c6c9a1a66007646a28c153e2a8580a5bad27bcfa
               if: >
-                github.event.pull_request.number &&
-                github.event.pull_request.head.repo.fork == false
+                  github.event.pull_request.number &&
+                  github.event.pull_request.head.repo.fork == false
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   comment-id: ${{ steps.find-comment.outputs.comment-id }}
