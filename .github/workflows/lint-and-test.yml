@@ -372,7 +372,7 @@ jobs:
 
             - name: Add workflow summary
               run: |
-                  cat tests/performance/specs/summary.md $GITHUB_STEP_SUMMARY
+                  cat tests/performance/specs/summary.md >> $GITHUB_STEP_SUMMARY
 
             - name: Archive debug artifacts (screenshots, HTML snapshots)
               uses: actions/upload-artifact@v3
