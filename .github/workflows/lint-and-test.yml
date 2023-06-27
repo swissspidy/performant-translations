@@ -355,6 +355,7 @@ jobs:
             - name: Check if a comment was already made
               id: find-comment
               uses: peter-evans/find-comment@a54c31d7fa095754bfef525c0c8e5e5674c4b4b1
+              if: github.event.pull_request.head.repo.fork == false
               with:
                   issue-number: ${{ github.event.pull_request.number }}
                   comment-author: swissspidy
