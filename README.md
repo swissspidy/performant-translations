@@ -26,4 +26,4 @@ The following numbers are for a site running 6.3 alpha with multiple active plug
 
 ## Credits
 
-Originally developed by [Dion Hulse](https://github.com/dd32).
+Originally developed by [Dion Hulse](https://github.com/dd32/ginger-mo).

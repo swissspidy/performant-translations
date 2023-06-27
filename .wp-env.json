@@ -1,4 +1,18 @@
 {
 	"core": null,
-	"plugins": [ "." ]
+	"plugins": [
+		".",
+		"https://downloads.wordpress.org/plugin/contact-form-7.zip",
+		"https://downloads.wordpress.org/plugin/performance-lab.zip",
+		"https://downloads.wordpress.org/plugin/woocommerce.zip",
+		"https://downloads.wordpress.org/plugin/wordpress-importer.zip",
+		"https://downloads.wordpress.org/plugin/wordpress-seo.zip"
+	],
+	"themes": [
+		"https://downloads.wordpress.org/theme/twentytwentyone.zip",
+		"https://downloads.wordpress.org/theme/twentytwentythree.zip"
+	],
+	"mappings": {
+		"wp-content/mu-plugins": "./tests/wp-env/mu-plugins"
+	}
 }
