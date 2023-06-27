@@ -350,10 +350,8 @@ jobs:
                   cd -
 
             - name: Run tests
-              id: current_results
               run: |
                   npm run test:performance
-                  echo "$(cat tests/performance/specs/summary.json)" >> "$GITHUB_OUTPUT"
                   mv tests/performance/specs/summary.json ${{ runner.temp }}/summary_after.json
 
             - name: Check out base commit
@@ -365,10 +363,8 @@ jobs:
                   BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
 
             - name: Run tests for base
-              id: base_results
               run: |
                   npm run test:performance
-                  echo "$(cat tests/performance/specs/summary.json)" >> "$GITHUB_OUTPUT"
                   mv tests/performance/specs/summary.json ${{ runner.temp }}/summary_before.json
 
             - name: Reset to original commit

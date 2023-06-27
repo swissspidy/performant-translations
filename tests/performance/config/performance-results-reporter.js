@@ -1,5 +1,5 @@
 const { readFileSync } = require( 'fs' );
-const { getResultsFilename, formatAsMarkdownTable } = require( '../utils' );
+const { getResultsFilename } = require( '../utils' );
 const { join } = require( 'node:path' );
 const { writeFileSync } = require( 'node:fs' );
 
