@@ -12,7 +12,7 @@ class PerformanceResultsReporter {
 
 	onRunComplete( testContexts, testResults ) {
 		let summaryMarkdown = `**Performance Test Results**\n\n`;
-		let summaryJson = [];
+		const summaryJson = [];
 
 		if ( process.env.GITHUB_SHA ) {
 			summaryMarkdown += `Performance test results for ${ process.env.GITHUB_SHA } are in 🛎️!\n\n`;
