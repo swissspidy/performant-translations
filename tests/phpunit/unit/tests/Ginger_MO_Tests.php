@@ -1,8 +1,11 @@
 <?php
 
+/**
+ * @coversDefaultClass Ginger_MO
+ */
 class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	/**
-	 * @covers Ginger_MO::instance
+	 * @covers >:instance
 	 *
 	 * @return void
 	 */
@@ -25,7 +28,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @covers Ginger_MO::unload()
+	 * @covers ::unload
 	 *
 	 * @return void
 	 */
@@ -36,7 +39,12 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @covers Ginger_MO::unload()
+	 * @covers ::load
+	 * @covers ::unload
+	 * @covers ::is_loaded
+	 * @covers ::translate
+	 * @covers ::locate_translation
+	 * @covers ::get_mo_files
 	 *
 	 * @return void
 	 */
@@ -101,6 +109,9 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
+	 * @covers Ginger_MO::load
+	 * @covers Ginger_MO::is_loaded
+	 *
 	 * @return void
 	 */
 	public function test_non_existent_file() {
@@ -111,6 +122,13 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
+	 * @covers ::load
+	 * @covers ::is_loaded
+	 * @covers ::translate
+	 * @covers ::translate_plural
+	 * @covers ::locate_translation
+	 * @covers ::get_mo_files
+	 *
 	 * @dataProvider data_simple_example_files
 	 *
 	 * @param string $file
@@ -147,5 +165,57 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 			array( 'example-simple.mo' ),
 			array( 'example-simple.php' ),
 		);
+	}
+
+	/**
+	 * @covers ::load
+	 * @covers ::unload
+	 * @covers ::is_loaded
+	 * @covers ::translate
+	 * @covers ::translate_plural
+	 * @covers ::locate_translation
+	 * @covers ::get_mo_files
+	 * @covers Ginger_MO_Translation_File::get_plural_form
+	 * @covers Ginger_MO_Translation_File::make_plural_form_function
+	 *
+	 * @return void
+	 */
+	public function test_load_multiple_files() {
+		$ginger_mo = new Ginger_MO();
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'simple.mo', 'unittest' ) );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'plural.mo', 'unittest' ) );
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
+
+		$this->assertFalse( $ginger_mo->translate( "string that doesn't exist", null, 'unittest' ) );
+		$this->assertFalse( $ginger_mo->translate( 'original', null, 'textdomain not loaded' ) );
+
+		// From example-simple.mo
+
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original', null, 'unittest' ) );
+		$this->assertSame( 'translation with context', $ginger_mo->translate( 'original with context', 'context', 'unittest' ) );
+
+		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 0, null, 'unittest' ) );
+		$this->assertSame( 'translation0', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 1, null, 'unittest' ) );
+		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 2, null, 'unittest' ) );
+
+		$this->assertSame( 'translation1 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 0, 'context', 'unittest' ) );
+		$this->assertSame( 'translation0 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 1, 'context', 'unittest' ) );
+		$this->assertSame( 'translation1 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 2, 'context', 'unittest' ) );
+
+		// From simple.mo.
+
+		$this->assertSame( 'dyado', $ginger_mo->translate( 'baba', null, 'unittest' ) );
+
+		// From plural.mo.
+
+		$this->assertSame( 'oney dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, null, 'unittest' ), 'Actual translation does not match expected one' );
+		$this->assertSame( 'twoey dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 2, null, 'unittest' ), 'Actual translation does not match expected one' );
+		$this->assertSame( 'twoey dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), -8, null, 'unittest' ), 'Actual translation does not match expected one' );
+
+		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'simple.mo' ) );
+
+		$this->assertFalse( $ginger_mo->translate( 'baba', null, 'unittest' ) );
 	}
 }

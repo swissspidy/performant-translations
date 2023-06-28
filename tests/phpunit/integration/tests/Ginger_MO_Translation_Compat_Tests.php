@@ -4,6 +4,9 @@
  * @coversDefaultClass Ginger_MO_Translation_Compat
  */
 class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
+	/**
+	 * @return void
+	 */
 	public function tear_down() {
 		if ( file_exists( DIR_TESTDATA . '/pomo/simple.php' ) ) {
 			$this->unlink( DIR_TESTDATA . '/pomo/simple.php' );
@@ -12,6 +15,8 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::overwrite_wordpress
+	 *
+	 * @return void
 	 */
 	public function test_overwrite_wordpress() {
 		$this->assertSame( 100, has_filter( 'override_load_textdomain', array( Ginger_MO_Translation_Compat::class, 'load_textdomain' ) ) );
@@ -22,6 +27,9 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	 * @covers ::load_textdomain
 	 * @covers Ginger_MO::get_entries
 	 * @covers Ginger_MO::get_headers
+	 * @covers Ginger_MO::normalize_header
+	 *
+	 * @return void
 	 */
 	public function test_load_textdomain() {
 		global $l10n;
@@ -67,9 +75,10 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 		);
 	}
 
-
 	/**
 	 * @covers ::load_textdomain
+	 *
+	 * @return void
 	 */
 	public function test_load_textdomain_creates_and_reads_php_files() {
 		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
@@ -89,11 +98,13 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 		$this->assertTrue( $unload_php_successful );
 	}
 
-
 	/**
 	 * @covers ::unload_textdomain
 	 * @covers Ginger_MO::get_entries
 	 * @covers Ginger_MO::get_headers
+	 * @covers Ginger_MO::normalize_header
+	 *
+	 * @return void
 	 */
 	public function test_unload_textdomain() {
 		global $l10n;

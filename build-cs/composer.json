@@ -1,6 +1,7 @@
 {
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
+		"php-stubs/wordpress-tests-stubs": "^6.2.0",
 		"phpcompatibility/php-compatibility": "^9.3",
 		"phpstan/phpstan": "^1.10",
 		"phpstan/extension-installer": "^1.2",

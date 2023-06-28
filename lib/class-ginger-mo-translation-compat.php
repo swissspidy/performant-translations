@@ -137,6 +137,8 @@ class Ginger_MO_Translation_Compat {
 	/**
 	 * Hook into WordPress.
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @return void
 	 */
 	public static function overwrite_wordpress() {
