@@ -96,6 +96,55 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 		);
 	}
 
+
+	/**
+	 * @covers ::__get
+	 * @covers ::make_entry
+	 *
+	 * @return void
+	 */
+	public function test_get_entries_context() {
+		global $l10n;
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+
+		$entries = $compat_instance ? $compat_instance->entries : array();
+
+		$unload_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
+		$this->assertEqualSets(
+			array(
+				new Translation_Entry(
+					array(
+						'context'      => 'not so dragon',
+						'singular'     => 'one dragon',
+						'translations' => array( 'oney dragoney' ),
+					)
+				),
+				new Translation_Entry(
+					array(
+						'is_plural'    => true,
+						'singular'     => 'one dragon',
+						'plural'       => '%d dragons',
+						'context'      => 'dragonland',
+						'translations' => array(
+							'oney dragoney',
+							'twoey dragoney',
+							'manyey dragoney',
+						),
+					)
+				),
+			),
+			$entries,
+			'Actual translation entries do not match expected ones'
+		);
+	}
+
+
 	/**
 	 * @covers ::__get
 	 *
