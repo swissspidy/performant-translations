@@ -155,7 +155,7 @@ class Ginger_MO {
 
 			foreach ( $this->loaded_translations as $locale => $domains ) {
 				foreach ( $domains[ $textdomain ] as $i => $moe ) {
-					if ( $mo === $moe ) {
+					if ( $mo === $moe || $mo === $moe->get_file() ) {
 						unset( $this->loaded_translations[ $locale ][ $textdomain ][ $i ] );
 						unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
 						return true;
