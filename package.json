@@ -29,7 +29,7 @@
 		"test:e2e": "wp-scripts test-e2e",
 		"test:e2e:help": "wp-scripts test-e2e --help",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e --puppeteer-devtools",
-		"test:performance": "wp-scripts test-e2e --config tests/performance/jest.config.js --runInBand",
+		"test:performance": "wp-scripts test-e2e --config tests/performance/jest.config.js",
 		"wp-env": "wp-env"
 	}
 }
