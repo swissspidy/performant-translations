@@ -231,6 +231,7 @@ jobs:
               with:
                   name: failures-artifacts
                   path: artifacts
+                  if-no-files-found: ignore
 
     core-php:
         name: 'WP core tests'
@@ -408,3 +409,4 @@ jobs:
               with:
                   name: failures-artifacts
                   path: artifacts
+                  if-no-files-found: ignore
