@@ -3,11 +3,10 @@ import {
 	activatePlugin,
 	deactivatePlugin,
 	createURL,
-	setOption,
 } from '@wordpress/e2e-test-utils';
 import { writeFileSync } from 'node:fs';
 import { getResultsFilename, median } from '../utils';
-import { setLocale } from '../../e2e-utils';
+import { setLocale, enablePerformancePackL10n } from '../../e2e-utils';
 
 enum Scenario {
 	Default = 'Default',
@@ -65,11 +64,7 @@ describe( 'Server Timing - Twenty Twenty-One', () => {
 
 				if ( scenario === Scenario.CacheL10n ) {
 					await activatePlugin( 'wp-performance-pack' );
-					// Enable l10n object caching in WP Performance Pack but nothing else.
-					await setOption(
-						'wppp_option',
-						'a:3:{s:21:"mod_l10n_improvements";b:1;s:14:"use_mo_dynamic";b:0;s:10:"mo_caching";b:1;}'
-					);
+					await enablePerformancePackL10n();
 				}
 
 				if (

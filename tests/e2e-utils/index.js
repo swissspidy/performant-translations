@@ -13,3 +13,32 @@ export async function setLocale( locale ) {
 		} ),
 	] );
 }
+
+export async function enablePerformancePackL10n() {
+	await visitAdminPage( 'options-general.php', 'page=wppp_options_page' );
+
+	const l10nCheckbox = await page.$( '#mod_l10n_improvements_id' );
+	await l10nCheckbox.click();
+
+	await Promise.all( [
+		page.click( '#submit' ),
+		page.waitForNavigation( {
+			waitUntil: 'networkidle0',
+		} ),
+	] );
+
+	await visitAdminPage(
+		'options-general.php',
+		'page=wppp_options_page&tab=l10n_improvements'
+	);
+
+	await page.click( '#use_mo_dynamic_id' );
+	await page.click( '#mo-caching' );
+
+	await Promise.all( [
+		page.click( '#submit' ),
+		page.waitForNavigation( {
+			waitUntil: 'networkidle0',
+		} ),
+	] );
+}
