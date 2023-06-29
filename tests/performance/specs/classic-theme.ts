@@ -40,12 +40,6 @@ describe( 'Server Timing - Twenty Twenty-One', () => {
 		beforeAll( async () => {
 			await setLocale( locale );
 
-			await deactivatePlugin( 'ginger-mo' );
-			await deactivatePlugin( 'ginger-mo-no-php' );
-			await deactivatePlugin( 'sqlite-object-cache' );
-			await deactivatePlugin( 'native-gettext' );
-			await deactivatePlugin( 'wp-performance-pack' );
-
 			if ( scenario === Scenario.NativeGettext ) {
 				await activatePlugin( 'native-gettext' );
 			}

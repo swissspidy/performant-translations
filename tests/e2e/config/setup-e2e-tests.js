@@ -1,5 +1,3 @@
-import { rmSync } from 'node:fs';
-import { join } from 'node:path';
 import {
 	visitAdminPage,
 	clearLocalStorage,
@@ -7,7 +5,6 @@ import {
 	setBrowserViewport,
 	deactivatePlugin,
 } from '@wordpress/e2e-test-utils';
-import { getResultsFilename } from '../utils';
 
 async function setupPage() {
 	await setBrowserViewport( 'large' );
@@ -24,11 +21,6 @@ async function closeFeaturePointers() {
 }
 
 beforeAll( async () => {
-	rmSync( join( __dirname, '/../', '/specs/', 'summary.json' ), {
-		force: true,
-	} );
-	rmSync( getResultsFilename( expect.getState().testPath ), { force: true } );
-
 	enablePageDialogAccept();
 	await setupPage();
 
