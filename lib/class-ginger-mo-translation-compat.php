@@ -31,16 +31,27 @@ class Ginger_MO_Translation_Compat {
 		/** This filter is documented in wp-includes/l10n.php */
 		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
 
-		$php_mo = str_replace( '.mo', '.php', $mofile );
+		/**
+		 * Filters whether PHP files should be preferred over MO files wherever possible.
+		 *
+		 * Useful for testing/debugging.
+		 *
+		 * @param bool $convert Whether to prefer PHP files over MO files. Default true.
+		 */
+		$prefer_php = apply_filters( 'ginger_mo_prefer_php_files', true );
 
-		$success = Ginger_MO::instance()->load( $php_mo, $domain );
+		if ( $prefer_php ) {
+			$php_mo = str_replace( '.mo', '.php', $mofile );
 
-		if ( $success ) {
-			// Unset Noop_Translations reference in get_translations_for_domain.
-			unset( $l10n[ $domain ] );
-			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
+			$success = Ginger_MO::instance()->load( $php_mo, $domain );
 
-			return $success;
+			if ( $success ) {
+				// Unset Noop_Translations reference in get_translations_for_domain.
+				unset( $l10n[ $domain ] );
+				$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
+
+				return $success;
+			}
 		}
 
 		$success = Ginger_MO::instance()->load( $mofile, $domain );
@@ -61,7 +72,7 @@ class Ginger_MO_Translation_Compat {
 			 */
 			$convert = apply_filters( 'ginger_mo_convert_to_php_files', true );
 
-			if ( $convert ) {
+			if ( $prefer_php && $convert ) {
 				$source      = Ginger_MO_Translation_File::create( $mofile );
 				$destination = Ginger_MO_Translation_File::create( $php_mo, 'write' );
 				if ( $source && $destination ) {
