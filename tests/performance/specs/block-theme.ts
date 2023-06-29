@@ -31,6 +31,7 @@ describe( 'Server Timing - Twenty Twenty-Three', () => {
 
 	describe.each( [
 		{ locale: 'en', scenario: Scenario.Default },
+		{ locale: 'en', scenario: Scenario.Sqlite },
 		{ locale: 'de_DE', scenario: Scenario.Default },
 		{ locale: 'de_DE', scenario: Scenario.GingerMo },
 		{ locale: 'de_DE', scenario: Scenario.GingerMoPhp },
@@ -45,14 +46,16 @@ describe( 'Server Timing - Twenty Twenty-Three', () => {
 			}
 
 			if ( scenario === Scenario.Sqlite ) {
-				await activatePlugin( 'wp-performance-pack' );
 				await activatePlugin( 'sqlite-object-cache' );
 
-				// Enable l10n object caching in WP Performance Pack but nothing else.
-				await setOption(
-					'wppp_option',
-					'a:3:{s:21:"mod_l10n_improvements";b:1;s:14:"use_mo_dynamic";b:0;s:10:"mo_caching";b:1;}'
-				);
+				if ( locale !== 'en' ) {
+					await activatePlugin( 'wp-performance-pack' );
+					// Enable l10n object caching in WP Performance Pack but nothing else.
+					await setOption(
+						'wppp_option',
+						'a:3:{s:21:"mod_l10n_improvements";b:1;s:14:"use_mo_dynamic";b:0;s:10:"mo_caching";b:1;}'
+					);
+				}
 			}
 
 			if (
