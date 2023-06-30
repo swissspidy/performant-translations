@@ -118,7 +118,7 @@ class Ginger_MO_Translation_Compat {
 
 		// Since we support multiple locales, we don't actually need to unload
 		// reloadable text domains.
-		if ( ! $reloadable ) {
+		if ( ! $reloadable && 'default' !== $domain ) {
 			return Ginger_MO::instance()->unload( $domain );
 		}
 

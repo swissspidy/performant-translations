@@ -128,4 +128,60 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 		$this->assertEmpty( $headers, 'Actual translation headers are not empty' );
 		$this->assertEmpty( $entries, 'Actual translation entries are not empty' );
 	}
+
+	/**
+	 * @covers ::load_textdomain
+	 * @covers ::unload_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_switch_to_locale_translations_stay_loaded_default_textdomain() {
+		global $l10n;
+
+		switch_to_locale( 'es_ES' );
+
+		$actual = __( 'Invalid parameter.' );
+
+		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'default' ) );
+		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'default', 'es_ES' ) );
+
+		restore_previous_locale();
+
+		$actual_2 = __( 'Invalid parameter.' );
+
+		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'default', 'es_ES' ) );
+
+		$this->assertSame( 'Parámetro no válido. ', $actual );
+		$this->assertSame( 'Invalid parameter.', $actual_2 );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 * @covers ::unload_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_switch_to_locale_translations_stay_loaded_custom_textdomain() {
+		require_once DIR_TESTDATA . '/plugins/internationalized-plugin.php';
+
+		$before = i18n_plugin_test();
+
+		switch_to_locale( 'es_ES' );
+
+		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'internationalized-plugin', 'es_ES' ) );
+		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'default', 'es_ES' ) );
+		$this->assertFalse( Ginger_MO::instance()->is_loaded( 'foo-bar', 'es_ES' ) );
+
+		$actual = i18n_plugin_test();
+
+		restore_previous_locale();
+
+		$after = i18n_plugin_test();
+
+		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'internationalized-plugin', 'es_ES' ) );
+
+		$this->assertSame( 'This is a dummy plugin', $before );
+		$this->assertSame( 'Este es un plugin dummy', $actual );
+		$this->assertSame( 'This is a dummy plugin', $after );
+	}
 }
