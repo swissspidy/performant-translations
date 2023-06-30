@@ -218,4 +218,51 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 		$this->assertFalse( $ginger_mo->translate( 'baba', null, 'unittest' ) );
 	}
+
+	/**
+	 * @covers ::set_locale
+	 * @covers ::get_locale
+	 * @covers ::load
+	 * @covers ::unload
+	 * @covers ::is_loaded
+	 * @covers ::translate
+	 * @covers ::translate_plural
+	 *
+	 * @return void
+	 */
+	public function test_load_multiple_locales() {
+		$ginger_mo = new Ginger_MO();
+
+		$this->assertSame( 'en_US', $ginger_mo->get_locale() );
+
+		$ginger_mo->set_locale( 'de_DE' );
+
+		$this->assertSame( 'de_DE', $ginger_mo->get_locale() );
+
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'simple.mo', 'unittest', 'es_ES' ) );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'plural.mo', 'unittest', 'en_US' ) );
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
+
+		// From example-simple.mo
+
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original', null, 'unittest' ), 'String should be translated in de_DE' );
+		$this->assertFalse( $ginger_mo->translate( 'original', null, 'unittest', 'es_ES' ), 'String should not be translated in es_ES' );
+		$this->assertFalse( $ginger_mo->translate( 'original', null, 'unittest', 'en_US' ), 'String should not be translated in en_US' );
+
+		// From simple.mo.
+
+		$this->assertFalse( $ginger_mo->translate( 'baba', null, 'unittest' ), 'String should not be translated in de_DE' );
+		$this->assertSame( 'dyado', $ginger_mo->translate( 'baba', null, 'unittest', 'es_ES' ), 'String should be translated in es_ES' );
+		$this->assertFalse( $ginger_mo->translate( 'baba', null, 'unittest', 'en_US' ), 'String should not be translated in en_US' );
+
+		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'plural.mo', 'de_DE' ) );
+
+		$this->assertSame( 'oney dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, null, 'unittest', 'en_US' ), 'String should be translated in en_US' );
+
+		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'plural.mo', 'en_US' ) );
+
+		$this->assertFalse( $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, null, 'unittest', 'en_US' ), 'String should not be translated in en_US' );
+	}
 }
