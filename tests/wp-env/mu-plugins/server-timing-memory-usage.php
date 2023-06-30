@@ -12,6 +12,10 @@
 add_action(
 	'plugins_loaded',
 	static function() {
+		if ( ! function_exists( 'perflab_server_timing_register_metric' ) ) {
+			return;
+		}
+
 		perflab_server_timing_register_metric(
 			'memory-usage',
 			array(
