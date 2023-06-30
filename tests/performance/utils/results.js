@@ -76,10 +76,10 @@ const PERCENTAGE_VARIANCE = 2;
  */
 function formatValue( value, key ) {
 	if ( key === 'wp-memory-usage' ) {
-		return `${ value / Math.pow( 10, 6 ) } MB`;
+		return `${ ( value / Math.pow( 10, 6 ) ).toFixed( 2 ) } MB`;
 	}
 
-	return `${ value } ms`;
+	return `${ value.toFixed( 2 ) } ms`;
 }
 
 for ( const { file, title, results } of afterStats ) {
@@ -125,7 +125,7 @@ for ( const { file, title, results } of afterStats ) {
 				value,
 				key
 			) } (${ prefix }${ formatValue(
-				delta.toFixed( 2 ),
+				delta,
 				key
 			) } / ${ prefix }${ percentage }%)`;
 		}
