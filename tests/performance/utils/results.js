@@ -7,35 +7,35 @@ const { formatAsMarkdownTable } = require( './index' );
 
 const args = process.argv.slice( 2 );
 
-const beforeFile = args[ 0 ];
-const afterFile = args[ 1 ];
+const beforeFile = args[ 1 ];
+const afterFile = args[ 0 ];
 
-if ( ! existsSync( beforeFile ) ) {
-	console.error( `File not found: ${ beforeFile }` );
-	process.exit( 1 );
-}
 if ( ! existsSync( afterFile ) ) {
 	console.error( `File not found: ${ afterFile }` );
+	process.exit( 1 );
+}
+
+if ( beforeFile && ! existsSync( beforeFile ) ) {
+	console.error( `File not found: ${ beforeFile }` );
 	process.exit( 1 );
 }
 
 /**
  * @type {Array<{file: string, title: string, results: Record<string,string|number|boolean>}>}
  */
-let beforeStats;
+let beforeStats = [];
 
 /**
  * @type {Array<{file: string, title: string, results: Record<string,string|number|boolean>}>}
  */
 let afterStats;
 
-try {
-	beforeStats = JSON.parse(
-		readFileSync( beforeFile, { encoding: 'UTF-8' } )
-	);
-} catch {
-	console.error( `Could not read file: ${ beforeFile }` );
-	process.exit( 1 );
+if ( beforeFile ) {
+	try {
+		beforeStats = JSON.parse(
+			readFileSync( beforeFile, { encoding: 'UTF-8' } )
+		);
+	} catch {}
 }
 
 try {
@@ -107,8 +107,9 @@ for ( const { file, title, results } of afterStats ) {
 			const delta = value - prevValue;
 			const percentage = Math.round( ( delta / value ) * 100 );
 
-			// Skip if there is not a significant delta.
+			// Skip if there is not a significant delta or none at all.
 			if (
+				! prevResult?.[ key ] ||
 				! percentage ||
 				Math.abs( percentage ) <= PERCENTAGE_VARIANCE ||
 				! delta ||
