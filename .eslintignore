@@ -1,0 +1,8 @@
+artifacts
+bin
+build-cs
+node_modules
+patches
+vendor
+tests/performance/specs/*.json
+tests/performance/specs/*.md

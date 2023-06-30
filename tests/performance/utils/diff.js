@@ -63,6 +63,25 @@ console.log(
 const DELTA_VARIANCE = 0.5;
 const PERCENTAGE_VARIANCE = 2;
 
+/**
+ * Format value and add unit.
+ *
+ * Turns bytes into MB (base 10).
+ *
+ * @todo Dynamic formatting based on definition in result.json.
+ *
+ * @param {number} value Value.
+ * @param {string} key   Key.
+ * @return {string} Formatted value.
+ */
+function formatValue( value, key ) {
+	if ( key === 'wp-memory-usage' ) {
+		return `${ value / Math.pow( 10, 6 ) } MB`;
+	}
+
+	return `${ value } ms`;
+}
+
 for ( const { file, title, results } of afterStats ) {
 	const prevStat = beforeStats.find( ( s ) => s.file === file );
 
@@ -95,15 +114,19 @@ for ( const { file, title, results } of afterStats ) {
 				! delta ||
 				Math.abs( delta ) <= DELTA_VARIANCE
 			) {
-				diffResult[ key ] = value;
+				diffResult[ key ] = formatValue( value, key );
 				continue;
 			}
 
 			const prefix = delta > 0 ? '+' : '';
 
-			diffResult[ key ] = `${ value } ms (${ prefix }${ delta.toFixed(
-				2
-			) } ms / ${ prefix }${ percentage }%)`;
+			diffResult[ key ] = `${ formatValue(
+				value,
+				key
+			) } (${ prefix }${ formatValue(
+				delta.toFixed( 2 ),
+				key
+			) } / ${ prefix }${ percentage }%)`;
 		}
 
 		diffResults.push( diffResult );

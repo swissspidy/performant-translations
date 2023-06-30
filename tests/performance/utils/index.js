@@ -1,3 +1,4 @@
+const path = require( 'node:path' );
 const tablemark = require( 'tablemark' );
 
 /**
@@ -26,7 +27,8 @@ function median( array ) {
  * @return {string} Result file name.
  */
 function getResultsFilename( fileName ) {
-	return `${ fileName.replace( '.js', '' ) }.results.json`;
+	const parsedPath = path.parse( fileName );
+	return `${ parsedPath.dir }/${ parsedPath.name }.results.json`;
 }
 
 /**
