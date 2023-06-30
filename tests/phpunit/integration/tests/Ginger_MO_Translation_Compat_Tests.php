@@ -168,11 +168,12 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 
 		switch_to_locale( 'es_ES' );
 
+		$actual = i18n_plugin_test();
+
+		// Note: In 6.3+ this will be true already before the second i18n_plugin_test() call above.
 		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'internationalized-plugin', 'es_ES' ) );
 		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'default', 'es_ES' ) );
 		$this->assertFalse( Ginger_MO::instance()->is_loaded( 'foo-bar', 'es_ES' ) );
-
-		$actual = i18n_plugin_test();
 
 		restore_previous_locale();
 
