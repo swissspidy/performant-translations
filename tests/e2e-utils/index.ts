@@ -42,3 +42,16 @@ export async function enablePerformancePackL10n() {
 		} ),
 	] );
 }
+
+export async function getServerTiming() {
+	return page.evaluate< () => Record< string, number > >( () =>
+		(
+			performance.getEntriesByType(
+				'navigation'
+			) as PerformanceNavigationTiming[]
+		 )[ 0 ].serverTiming.reduce( ( acc, entry ) => {
+			acc[ entry.name ] = entry.duration;
+			return acc;
+		}, {} )
+	);
+}

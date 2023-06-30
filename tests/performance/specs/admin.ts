@@ -1,8 +1,7 @@
 import {
-	activateTheme,
 	activatePlugin,
 	deactivatePlugin,
-	createURL,
+	visitAdminPage,
 } from '@wordpress/e2e-test-utils';
 import { writeFileSync } from 'node:fs';
 import { getResultsFilename, median } from '../utils';
@@ -20,12 +19,8 @@ enum Scenario {
 	NativeGettext = 'Native Gettext',
 }
 
-describe( 'Server Timing - Twenty Twenty-One', () => {
+describe( 'Server Timing - WordPress Admin', () => {
 	const results = [];
-
-	beforeAll( async () => {
-		await activateTheme( 'twentytwentyone' );
-	} );
 
 	afterAll( async () => {
 		const resultsFilename = getResultsFilename( __filename );
@@ -98,7 +93,7 @@ describe( 'Server Timing - Twenty Twenty-One', () => {
 				let i = globalThis.TEST_RUNS;
 
 				while ( i-- ) {
-					await page.goto( createURL( '/' ) );
+					await visitAdminPage( 'index.php' );
 
 					const serverTiming = await getServerTiming();
 

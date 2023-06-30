@@ -6,7 +6,11 @@ import {
 } from '@wordpress/e2e-test-utils';
 import { writeFileSync } from 'node:fs';
 import { getResultsFilename, median } from '../utils';
-import { setLocale, enablePerformancePackL10n } from '../../e2e-utils';
+import {
+	setLocale,
+	enablePerformancePackL10n,
+	getServerTiming,
+} from '../../e2e-utils';
 
 enum Scenario {
 	Default = 'Default',
@@ -96,17 +100,7 @@ describe( 'Server Timing - Twenty Twenty-Three', () => {
 				while ( i-- ) {
 					await page.goto( createURL( '/' ) );
 
-					const serverTiming: Record< string, number > =
-						await page.evaluate( () =>
-							(
-								performance.getEntriesByType(
-									'navigation'
-								) as PerformanceNavigationTiming[]
-							 )[ 0 ].serverTiming.reduce( ( acc, entry ) => {
-								acc[ entry.name ] = entry.duration;
-								return acc;
-							}, {} )
-						);
+					const serverTiming = await getServerTiming();
 
 					for ( const [ key, value ] of Object.entries(
 						serverTiming

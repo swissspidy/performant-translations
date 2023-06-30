@@ -7,35 +7,35 @@ const { formatAsMarkdownTable } = require( './index' );
 
 const args = process.argv.slice( 2 );
 
-const beforeFile = args[ 0 ];
-const afterFile = args[ 1 ];
+const beforeFile = args[ 1 ];
+const afterFile = args[ 0 ];
 
-if ( ! existsSync( beforeFile ) ) {
-	console.error( `File not found: ${ beforeFile }` );
-	process.exit( 1 );
-}
 if ( ! existsSync( afterFile ) ) {
 	console.error( `File not found: ${ afterFile }` );
+	process.exit( 1 );
+}
+
+if ( beforeFile && ! existsSync( beforeFile ) ) {
+	console.error( `File not found: ${ beforeFile }` );
 	process.exit( 1 );
 }
 
 /**
  * @type {Array<{file: string, title: string, results: Record<string,string|number|boolean>}>}
  */
-let beforeStats;
+let beforeStats = [];
 
 /**
  * @type {Array<{file: string, title: string, results: Record<string,string|number|boolean>}>}
  */
 let afterStats;
 
-try {
-	beforeStats = JSON.parse(
-		readFileSync( beforeFile, { encoding: 'UTF-8' } )
-	);
-} catch {
-	console.error( `Could not read file: ${ beforeFile }` );
-	process.exit( 1 );
+if ( beforeFile ) {
+	try {
+		beforeStats = JSON.parse(
+			readFileSync( beforeFile, { encoding: 'UTF-8' } )
+		);
+	} catch {}
 }
 
 try {
@@ -63,6 +63,25 @@ console.log(
 const DELTA_VARIANCE = 0.5;
 const PERCENTAGE_VARIANCE = 2;
 
+/**
+ * Format value and add unit.
+ *
+ * Turns bytes into MB (base 10).
+ *
+ * @todo Dynamic formatting based on definition in result.json.
+ *
+ * @param {number} value Value.
+ * @param {string} key   Key.
+ * @return {string} Formatted value.
+ */
+function formatValue( value, key ) {
+	if ( key === 'wp-memory-usage' ) {
+		return `${ ( value / Math.pow( 10, 6 ) ).toFixed( 2 ) } MB`;
+	}
+
+	return `${ value.toFixed( 2 ) } ms`;
+}
+
 for ( const { file, title, results } of afterStats ) {
 	const prevStat = beforeStats.find( ( s ) => s.file === file );
 
@@ -88,22 +107,27 @@ for ( const { file, title, results } of afterStats ) {
 			const delta = value - prevValue;
 			const percentage = Math.round( ( delta / value ) * 100 );
 
-			// Skip if there is not a significant delta.
+			// Skip if there is not a significant delta or none at all.
 			if (
+				! prevResult?.[ key ] ||
 				! percentage ||
 				Math.abs( percentage ) <= PERCENTAGE_VARIANCE ||
 				! delta ||
 				Math.abs( delta ) <= DELTA_VARIANCE
 			) {
-				diffResult[ key ] = value;
+				diffResult[ key ] = formatValue( value, key );
 				continue;
 			}
 
 			const prefix = delta > 0 ? '+' : '';
 
-			diffResult[ key ] = `${ value } ms (${ prefix }${ delta.toFixed(
-				2
-			) } ms / ${ prefix }${ percentage }%)`;
+			diffResult[ key ] = `${ formatValue(
+				value,
+				key
+			) } (${ prefix }${ formatValue(
+				delta,
+				key
+			) } / ${ prefix }${ percentage }%)`;
 		}
 
 		diffResults.push( diffResult );
