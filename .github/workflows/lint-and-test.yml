@@ -331,7 +331,7 @@ jobs:
 
             - name: Update permalink structure
               run: |
-                  npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
+                  npm run wp-env run tests-cli wp rewrite structure '/%postname%/' -- --hard
 
             - name: Import mock data
               run: |
