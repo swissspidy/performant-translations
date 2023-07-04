@@ -302,6 +302,8 @@ jobs:
     performance-tests:
         name: 'Performance Tests (trunk)'
         runs-on: ubuntu-latest
+        env:
+            WP_ARTIFACTS_PATH: ${{ github.workspace }}/artifacts
 
         steps:
             - name: Checkout
@@ -353,7 +355,7 @@ jobs:
             - name: Run tests
               run: |
                   npm run test:performance
-                  mv tests/performance/specs/summary.json ${{ runner.temp }}/summary_after.json
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_after.json
 
             - name: Check out base commit
               run: |
@@ -366,7 +368,7 @@ jobs:
             - name: Run tests for base
               run: |
                   npm run test:performance
-                  mv tests/performance/specs/summary.json ${{ runner.temp }}/summary_before.json
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_before.json
 
             - name: Reset to original commit
               run: |
@@ -396,16 +398,23 @@ jobs:
                   issue-number: ${{ github.event.pull_request.number }}
                   comment-id: ${{ steps.find-comment.outputs.comment-id }}
                   edit-mode: replace
-                  body-path: tests/performance/specs/summary.md
+                  body-path: ${{ env.WP_ARTIFACTS_PATH }}/performance-results.md
                   token: ${{ secrets.PR_COMMENT_TOKEN }}
 
             - name: Add workflow summary
               run: |
-                  cat tests/performance/specs/summary.md >> $GITHUB_STEP_SUMMARY
+                  cat ${{ env.WP_ARTIFACTS_PATH }}/performance-results.md >> $GITHUB_STEP_SUMMARY
+
+            - name: Archive performance results
+              if: success()
+              uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+              with:
+                  name: performance-results
+                  path: ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json
 
             - name: Archive debug artifacts (screenshots, HTML snapshots)
               uses: actions/upload-artifact@v3
-              if: always()
+              if: failure()
               with:
                   name: failures-artifacts
                   path: artifacts

@@ -53,12 +53,17 @@ if ( process.env.GITHUB_SHA ) {
 	summaryMarkdown += `Performance test results are in 🛎️!\n\n`;
 }
 
-summaryMarkdown += `Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n\n`;
+if ( beforeFile ) {
+	summaryMarkdown += `Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n\n`;
+}
 
 console.log( 'Performance Test Results\n' );
-console.log(
-	'Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n'
-);
+
+if ( beforeFile ) {
+	console.log(
+		'Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n'
+	);
+}
 
 const DELTA_VARIANCE = 0.5;
 const PERCENTAGE_VARIANCE = 2;
@@ -75,6 +80,10 @@ const PERCENTAGE_VARIANCE = 2;
  * @return {string} Formatted value.
  */
 function formatValue( value, key ) {
+	if ( key === 'CLS' ) {
+		return value.toFixed( 2 );
+	}
+
 	if ( key === 'wp-memory-usage' ) {
 		return `${ ( value / Math.pow( 10, 6 ) ).toFixed( 2 ) } MB`;
 	}
