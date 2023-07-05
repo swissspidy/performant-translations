@@ -21,7 +21,7 @@ class PerformanceReporter implements Reporter {
 			( attachment ) => attachment.name === 'results'
 		);
 
-		if ( performanceResults ) {
+		if ( performanceResults?.body ) {
 			this.allResults[ test.location.file ] ??= {
 				// 0 = empty, 1 = browser, 2 = file name.
 				title: test.titlePath()[ 3 ],
@@ -40,6 +40,8 @@ class PerformanceReporter implements Reporter {
 			console.log( `\nPerformance Test Results` );
 		}
 
+		console.log( `Result: ${ result }` );
+
 		for ( const [ file, { title, results } ] of Object.entries(
 			this.allResults
 		) ) {
@@ -54,7 +56,10 @@ class PerformanceReporter implements Reporter {
 		}
 
 		writeFileSync(
-			join( process.env.WP_ARTIFACTS_PATH, 'performance-results.json' ),
+			join(
+				process.env.WP_ARTIFACTS_PATH as string,
+				'performance-results.json'
+			),
 			JSON.stringify( summary, null, 2 )
 		);
 	}

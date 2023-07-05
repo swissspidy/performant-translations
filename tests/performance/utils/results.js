@@ -3,7 +3,7 @@
 const { readFileSync, existsSync } = require( 'fs' );
 const { writeFileSync } = require( 'node:fs' );
 const { join } = require( 'node:path' );
-const { formatAsMarkdownTable } = require( './index' );
+const tablemark = require( 'tablemark' );
 
 const args = process.argv.slice( 2 );
 
@@ -18,6 +18,38 @@ if ( ! existsSync( afterFile ) ) {
 if ( beforeFile && ! existsSync( beforeFile ) ) {
 	console.error( `File not found: ${ beforeFile }` );
 	process.exit( 1 );
+}
+
+/**
+ * Format test results as a Markdown table.
+ *
+ * @param {Array<Record<string,string|number|boolean>>} results Test results.
+ *
+ * @return {string} Markdown content.
+ */
+function formatAsMarkdownTable( results ) {
+	if ( ! results?.length ) {
+		return '';
+	}
+
+	function toCellText( v ) {
+		if ( v === true || v === 'true' ) return '✅';
+		if ( ! v || v === 'false' ) return '';
+		return v?.toString() || String( v );
+	}
+
+	return tablemark( results, {
+		// In v2 the option is still called stringify
+		stringify: toCellText,
+		caseHeaders: false,
+		columns: [
+			{ align: 'left' },
+			{ align: 'center' },
+			{ align: 'center' },
+			{ align: 'center' },
+			{ align: 'center' },
+		],
+	} );
 }
 
 /**

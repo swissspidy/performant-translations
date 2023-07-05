@@ -3,9 +3,9 @@ import {
 	Admin,
 	RequestUtils,
 } from '@wordpress/e2e-test-utils-playwright';
-import { Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { chromium, type Browser } from 'playwright';
-import type { Result } from 'lighthouse';
+import lighthouse from 'lighthouse';
 import getPort from 'get-port';
 
 class SettingsPage {
@@ -17,7 +17,7 @@ class SettingsPage {
 		this.page = page;
 	}
 
-	async setLocale( locale ) {
+	async setLocale( locale: string ) {
 		await this.admin.visitAdminPage( 'options-general.php', '' );
 
 		// en_US has an empty value in the language dropdown.
@@ -72,29 +72,33 @@ class Metrics {
 				performance.getEntriesByType(
 					'navigation'
 				) as PerformanceNavigationTiming[]
-			 )[ 0 ].serverTiming.reduce( ( acc, entry ) => {
-				acc[ entry.name ] = entry.duration;
-				return acc;
-			}, {} )
+			 )[ 0 ].serverTiming.reduce< Record< string, number > >(
+				( acc, entry ) => {
+					acc[ entry.name ] = entry.duration;
+					return acc;
+				},
+				{}
+			)
 		);
 	}
 
 	async getLighthouseReport() {
-		const lighthouse = await import( 'lighthouse/core/index.cjs' );
-		// @ts-ignore
-		const { lhr } = await lighthouse.default(
+		const result = await lighthouse(
 			this.page.url(),
 			{ port: this.port },
 			undefined
 		);
 
-		const LCP = ( lhr as Result ).audits[ 'largest-contentful-paint' ]
-			.numericValue;
-		const TBT = ( lhr as Result ).audits[ 'total-blocking-time' ]
-			.numericValue;
-		const TTI = ( lhr as Result ).audits.interactive.numericValue;
-		const CLS = ( lhr as Result ).audits[ 'cumulative-layout-shift' ]
-			.numericValue;
+		if ( ! result ) {
+			return {} as Record< string, number >;
+		}
+
+		const { lhr } = result;
+
+		const LCP = lhr.audits[ 'largest-contentful-paint' ].numericValue || 0;
+		const TBT = lhr.audits[ 'total-blocking-time' ].numericValue || 0;
+		const TTI = lhr.audits.interactive.numericValue || 0;
+		const CLS = lhr.audits[ 'cumulative-layout-shift' ].numericValue || 0;
 
 		return {
 			LCP,
@@ -113,8 +117,26 @@ type PerformanceFixtures = {
 
 export const test = base.extend<
 	PerformanceFixtures,
-	{ port: number; browser: Browser }
+	{
+		requestUtils: RequestUtils;
+		port: number;
+		browser: Browser;
+	}
 >( {
+	// Override requestUtils from @wordpress/e2e-test-utils-playwright
+	// to not trash all posts initially.
+	// @ts-ignore -- TODO: Fix types.
+	requestUtils: [
+		async ( {}, use, workerInfo ) => {
+			const requestUtils = await RequestUtils.setup( {
+				baseURL: workerInfo.project.use.baseURL,
+				storageStatePath: process.env.STORAGE_STATE_PATH,
+			} );
+
+			await use( requestUtils );
+		},
+		{ scope: 'worker', auto: true },
+	],
 	settingsPage: async ( { admin, page }, use ) => {
 		await use( new SettingsPage( { admin, page } ) );
 	},
@@ -140,20 +162,6 @@ export const test = base.extend<
 	metrics: async ( { page, port }, use ) => {
 		await use( new Metrics( page, port ) );
 	},
-	// Override requestUtils from @wordpress/e2e-test-utils-playwright
-	// to not trash all posts initially.
-	requestUtils: [
-		async ( {}, use, workerInfo ) => {
-			const requestUtils = await RequestUtils.setup( {
-				baseURL: workerInfo.project.use.baseURL,
-				storageStatePath: process.env.STORAGE_STATE_PATH,
-			} );
-
-			await use( requestUtils );
-		},
-		// @ts-ignore -- False positive, see https://playwright.dev/docs/test-fixtures#automatic-fixtures
-		{ scope: 'worker', auto: true },
-	],
 } );
 
 export { expect } from '@wordpress/e2e-test-utils-playwright';

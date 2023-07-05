@@ -58,7 +58,6 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 			} );
 
 			test( 'Server Timing Metrics', async ( {
-				page,
 				admin,
 				settingsPage,
 				wpPerformancePack,
@@ -79,6 +78,22 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 
 					const allMetrics = {
 						...( await metrics.getServerTiming() ),
+					};
+
+					for ( const [ key, value ] of Object.entries(
+						allMetrics
+					) ) {
+						result[ key ] ??= [];
+						result[ key ].push( value );
+					}
+				}
+
+				i = Number( process.env.LIGHTHOUSE_RUNS );
+
+				while ( i-- ) {
+					await admin.visitAdminPage( 'index.php', '' );
+
+					const allMetrics = {
 						...( await metrics.getLighthouseReport() ),
 					};
 

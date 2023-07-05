@@ -82,6 +82,22 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 
 					const allMetrics = {
 						...( await metrics.getServerTiming() ),
+					};
+
+					for ( const [ key, value ] of Object.entries(
+						allMetrics
+					) ) {
+						result[ key ] ??= [];
+						result[ key ].push( value );
+					}
+				}
+
+				i = Number( process.env.LIGHTHOUSE_RUNS );
+
+				while ( i-- ) {
+					await page.goto( '/' );
+
+					const allMetrics = {
 						...( await metrics.getLighthouseReport() ),
 					};
 

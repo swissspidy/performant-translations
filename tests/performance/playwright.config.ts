@@ -10,8 +10,12 @@ process.env.STORAGE_STATE_PATH ??= join(
 	process.env.WP_ARTIFACTS_PATH,
 	'storage-states/admin.json'
 );
-process.env.ASSETS_PATH = join( __dirname, 'assets' );
+process.env.ASSETS_PATH = join(
+	fileURLToPath( new URL( '.', import.meta.url ) ),
+	'assets'
+);
 process.env.TEST_RUNS ??= '20';
+process.env.LIGHTHOUSE_RUNS ??= '1';
 
 const config = defineConfig( {
 	reporter: [ [ 'list' ], [ './config/performance-reporter.ts' ] ],
@@ -20,13 +24,11 @@ const config = defineConfig( {
 	workers: 1,
 	retries: 0,
 	timeout: parseInt( process.env.TIMEOUT || '', 10 ) || 600_000, // Defaults to 10 minutes.
-	testDir: fileURLToPath( new URL( './specs', 'file:' + __filename ).href ),
+	testDir: 'specs',
 	outputDir: join( process.env.WP_ARTIFACTS_PATH, 'test-results' ),
 	snapshotPathTemplate:
 		'{testDir}/{testFileDir}/__snapshots__/{arg}-{projectName}{ext}',
-	globalSetup: fileURLToPath(
-		new URL( './config/global-setup.ts', 'file:' + __filename ).href
-	),
+	globalSetup: './config/global-setup.ts',
 	use: {
 		baseURL: process.env.WP_BASE_URL || 'http://localhost:8889',
 		headless: true,
