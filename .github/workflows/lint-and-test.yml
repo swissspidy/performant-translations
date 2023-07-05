@@ -300,15 +300,10 @@ jobs:
               run: vendor/bin/phpunit --group=l10n,i18n,pomo
 
     performance-tests:
-        name: 'Performance Tests (${{ matrix.wp }}) (${{ matrix.shard }})'
+        name: 'Performance Tests (trunk)'
         runs-on: ubuntu-latest
         env:
             WP_ARTIFACTS_PATH: ${{ github.workspace }}/artifacts
-        strategy:
-            fail-fast: false
-            matrix:
-                wp: ['trunk']
-                shard: ['1/2']
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -358,7 +353,7 @@ jobs:
 
             - name: Run tests
               run: |
-                  npm run test:performance -- --shard=${{ matrix.shard }}
+                  npm run test:performance
                   mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_after.json
 
             - name: Check out base commit
