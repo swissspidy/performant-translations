@@ -79,7 +79,7 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 
 					const allMetrics = {
 						...( await metrics.getServerTiming() ),
-						// ...( await metrics.getLighthouseReport() ),
+						...( await metrics.getLighthouseReport() ),
 					};
 
 					for ( const [ key, value ] of Object.entries(
