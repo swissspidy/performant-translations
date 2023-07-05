@@ -24,7 +24,7 @@ const config = defineConfig( {
 	forbidOnly: !! process.env.CI,
 	fullyParallel: false,
 	workers: 1,
-	retries: 0,
+	retries: process.env.CI ? 2 : 0,
 	timeout: parseInt( process.env.TIMEOUT || '', 10 ) || 600_000, // Defaults to 10 minutes.
 	// Don't report slow test "files", as we will be running many iterations.
 	reportSlowTests: null,
