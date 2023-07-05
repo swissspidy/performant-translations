@@ -372,7 +372,9 @@ jobs:
             - name: Run tests for base
               run: |
                   npm run test:performance
-                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_before.json
+                  if [ -f "{{ env.WP_ARTIFACTS_PATH }}/performance-results.json" ]; then
+                    mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_before.json
+                  fi;
 
             - name: Reset to original commit
               run: |
@@ -380,7 +382,11 @@ jobs:
 
             - name: Compare results with base
               run: |
-                  node tests/performance/cli/results.js ${{ runner.temp }}/summary_after.json ${{ runner.temp }}/summary_before.json
+                  if [ -f "${{ runner.temp }}/summary_before.json" ]; then
+                    node tests/performance/cli/results.js ${{ runner.temp }}/summary_after.json ${{ runner.temp }}/summary_before.json
+                  else
+                    node tests/performance/cli/results.js ${{ runner.temp }}/summary_after.json
+                  fi;
 
             - name: Check if a comment was already made
               id: find-comment
