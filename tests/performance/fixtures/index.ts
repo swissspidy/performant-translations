@@ -124,7 +124,7 @@ export const test = base.extend<
 	}
 >( {
 	// Override requestUtils from @wordpress/e2e-test-utils-playwright
-	// to not trash all posts initially.
+	// to avoid trashing all posts initially and looking for GB-specific plugins.
 	// @ts-ignore -- TODO: Fix types.
 	requestUtils: [
 		async ( {}, use, workerInfo ) => {

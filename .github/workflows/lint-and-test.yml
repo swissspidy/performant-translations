@@ -376,7 +376,7 @@ jobs:
 
             - name: Compare results with base
               run: |
-                  node tests/performance/utils/results.js ${{ runner.temp }}/summary_after.json ${{ runner.temp }}/summary_before.json
+                  node tests/performance/cli/results.js ${{ runner.temp }}/summary_after.json ${{ runner.temp }}/summary_before.json
 
             - name: Check if a comment was already made
               id: find-comment

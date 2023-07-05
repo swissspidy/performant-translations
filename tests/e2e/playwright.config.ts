@@ -2,34 +2,22 @@
  * External dependencies
  */
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { defineConfig, devices } from '@playwright/test';
 
-process.env.WP_ARTIFACTS_PATH ??= join( process.cwd(), 'artifacts' );
-process.env.STORAGE_STATE_PATH ??= join(
-	process.env.WP_ARTIFACTS_PATH,
-	'storage-states/admin.json'
-);
-process.env.ASSETS_PATH = join(
-	fileURLToPath( new URL( '.', import.meta.url ) ),
-	'assets'
-);
-process.env.TEST_RUNS ??= '20';
-process.env.LIGHTHOUSE_RUNS ??= '1';
+const STORAGE_STATE_PATH =
+	process.env.STORAGE_STATE_PATH ||
+	join( process.cwd(), 'artifacts/storage-states/admin.json' );
 
 const config = defineConfig( {
-	reporter: process.env.CI
-		? [ [ 'github' ], [ 'list' ], [ './config/performance-reporter.ts' ] ]
-		: [ [ 'list' ], [ './config/performance-reporter.ts' ] ],
+	reporter: process.env.CI ? [ [ 'github' ], [ 'list' ] ] : 'list',
 	forbidOnly: !! process.env.CI,
-	fullyParallel: false,
 	workers: 1,
-	retries: 0,
-	timeout: parseInt( process.env.TIMEOUT || '', 10 ) || 600_000, // Defaults to 10 minutes.
-	// Don't report slow test "files", as we will be running many iterations.
+	retries: process.env.CI ? 2 : 0,
+	timeout: parseInt( process.env.TIMEOUT || '', 10 ) || 100_000, // Defaults to 100 seconds.
+	// Don't report slow test "files", as we will be running our tests in serial.
 	reportSlowTests: null,
 	testDir: 'specs',
-	outputDir: join( process.env.WP_ARTIFACTS_PATH, 'test-results' ),
+	outputDir: join( process.cwd(), 'artifacts/test-results' ),
 	snapshotPathTemplate:
 		'{testDir}/{testFileDir}/__snapshots__/{arg}-{projectName}{ext}',
 	globalSetup: './config/global-setup.ts',
@@ -46,11 +34,11 @@ const config = defineConfig( {
 			reducedMotion: 'reduce',
 			strictSelectors: true,
 		},
-		storageState: process.env.STORAGE_STATE_PATH,
+		storageState: STORAGE_STATE_PATH,
 		actionTimeout: 10_000, // 10 seconds.
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
-		video: 'off',
+		video: 'on-first-retry',
 	},
 	webServer: {
 		command: 'npm run wp-env start',

@@ -33,9 +33,7 @@
 		"postinstall": "patch-package",
 		"lint": "wp-scripts lint-js",
 		"format": "wp-scripts format",
-		"test:e2e": "wp-scripts test-e2e",
-		"test:e2e:help": "wp-scripts test-e2e --help",
-		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e --puppeteer-devtools",
+		"test:e2e": "node_modules/@playwright/test/cli.js test --config tests/e2e/playwright.config.ts",
 		"test:performance": "node_modules/@playwright/test/cli.js test --config tests/performance/playwright.config.ts",
 		"wp-env": "wp-env"
 	}
