@@ -377,10 +377,10 @@ jobs:
 
             - name: Compare results with base
               run: |
-                  if [ -f "${{ runner.temp }}/summary_before.json" ]; then
-                    node tests/performance/cli/results.js ${{ runner.temp }}/summary_after.json ${{ runner.temp }}/summary_before.json
+                  if [ -f "${{ runner.temp }}/results_before.json" ]; then
+                    node tests/performance/cli/results.js ${{ runner.temp }}/results_after.json ${{ runner.temp }}/results_before.json
                   else
-                    node tests/performance/cli/results.js ${{ runner.temp }}/summary_after.json
+                    node tests/performance/cli/results.js ${{ runner.temp }}/results_after.json
                   fi;
 
             - name: Check if a comment was already made
