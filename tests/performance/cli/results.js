@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-const { readFileSync, existsSync } = require( 'fs' );
-const { writeFileSync } = require( 'node:fs' );
-const { join } = require( 'node:path' );
-const tablemark = require( 'tablemark' );
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import tablemark from 'tablemark';
 
 const args = process.argv.slice( 2 );
 
