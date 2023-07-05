@@ -4,6 +4,8 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import tablemark from 'tablemark';
 
+process.env.WP_ARTIFACTS_PATH ??= join( process.cwd(), 'artifacts' );
+
 const args = process.argv.slice( 2 );
 
 const beforeFile = args[ 1 ];
@@ -181,6 +183,6 @@ for ( const { file, title, results } of afterStats ) {
 }
 
 writeFileSync(
-	join( __dirname, '/../', '/specs/', 'summary.md' ),
+	join( process.env.WP_ARTIFACTS_PATH, '/performance-results.md' ),
 	summaryMarkdown
 );
