@@ -3,9 +3,10 @@ import {
 	Admin,
 	RequestUtils,
 } from '@wordpress/e2e-test-utils-playwright';
-import { Page, BrowserContext } from '@playwright/test';
-import { chromium } from 'playwright';
+import { Page } from '@playwright/test';
+import { chromium, type Browser } from 'playwright';
 import type { Result } from 'lighthouse';
+import getPort from 'get-port';
 
 class SettingsPage {
 	admin: Admin;
@@ -60,12 +61,9 @@ class WpPerformancePack {
 }
 
 class Metrics {
-	constructor(
-		public readonly page: Page,
-		public readonly context: BrowserContext
-	) {
+	constructor( public readonly page: Page, public readonly port: number ) {
 		this.page = page;
-		this.context = context;
+		this.port = port;
 	}
 
 	async getServerTiming() {
@@ -83,14 +81,10 @@ class Metrics {
 
 	async getLighthouseReport() {
 		const lighthouse = await import( 'lighthouse/core/index.cjs' );
-		const browser = await chromium.launch( {
-			args: [ '--remote-debugging-port=9222' ],
-		} );
-
 		// @ts-ignore
 		const { lhr } = await lighthouse.default(
 			this.page.url(),
-			{ port: 9222 },
+			{ port: this.port },
 			undefined
 		);
 
@@ -101,8 +95,6 @@ class Metrics {
 		const TTI = ( lhr as Result ).audits.interactive.numericValue;
 		const CLS = ( lhr as Result ).audits[ 'cumulative-layout-shift' ]
 			.numericValue;
-
-		await browser.close();
 
 		return {
 			LCP,
@@ -119,15 +111,34 @@ type PerformanceFixtures = {
 	wpPerformancePack: WpPerformancePack;
 };
 
-export const test = base.extend< PerformanceFixtures >( {
+export const test = base.extend<
+	PerformanceFixtures,
+	{ port: number; browser: Browser }
+>( {
 	settingsPage: async ( { admin, page }, use ) => {
 		await use( new SettingsPage( { admin, page } ) );
 	},
 	wpPerformancePack: async ( { admin, page }, use ) => {
 		await use( new WpPerformancePack( { admin, page } ) );
 	},
-	metrics: async ( { page, context }, use ) => {
-		await use( new Metrics( page, context ) );
+	port: [
+		async ( {}, use ) => {
+			const port = await getPort();
+			await use( port );
+		},
+		{ scope: 'worker' },
+	],
+	browser: [
+		async ( { port }, use ) => {
+			const browser = await chromium.launch( {
+				args: [ `--remote-debugging-port=${ port }` ],
+			} );
+			await use( browser );
+		},
+		{ scope: 'worker' },
+	],
+	metrics: async ( { page, port }, use ) => {
+		await use( new Metrics( page, port ) );
 	},
 	// Override requestUtils from @wordpress/e2e-test-utils-playwright
 	// to not trash all posts initially.
