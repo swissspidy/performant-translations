@@ -1,3 +1,27 @@
+import { Scenario } from './types';
+
+export const testCases = [
+	{ locale: 'en_US', scenario: Scenario.Default, objectCache: false },
+	{ locale: 'de_DE', scenario: Scenario.Default, objectCache: false },
+	{ locale: 'de_DE', scenario: Scenario.GingerMo, objectCache: false },
+	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, objectCache: false },
+	{
+		locale: 'de_DE',
+		scenario: Scenario.NativeGettext,
+		objectCache: false,
+	},
+	{ locale: 'en_US', scenario: Scenario.Default, objectCache: true },
+	{ locale: 'de_DE', scenario: Scenario.Default, objectCache: true },
+	{ locale: 'de_DE', scenario: Scenario.CacheL10n, objectCache: true },
+	{ locale: 'de_DE', scenario: Scenario.GingerMo, objectCache: true },
+	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, objectCache: true },
+	{
+		locale: 'de_DE',
+		scenario: Scenario.NativeGettext,
+		objectCache: true,
+	},
+];
+
 /**
  * Computes the median number from an array numbers.
  *

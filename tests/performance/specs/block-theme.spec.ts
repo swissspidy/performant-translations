@@ -1,28 +1,6 @@
 import { test } from '../fixtures';
-import { median } from '../utils';
+import { testCases, median } from '../utils';
 import { Scenario } from '../utils/types';
-
-const testCases = [
-	{ locale: 'en_US', scenario: Scenario.Default, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.Default, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.GingerMo, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, objectCache: false },
-	{
-		locale: 'de_DE',
-		scenario: Scenario.NativeGettext,
-		objectCache: false,
-	},
-	{ locale: 'en_US', scenario: Scenario.Default, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.Default, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.CacheL10n, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.GingerMo, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, objectCache: true },
-	{
-		locale: 'de_DE',
-		scenario: Scenario.NativeGettext,
-		objectCache: true,
-	},
-];
 
 test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 	test.beforeAll( async ( { requestUtils } ) => {
