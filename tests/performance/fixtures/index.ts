@@ -156,6 +156,8 @@ export const test = base.extend<
 				args: [ `--remote-debugging-port=${ port }` ],
 			} );
 			await use( browser );
+
+			await browser.close();
 		},
 		{ scope: 'worker' },
 	],
