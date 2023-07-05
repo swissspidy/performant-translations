@@ -38,9 +38,8 @@ class PerformanceReporter implements Reporter {
 
 		if ( Object.keys( this.allResults ).length > 0 ) {
 			console.log( `\nPerformance Test Results` );
+			console.log( `Status: ${ result.status }` );
 		}
-
-		console.log( `Result: ${ result }` );
 
 		for ( const [ file, { title, results } ] of Object.entries(
 			this.allResults
