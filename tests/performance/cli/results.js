@@ -33,6 +33,10 @@ function formatAsMarkdownTable( results ) {
 		return '';
 	}
 
+	/**
+	 * @param {unknown} v
+	 * @returns {string}
+	 */
 	function toCellText( v ) {
 		if ( v === true || v === 'true' ) return '✅';
 		if ( ! v || v === 'false' ) return '';
@@ -40,8 +44,7 @@ function formatAsMarkdownTable( results ) {
 	}
 
 	return tablemark( results, {
-		// In v2 the option is still called stringify
-		stringify: toCellText,
+		toCellText,
 		caseHeaders: false,
 		columns: [
 			{ align: 'left' },
@@ -66,13 +69,13 @@ let afterStats;
 if ( beforeFile ) {
 	try {
 		beforeStats = JSON.parse(
-			readFileSync( beforeFile, { encoding: 'UTF-8' } )
+			readFileSync( beforeFile, { encoding: 'utf-8' } )
 		);
 	} catch {}
 }
 
 try {
-	afterStats = JSON.parse( readFileSync( afterFile, { encoding: 'UTF-8' } ) );
+	afterStats = JSON.parse( readFileSync( afterFile, { encoding: 'utf-8' } ) );
 } catch {
 	console.error( `Could not read file: ${ afterFile }` );
 	process.exit( 1 );
