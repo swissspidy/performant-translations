@@ -17,10 +17,14 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 				await Promise.all( [
 					objectCache &&
 						requestUtils.activatePlugin( 'sq-lite-object-cache' ),
+					scenario === Scenario.Dynamo &&
+						requestUtils.activatePlugin( 'dyna-mo' ),
 					scenario === Scenario.NativeGettext &&
 						requestUtils.activatePlugin( 'native-gettext' ),
-					scenario === Scenario.CacheL10n &&
+					scenario === Scenario.ObjectCache &&
 						requestUtils.activatePlugin( 'wp-performance-pack' ),
+					scenario === Scenario.Apcu &&
+						requestUtils.activatePlugin( 'translations-cache' ),
 					( scenario === Scenario.GingerMo ||
 						scenario === Scenario.GingerMoPhp ) &&
 						requestUtils.activatePlugin( 'ginger-mo' ),
@@ -31,11 +35,13 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 
 			test.afterAll( async ( { requestUtils } ) => {
 				await Promise.all( [
+					requestUtils.deactivatePlugin( 'dyna-mo' ),
 					requestUtils.deactivatePlugin( 'ginger-mo' ),
 					requestUtils.deactivatePlugin( 'ginger-mo-no-php' ),
 					requestUtils.deactivatePlugin( 'sq-lite-object-cache' ),
 					requestUtils.deactivatePlugin( 'native-gettext' ),
 					requestUtils.deactivatePlugin( 'wp-performance-pack' ),
+					requestUtils.deactivatePlugin( 'translations-cache' ),
 				] );
 			} );
 
@@ -47,7 +53,7 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 			}, testInfo ) => {
 				await settingsPage.setLocale( locale );
 
-				if ( scenario === Scenario.CacheL10n ) {
+				if ( scenario === Scenario.ObjectCache ) {
 					await wpPerformancePack.enableL10n();
 				}
 

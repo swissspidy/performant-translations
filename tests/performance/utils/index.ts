@@ -6,12 +6,15 @@ export const testCases = [
 	{ locale: 'de_DE', scenario: Scenario.GingerMo, objectCache: false },
 	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, objectCache: false },
 	{ locale: 'de_DE', scenario: Scenario.NativeGettext, objectCache: false },
+	{ locale: 'de_DE', scenario: Scenario.Dynamo, objectCache: false },
 	{ locale: 'en_US', scenario: Scenario.Default, objectCache: true },
 	{ locale: 'de_DE', scenario: Scenario.Default, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.CacheL10n, objectCache: true },
 	{ locale: 'de_DE', scenario: Scenario.GingerMo, objectCache: true },
 	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, objectCache: true },
 	{ locale: 'de_DE', scenario: Scenario.NativeGettext, objectCache: true },
+	{ locale: 'de_DE', scenario: Scenario.Dynamo, objectCache: true },
+	{ locale: 'de_DE', scenario: Scenario.ObjectCache, objectCache: true },
+	{ locale: 'de_DE', scenario: Scenario.Apcu, objectCache: true },
 ];
 
 /**

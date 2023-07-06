@@ -1,7 +1,9 @@
 export enum Scenario {
 	Default = 'Default',
+	Dynamo = 'DynaMo',
 	GingerMo = 'Ginger-MO (MO)',
 	GingerMoPhp = 'Ginger-MO (PHP)',
-	CacheL10n = 'Cache translations',
+	ObjectCache = 'Cache in object cache',
+	Apcu = 'Cache in APCu',
 	NativeGettext = 'Native Gettext',
 }

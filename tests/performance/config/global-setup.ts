@@ -28,11 +28,13 @@ async function globalSetup( config: FullConfig ) {
 	await requestContext.dispose();
 
 	await Promise.all( [
+		requestUtils.deactivatePlugin( 'dyna-mo' ),
 		requestUtils.deactivatePlugin( 'ginger-mo' ),
 		requestUtils.deactivatePlugin( 'ginger-mo-no-php' ),
 		requestUtils.deactivatePlugin( 'sq-lite-object-cache' ),
 		requestUtils.deactivatePlugin( 'native-gettext' ),
 		requestUtils.deactivatePlugin( 'wp-performance-pack' ),
+		requestUtils.deactivatePlugin( 'translations-cache' ),
 	] );
 }
 
