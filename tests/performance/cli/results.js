@@ -134,7 +134,12 @@ for ( const { file, title, results } of afterStats ) {
 
 	for ( const i in results ) {
 		const newResult = results[ i ];
-		const prevResult = prevStat?.results[ i ];
+		// Only do comparison if the number of results is the same.
+		// TODO: what if order of results has changed?
+		const prevResult =
+			prevStat?.results.length === results.length
+				? prevStat?.results[ i ]
+				: null;
 
 		const diffResult = {};
 
