@@ -26,6 +26,14 @@ async function globalSetup( config: FullConfig ) {
 	await requestUtils.setupRest();
 
 	await requestContext.dispose();
+
+	await Promise.all( [
+		requestUtils.deactivatePlugin( 'ginger-mo' ),
+		requestUtils.deactivatePlugin( 'ginger-mo-no-php' ),
+		requestUtils.deactivatePlugin( 'sq-lite-object-cache' ),
+		requestUtils.deactivatePlugin( 'native-gettext' ),
+		requestUtils.deactivatePlugin( 'wp-performance-pack' ),
+	] );
 }
 
 export default globalSetup;
