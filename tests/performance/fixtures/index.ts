@@ -32,13 +32,27 @@ class SettingsPage {
 class WpPerformancePack {
 	admin: Admin;
 	page: Page;
+	requestUtils: RequestUtils;
 
-	constructor( { admin, page }: { admin: Admin; page: Page } ) {
+	constructor( {
+		admin,
+		page,
+		requestUtils,
+	}: {
+		admin: Admin;
+		page: Page;
+		requestUtils: RequestUtils;
+	} ) {
 		this.admin = admin;
 		this.page = page;
+		this.requestUtils = requestUtils;
 	}
 
 	async enableL10n() {
+		// Try to activate the plugin (again) just in case.
+		// Reduces test flakiness in case it didn't work previously.
+		await this.requestUtils.activatePlugin( 'wp-performance-pack' );
+
 		await this.admin.visitAdminPage(
 			'options-general.php',
 			'page=wppp_options_page'
@@ -140,8 +154,8 @@ export const test = base.extend<
 	settingsPage: async ( { admin, page }, use ) => {
 		await use( new SettingsPage( { admin, page } ) );
 	},
-	wpPerformancePack: async ( { admin, page }, use ) => {
-		await use( new WpPerformancePack( { admin, page } ) );
+	wpPerformancePack: async ( { admin, page, requestUtils }, use ) => {
+		await use( new WpPerformancePack( { admin, page, requestUtils } ) );
 	},
 	port: [
 		async ( {}, use ) => {
