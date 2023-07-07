@@ -9,6 +9,9 @@ phpunit-multisite.xml
 .phpunit.cache/
 .phpunit.result.cache
 .wp-env.override.json
+tsconfig.tsbuildinfo
 tests/performance/specs/*.results.json
 tests/performance/specs/summary.md
 tests/performance/specs/summary.json
+*.d.ts
+*.d.ts.map
