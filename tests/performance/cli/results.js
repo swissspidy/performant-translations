@@ -57,12 +57,12 @@ function formatAsMarkdownTable( results ) {
 }
 
 /**
- * @type {Array<{file: string, title: string, results: Record<string,string|number|boolean>}>}
+ * @type {Array<{file: string, title: string, results: Record<string,string|number|boolean>[]}>}
  */
 let beforeStats = [];
 
 /**
- * @type {Array<{file: string, title: string, results: Record<string,string|number|boolean>}>}
+ * @type {Array<{file: string, title: string, results: Record<string,string|number|boolean>[]}>}
  */
 let afterStats;
 
@@ -139,11 +139,15 @@ for ( const { file, title, results } of afterStats ) {
 		const newResult = results[ i ];
 		// Only do comparison if the number of results is the same.
 		// TODO: what if order of results has changed?
+
 		const prevResult =
 			prevStat?.results.length === results.length
 				? prevStat?.results[ i ]
 				: null;
 
+		/**
+		 * @type {Record<string, string|number|boolean>}
+		 */
 		const diffResult = {};
 
 		for ( const [ key, value ] of Object.entries( newResult ) ) {
@@ -154,8 +158,19 @@ for ( const { file, title, results } of afterStats ) {
 			}
 
 			const prevValue = prevResult?.[ key ] || 0;
-			const delta = value - prevValue;
-			const percentage = Math.round( ( delta / value ) * 100 );
+
+			// Do not diff anything if the previous value is not a number either.
+			if ( ! Number.isFinite( prevValue ) ) {
+				diffResult[ key ] = value;
+				continue;
+			}
+
+			const delta =
+				/** @type {number} */ ( value ) -
+				/** @type {number} */ ( prevValue );
+			const percentage = Math.round(
+				( delta / /** @type {number} */ ( value ) ) * 100
+			);
 
 			// Skip if there is not a significant delta or none at all.
 			if (
@@ -165,14 +180,17 @@ for ( const { file, title, results } of afterStats ) {
 				! delta ||
 				Math.abs( delta ) <= DELTA_VARIANCE
 			) {
-				diffResult[ key ] = formatValue( value, key );
+				diffResult[ key ] = formatValue(
+					/** @type {number} */ ( value ),
+					key
+				);
 				continue;
 			}
 
 			const prefix = delta > 0 ? '+' : '';
 
 			diffResult[ key ] = `${ formatValue(
-				value,
+				/** @type {number} */ ( value ),
 				key
 			) } (${ prefix }${ formatValue(
 				delta,

@@ -33,5 +33,5 @@
 		"typeRoots": [ "./typings", "./node_modules/@types" ],
 		"types": []
 	},
-	"include": [ "tests/**/*.ts" ]
+	"include": [ "tests/**/*" ]
 }
