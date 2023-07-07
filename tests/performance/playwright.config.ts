@@ -14,7 +14,7 @@ process.env.ASSETS_PATH = join(
 	fileURLToPath( new URL( '.', import.meta.url ) ),
 	'assets'
 );
-process.env.TEST_RUNS ??= '30';
+process.env.TEST_RUNS ??= '20';
 process.env.LIGHTHOUSE_RUNS ??= '0';
 
 const config = defineConfig( {
