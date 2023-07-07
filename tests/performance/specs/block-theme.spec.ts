@@ -105,12 +105,12 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 					),
 				};
 
+				await settingsPage.setLocale( '' );
+
 				await testInfo.attach( 'results', {
 					body: JSON.stringify( results, null, 2 ),
 					contentType: 'application/json',
 				} );
-
-				await settingsPage.setLocale( '' );
 			} );
 		} );
 	}
