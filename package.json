@@ -16,7 +16,7 @@
 	"devDependencies": {
 		"@playwright/test": "^1.35.1",
 		"@types/jest-environment-puppeteer": "^5.0.3",
-		"@wordpress/e2e-test-utils-playwright": "^0.4.0",
+		"@wordpress/e2e-test-utils-playwright": "^0.5.0",
 		"@wordpress/env": "^8.2.0",
 		"@wordpress/scripts": "^26.6.0",
 		"eslint-plugin-playwright": "^0.15.2",
