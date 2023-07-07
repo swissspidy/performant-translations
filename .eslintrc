@@ -8,6 +8,14 @@
 		},
 		"warnOnUnsupportedTypeScriptVersion": false
 	},
+	"rules": {
+		"import/no-unresolved": [
+			"error",
+			{
+				"ignore": ["^tablemark$"]
+			}
+		]
+	},
 	"overrides": [
 		{
 			"files": ["tests/e2e/**/*.[jt]s", "tests/e2e-utils/**/*.[jt]s"],

@@ -35,7 +35,7 @@ function formatAsMarkdownTable( results ) {
 
 	/**
 	 * @param {unknown} v
-	 * @returns {string}
+	 * @return {string} Formatted cell text.
 	 */
 	function toCellText( v ) {
 		if ( v === true || v === 'true' ) return '✅';
