@@ -10,17 +10,19 @@
 	},
 	"overrides": [
 		{
-			"files": ["tests/e2e/**/*.js", "tests/performance/**/*.js", "tests/e2e-utils/**/*.js"],
+			"files": ["tests/e2e/**/*.[jt]s", "tests/e2e-utils/**/*.[jt]s"],
 			"extends": ["plugin:@wordpress/eslint-plugin/test-e2e"]
 		},
 		{
-			"files": ["tests/performance/**/*.js"],
-			"globals": {
-				"TEST_RUNS": "readonly"
-			},
+			"files": ["tests/performance/**/*.[jt]s"],
+			"extends": [
+				"plugin:eslint-plugin-playwright/playwright-test"
+			],
 			"rules": {
 				"no-console": "off",
-				"jest/expect-expect": "off"
+				"jest/expect-expect": "off",
+				"playwright/expect-expect": "off",
+				"playwright/no-conditional-in-test": "off"
 			}
 		}
 	]

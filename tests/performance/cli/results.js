@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-const { readFileSync, existsSync } = require( 'fs' );
-const { writeFileSync } = require( 'node:fs' );
-const { join } = require( 'node:path' );
-const { formatAsMarkdownTable } = require( './index' );
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import tablemark from 'tablemark';
+
+process.env.WP_ARTIFACTS_PATH ??= join( process.cwd(), 'artifacts' );
 
 const args = process.argv.slice( 2 );
 
@@ -18,6 +19,38 @@ if ( ! existsSync( afterFile ) ) {
 if ( beforeFile && ! existsSync( beforeFile ) ) {
 	console.error( `File not found: ${ beforeFile }` );
 	process.exit( 1 );
+}
+
+/**
+ * Format test results as a Markdown table.
+ *
+ * @param {Array<Record<string,string|number|boolean>>} results Test results.
+ *
+ * @return {string} Markdown content.
+ */
+function formatAsMarkdownTable( results ) {
+	if ( ! results?.length ) {
+		return '';
+	}
+
+	function toCellText( v ) {
+		if ( v === true || v === 'true' ) return '✅';
+		if ( ! v || v === 'false' ) return '';
+		return v?.toString() || String( v );
+	}
+
+	return tablemark( results, {
+		// In v2 the option is still called stringify
+		stringify: toCellText,
+		caseHeaders: false,
+		columns: [
+			{ align: 'left' },
+			{ align: 'center' },
+			{ align: 'center' },
+			{ align: 'center' },
+			{ align: 'center' },
+		],
+	} );
 }
 
 /**
@@ -53,12 +86,17 @@ if ( process.env.GITHUB_SHA ) {
 	summaryMarkdown += `Performance test results are in 🛎️!\n\n`;
 }
 
-summaryMarkdown += `Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n\n`;
+if ( beforeFile ) {
+	summaryMarkdown += `Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n\n`;
+}
 
 console.log( 'Performance Test Results\n' );
-console.log(
-	'Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n'
-);
+
+if ( beforeFile ) {
+	console.log(
+		'Note: the numbers in parentheses show the difference to the previous (baseline) test run.\n'
+	);
+}
 
 const DELTA_VARIANCE = 0.5;
 const PERCENTAGE_VARIANCE = 2;
@@ -75,6 +113,10 @@ const PERCENTAGE_VARIANCE = 2;
  * @return {string} Formatted value.
  */
 function formatValue( value, key ) {
+	if ( key === 'CLS' ) {
+		return value.toFixed( 2 );
+	}
+
 	if ( key === 'wp-memory-usage' ) {
 		return `${ ( value / Math.pow( 10, 6 ) ).toFixed( 2 ) } MB`;
 	}
@@ -92,7 +134,12 @@ for ( const { file, title, results } of afterStats ) {
 
 	for ( const i in results ) {
 		const newResult = results[ i ];
-		const prevResult = prevStat?.results[ i ];
+		// Only do comparison if the number of results is the same.
+		// TODO: what if order of results has changed?
+		const prevResult =
+			prevStat?.results.length === results.length
+				? prevStat?.results[ i ]
+				: null;
 
 		const diffResult = {};
 
@@ -141,6 +188,6 @@ for ( const { file, title, results } of afterStats ) {
 }
 
 writeFileSync(
-	join( __dirname, '/../', '/specs/', 'summary.md' ),
+	join( process.env.WP_ARTIFACTS_PATH, '/performance-results.md' ),
 	summaryMarkdown
 );

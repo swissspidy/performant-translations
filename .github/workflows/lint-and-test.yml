@@ -223,7 +223,7 @@ jobs:
                   cd -
 
             - name: Run tests
-              run: npm run test:e2e -- --runInBand
+              run: npm run test:e2e
 
             - name: Archive debug artifacts (screenshots, HTML snapshots)
               uses: actions/upload-artifact@v3
@@ -302,7 +302,8 @@ jobs:
     performance-tests:
         name: 'Performance Tests (trunk)'
         runs-on: ubuntu-latest
-
+        env:
+            WP_ARTIFACTS_PATH: ${{ github.workspace }}/artifacts
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -329,7 +330,7 @@ jobs:
 
             - name: Update permalink structure
               run: |
-                  npm run wp-env run tests-cli wp rewrite structure '/%postname%/'
+                  npm run wp-env run tests-cli wp rewrite structure '/%postname%/' -- --hard
 
             - name: Import mock data
               run: |
@@ -353,7 +354,7 @@ jobs:
             - name: Run tests
               run: |
                   npm run test:performance
-                  mv tests/performance/specs/summary.json ${{ runner.temp }}/summary_after.json
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_after.json
 
             - name: Check out base commit
               run: |
@@ -366,7 +367,9 @@ jobs:
             - name: Run tests for base
               run: |
                   npm run test:performance
-                  mv tests/performance/specs/summary.json ${{ runner.temp }}/summary_before.json
+                  if [ -f "{{ env.WP_ARTIFACTS_PATH }}/performance-results.json" ]; then
+                    mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_before.json
+                  fi;
 
             - name: Reset to original commit
               run: |
@@ -374,7 +377,11 @@ jobs:
 
             - name: Compare results with base
               run: |
-                  node tests/performance/utils/results.js ${{ runner.temp }}/summary_after.json ${{ runner.temp }}/summary_before.json
+                  if [ -f "${{ runner.temp }}/results_before.json" ]; then
+                    node tests/performance/cli/results.js ${{ runner.temp }}/results_after.json ${{ runner.temp }}/results_before.json
+                  else
+                    node tests/performance/cli/results.js ${{ runner.temp }}/results_after.json
+                  fi;
 
             - name: Check if a comment was already made
               id: find-comment
@@ -396,16 +403,23 @@ jobs:
                   issue-number: ${{ github.event.pull_request.number }}
                   comment-id: ${{ steps.find-comment.outputs.comment-id }}
                   edit-mode: replace
-                  body-path: tests/performance/specs/summary.md
+                  body-path: ${{ env.WP_ARTIFACTS_PATH }}/performance-results.md
                   token: ${{ secrets.PR_COMMENT_TOKEN }}
 
             - name: Add workflow summary
               run: |
-                  cat tests/performance/specs/summary.md >> $GITHUB_STEP_SUMMARY
+                  cat ${{ env.WP_ARTIFACTS_PATH }}/performance-results.md >> $GITHUB_STEP_SUMMARY
+
+            - name: Archive performance results
+              if: success()
+              uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+              with:
+                  name: performance-results
+                  path: ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json
 
             - name: Archive debug artifacts (screenshots, HTML snapshots)
               uses: actions/upload-artifact@v3
-              if: always()
+              if: failure()
               with:
                   name: failures-artifacts
                   path: artifacts

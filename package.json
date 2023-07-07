@@ -12,24 +12,29 @@
 		"url": "https://github.com/swissspidy/ginger-mo/issues"
 	},
 	"homepage": "https://github.com/swissspidy/ginger-mo#readme",
+	"type": "module",
 	"devDependencies": {
+		"@playwright/test": "^1.35.1",
 		"@types/expect-puppeteer": "^5.0.3",
 		"@types/jest-environment-puppeteer": "^5.0.3",
 		"@wordpress/e2e-test-utils": "^10.6.0",
+		"@wordpress/e2e-test-utils-playwright": "^0.4.0",
 		"@wordpress/env": "^8.2.0",
 		"@wordpress/scripts": "^26.6.0",
+		"eslint-plugin-playwright": "^0.15.2",
+		"get-port": "^7.0.0",
 		"glob": "^10.3.0",
+		"lighthouse": "^10.3.0",
 		"patch-package": "^7.0.0",
+		"playwright": "^1.35.1",
 		"tablemark": "^2.0.0"
 	},
 	"scripts": {
 		"postinstall": "patch-package",
 		"lint": "wp-scripts lint-js",
 		"format": "wp-scripts format",
-		"test:e2e": "wp-scripts test-e2e",
-		"test:e2e:help": "wp-scripts test-e2e --help",
-		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e --puppeteer-devtools",
-		"test:performance": "wp-scripts test-e2e --config tests/performance/jest.config.js",
+		"test:e2e": "node_modules/@playwright/test/cli.js test --config tests/e2e/playwright.config.ts",
+		"test:performance": "node_modules/@playwright/test/cli.js test --config tests/performance/playwright.config.ts",
 		"wp-env": "wp-env"
 	}
 }
