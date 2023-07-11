@@ -66,6 +66,10 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 				await page.request.head(
 					`${ requestUtils.baseURL }/?opcache_action=clear-opcache`
 				);
+				await page.request.head(
+					`${ requestUtils.baseURL }/?action=flush-object-cache`
+				);
+
 				await settingsPage.setLocale( locale );
 
 				if ( scenario === Scenario.ObjectCache ) {

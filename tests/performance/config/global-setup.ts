@@ -36,6 +36,9 @@ async function globalSetup( config: FullConfig ) {
 	await requestContext.head(
 		`${ requestUtils.baseURL }/?opcache_action=clear-opcache`
 	);
+	await requestContext.head(
+		`${ requestUtils.baseURL }/?action=flush-object-cache`
+	);
 
 	await requestContext.dispose();
 }
