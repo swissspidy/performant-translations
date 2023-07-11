@@ -33,6 +33,10 @@ async function globalSetup( config: FullConfig ) {
 	await requestUtils.deactivatePlugin( 'wp-performance-pack' );
 	await requestUtils.deactivatePlugin( 'translations-cache' );
 
+	await requestContext.head(
+		`${ requestUtils.baseURL }/?opcache_action=clear-opcache`
+	);
+
 	await requestContext.dispose();
 }
 
