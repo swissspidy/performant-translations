@@ -53,11 +53,17 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 			} );
 
 			test( 'Server Timing Metrics', async ( {
+				page,
 				admin,
+				requestUtils,
 				settingsPage,
 				wpPerformancePack,
 				metrics,
 			}, testInfo ) => {
+				await page.request.head(
+					`${ requestUtils.baseURL }/?opcache_action=clear-opcache`
+				);
+
 				await settingsPage.setLocale( locale );
 
 				if ( scenario === Scenario.ObjectCache ) {

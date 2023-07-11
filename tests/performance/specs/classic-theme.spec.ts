@@ -58,10 +58,15 @@ test.describe( 'Server Timing - Twenty Twenty-One', () => {
 
 			test( 'Server Timing Metrics', async ( {
 				page,
+				requestUtils,
 				settingsPage,
 				wpPerformancePack,
 				metrics,
 			}, testInfo ) => {
+				await page.request.head(
+					`${ requestUtils.baseURL }/?opcache_action=clear-opcache`
+				);
+
 				await settingsPage.setLocale( locale );
 
 				if ( scenario === Scenario.ObjectCache ) {
