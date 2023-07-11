@@ -31,8 +31,8 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 				}
 
 				if (
-						scenario === Scenario.GingerMo ||
-						scenario === Scenario.GingerMoPhp
+					scenario === Scenario.GingerMo ||
+					scenario === Scenario.GingerMoPhp
 				) {
 					await requestUtils.activatePlugin( 'ginger-mo' );
 				}

@@ -35,8 +35,8 @@ test.describe( 'Server Timing - Twenty Twenty-One', () => {
 				}
 
 				if (
-						scenario === Scenario.GingerMo ||
-						scenario === Scenario.GingerMoPhp
+					scenario === Scenario.GingerMo ||
+					scenario === Scenario.GingerMoPhp
 				) {
 					await requestUtils.activatePlugin( 'ginger-mo' );
 				}
