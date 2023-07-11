@@ -80,19 +80,33 @@ class Metrics {
 		this.port = port;
 	}
 
-	async getServerTiming() {
-		return this.page.evaluate< Record< string, number > >( () =>
-			(
-				performance.getEntriesByType(
-					'navigation'
-				) as PerformanceNavigationTiming[]
-			 )[ 0 ].serverTiming.reduce< Record< string, number > >(
-				( acc, entry ) => {
-					acc[ entry.name ] = entry.duration;
-					return acc;
-				},
-				{}
-			)
+	/**
+	 * Returns durations from the Server-Timing header.
+	 *
+	 * @param fields Optional fields to filter.
+	 */
+	async getServerTiming( fields: string[] = [] ) {
+		return this.page.evaluate< Record< string, number >, string[] >(
+			( fields: string[] ) =>
+				(
+					performance.getEntriesByType(
+						'navigation'
+					) as PerformanceNavigationTiming[]
+				 )[ 0 ].serverTiming.reduce< Record< string, number > >(
+					( acc, entry ) => {
+						if (
+							fields.length === 0 ||
+							fields.includes( entry.name )
+						) {
+							acc[ entry.name ] = entry.duration;
+						}
+						return acc;
+					},
+					{}
+				),
+			fields
+		);
+	}
 		);
 	}
 
