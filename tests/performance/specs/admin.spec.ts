@@ -81,7 +81,10 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 					await admin.visitAdminPage( 'index.php', '' );
 
 					const allMetrics = {
-						...( await metrics.getServerTiming() ),
+						...( await metrics.getServerTiming( [
+							'wp-memory-usage',
+							'wp-total',
+						] ) ),
 						TTFB: await metrics.getTimeToFirstByte(),
 					};
 
