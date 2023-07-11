@@ -107,6 +107,18 @@ class Metrics {
 			fields
 		);
 	}
+
+	/**
+	 * Returns time to first byte (TTFB) from PerformanceObserver.
+	 */
+	async getTimeToFirstByte() {
+		return this.page.evaluate< number >(
+			() =>
+				(
+					performance.getEntriesByType(
+						'navigation'
+					) as PerformanceNavigationTiming[]
+				 )[ 0 ].responseStart
 		);
 	}
 
