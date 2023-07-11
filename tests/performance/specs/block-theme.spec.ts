@@ -64,10 +64,13 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 				metrics,
 			}, testInfo ) => {
 				await page.request.head(
-					`${ requestUtils.baseURL }/?opcache_action=clear-opcache`
+					`${ requestUtils.baseURL }/?clear-cache=opcache`
 				);
 				await page.request.head(
-					`${ requestUtils.baseURL }/?action=flush-object-cache`
+					`${ requestUtils.baseURL }/?clear-cache=object-cache`
+				);
+				await page.request.head(
+					`${ requestUtils.baseURL }/?clear-cache=apcu`
 				);
 
 				await settingsPage.setLocale( locale );

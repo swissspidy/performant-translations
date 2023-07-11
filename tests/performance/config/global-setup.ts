@@ -34,11 +34,12 @@ async function globalSetup( config: FullConfig ) {
 	await requestUtils.deactivatePlugin( 'translations-cache' );
 
 	await requestContext.head(
-		`${ requestUtils.baseURL }/?opcache_action=clear-opcache`
+		`${ requestUtils.baseURL }/?clear-cache=opcache`
 	);
 	await requestContext.head(
-		`${ requestUtils.baseURL }/?action=flush-object-cache`
+		`${ requestUtils.baseURL }/?clear-cache=object-cache`
 	);
+	await requestContext.head( `${ requestUtils.baseURL }/?clear-cache=apcu` );
 
 	await requestContext.dispose();
 }
