@@ -218,8 +218,10 @@ jobs:
                   mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language core install de_DE es_ES fr_FR it_IT
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language plugin install de_DE es_ES fr_FR it_IT --all
                   docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language plugin update --all
                   docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language theme update --all
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language theme install de_DE es_ES fr_FR it_IT --all
                   cd -
 
             - name: Run tests
@@ -346,8 +348,10 @@ jobs:
                   cd $WP_ENV_DIR
                   mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
-                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language core install de_DE es_ES fr_FR it_IT
-                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language plugin update --all
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language core install de_DE
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language plugin install de_DE --all
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language theme update --all
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language theme install de_DE --all
                   docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language theme update --all
                   cd -
 
