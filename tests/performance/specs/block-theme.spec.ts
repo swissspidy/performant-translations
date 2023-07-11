@@ -80,7 +80,11 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 					await page.goto( '/' );
 
 					const allMetrics = {
-						...( await metrics.getServerTiming() ),
+						...( await metrics.getServerTiming( [
+							'wp-memory-usage',
+							'wp-total',
+						] ) ),
+						TTFB: await metrics.getTimeToFirstByte(),
 					};
 
 					for ( const [ key, value ] of Object.entries(

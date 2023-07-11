@@ -79,6 +79,7 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 
 					const allMetrics = {
 						...( await metrics.getServerTiming() ),
+						TTFB: await metrics.getTimeToFirstByte(),
 					};
 
 					for ( const [ key, value ] of Object.entries(

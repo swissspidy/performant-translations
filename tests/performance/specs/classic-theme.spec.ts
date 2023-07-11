@@ -82,6 +82,7 @@ test.describe( 'Server Timing - Twenty Twenty-One', () => {
 
 					const allMetrics = {
 						...( await metrics.getServerTiming() ),
+						TTFB: await metrics.getTimeToFirstByte(),
 					};
 
 					for ( const [ key, value ] of Object.entries(
