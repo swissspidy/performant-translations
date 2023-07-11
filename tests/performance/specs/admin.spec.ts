@@ -10,35 +10,46 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 			objectCache ? 'Yes' : 'No'
 		}`, () => {
 			test.beforeAll( async ( { requestUtils } ) => {
-				await Promise.all( [
-					objectCache &&
-						requestUtils.activatePlugin( 'sq-lite-object-cache' ),
-					scenario === Scenario.Dynamo &&
-						requestUtils.activatePlugin( 'dyna-mo' ),
-					scenario === Scenario.NativeGettext &&
-						requestUtils.activatePlugin( 'native-gettext' ),
-					scenario === Scenario.ObjectCache &&
-						requestUtils.activatePlugin( 'wp-performance-pack' ),
-					scenario === Scenario.Apcu &&
-						requestUtils.activatePlugin( 'translations-cache' ),
-					( scenario === Scenario.GingerMo ||
-						scenario === Scenario.GingerMoPhp ) &&
-						requestUtils.activatePlugin( 'ginger-mo' ),
-					scenario === Scenario.GingerMo &&
-						requestUtils.activatePlugin( 'ginger-mo-no-php' ),
-				] );
+				if ( objectCache ) {
+					await requestUtils.activatePlugin( 'sq-lite-object-cache' );
+				}
+
+				if ( scenario === Scenario.Dynamo ) {
+					await requestUtils.activatePlugin( 'dyna-mo' );
+				}
+
+				if ( scenario === Scenario.NativeGettext ) {
+					await requestUtils.activatePlugin( 'native-gettext' );
+				}
+
+				if ( scenario === Scenario.ObjectCache ) {
+					await requestUtils.activatePlugin( 'wp-performance-pack' );
+				}
+
+				if ( scenario === Scenario.Apcu ) {
+					await requestUtils.activatePlugin( 'translations-cache' );
+				}
+
+				if (
+						scenario === Scenario.GingerMo ||
+						scenario === Scenario.GingerMoPhp
+				) {
+					await requestUtils.activatePlugin( 'ginger-mo' );
+				}
+
+				if ( scenario === Scenario.GingerMo ) {
+					await requestUtils.activatePlugin( 'ginger-mo-no-php' );
+				}
 			} );
 
 			test.afterAll( async ( { requestUtils } ) => {
-				await Promise.all( [
-					requestUtils.deactivatePlugin( 'dyna-mo' ),
-					requestUtils.deactivatePlugin( 'ginger-mo' ),
-					requestUtils.deactivatePlugin( 'ginger-mo-no-php' ),
-					requestUtils.deactivatePlugin( 'sq-lite-object-cache' ),
-					requestUtils.deactivatePlugin( 'native-gettext' ),
-					requestUtils.deactivatePlugin( 'wp-performance-pack' ),
-					requestUtils.deactivatePlugin( 'translations-cache' ),
-				] );
+				await requestUtils.deactivatePlugin( 'dyna-mo' );
+				await requestUtils.deactivatePlugin( 'ginger-mo' );
+				await requestUtils.deactivatePlugin( 'ginger-mo-no-php' );
+				await requestUtils.deactivatePlugin( 'sq-lite-object-cache' );
+				await requestUtils.deactivatePlugin( 'native-gettext' );
+				await requestUtils.deactivatePlugin( 'wp-performance-pack' );
+				await requestUtils.deactivatePlugin( 'translations-cache' );
 			} );
 
 			test( 'Server Timing Metrics', async ( {

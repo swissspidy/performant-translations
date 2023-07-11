@@ -25,17 +25,15 @@ async function globalSetup( config: FullConfig ) {
 	// Authenticate and save the storageState to disk.
 	await requestUtils.setupRest();
 
-	await requestContext.dispose();
+	await requestUtils.deactivatePlugin( 'dyna-mo' );
+	await requestUtils.deactivatePlugin( 'ginger-mo' );
+	await requestUtils.deactivatePlugin( 'ginger-mo-no-php' );
+	await requestUtils.deactivatePlugin( 'sq-lite-object-cache' );
+	await requestUtils.deactivatePlugin( 'native-gettext' );
+	await requestUtils.deactivatePlugin( 'wp-performance-pack' );
+	await requestUtils.deactivatePlugin( 'translations-cache' );
 
-	await Promise.all( [
-		requestUtils.deactivatePlugin( 'dyna-mo' ),
-		requestUtils.deactivatePlugin( 'ginger-mo' ),
-		requestUtils.deactivatePlugin( 'ginger-mo-no-php' ),
-		requestUtils.deactivatePlugin( 'sq-lite-object-cache' ),
-		requestUtils.deactivatePlugin( 'native-gettext' ),
-		requestUtils.deactivatePlugin( 'wp-performance-pack' ),
-		requestUtils.deactivatePlugin( 'translations-cache' ),
-	] );
+	await requestContext.dispose();
 }
 
 export default globalSetup;
