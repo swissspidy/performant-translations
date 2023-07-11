@@ -87,17 +87,14 @@ class Metrics {
 	 */
 	async getServerTiming( fields: string[] = [] ) {
 		return this.page.evaluate< Record< string, number >, string[] >(
-			( fields: string[] ) =>
+			( f: string[] ) =>
 				(
 					performance.getEntriesByType(
 						'navigation'
 					) as PerformanceNavigationTiming[]
 				 )[ 0 ].serverTiming.reduce< Record< string, number > >(
 					( acc, entry ) => {
-						if (
-							fields.length === 0 ||
-							fields.includes( entry.name )
-						) {
+						if ( f.length === 0 || f.includes( entry.name ) ) {
 							acc[ entry.name ] = entry.duration;
 						}
 						return acc;
