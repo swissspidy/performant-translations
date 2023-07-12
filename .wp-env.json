@@ -21,7 +21,8 @@
 	"mappings": {
 		"wp-cli.yml": "./tests/wp-env/wp-cli.yml",
 		"wp-content/mu-plugins": "./tests/wp-env/mu-plugins",
-		"wp-content/plugins/ginger-mo-no-php": "./tests/wp-env/plugins/ginger-mo-no-php"
+		"wp-content/plugins/ginger-mo-prefer-json": "./tests/wp-env/plugins/ginger-mo-prefer-json",
+		"wp-content/plugins/ginger-mo-prefer-mo": "./tests/wp-env/plugins/ginger-mo-prefer-mo"
 	},
 	"config": {
 		"PERFLAB_DISABLE_OBJECT_CACHE_DROPIN": true

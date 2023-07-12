@@ -42,18 +42,21 @@ class Ginger_MO_Translation_Compat {
 		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
 
 		/**
-		 * Filters whether PHP files should be preferred over MO files wherever possible.
+		 * Filters the preferred file format for translation files.
 		 *
 		 * Useful for testing/debugging.
 		 *
-		 * @param bool $convert Whether to prefer PHP files over MO files. Default true.
+		 * @param string $convert Preferred file format. Possible values: 'php', 'mo', 'json'. Default: 'php'.
 		 */
-		$prefer_php = apply_filters( 'ginger_mo_prefer_php_files', true );
+		$preferred_format = apply_filters( 'ginger_mo_preferred_format', 'php' );
+		if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
+			$preferred_format = 'php';
+		}
 
-		if ( $prefer_php ) {
-			$php_mo = str_replace( '.mo', '.php', $mofile );
+		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $mofile );
 
-			$success = Ginger_MO::instance()->load( $php_mo, $domain, $locale );
+		if ( 'mo' !== $preferred_format ) {
+			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
 			if ( $success ) {
 				// Unset Noop_Translations reference in get_translations_for_domain.
@@ -73,19 +76,21 @@ class Ginger_MO_Translation_Compat {
 			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
 
 			/**
-			 * Filters whether existing MO files should be automatically converted to PHP files.
+			 * Filters whether existing MO files should be automatically converted to the preferred format.
 			 *
-			 * Only runs when no corresponding PHP translation file exists yet.
+			 * Only runs when no corresponding PHP or JSON translation file exists yet.
+			 *
+			 * The preferred format is determined by the {@see 'ginger_mo_prefer_php_files'} filter
 			 *
 			 * Useful for testing/debugging.
 			 *
 			 * @param bool $convert Whether to convert MO files to PHP files. Default true.
 			 */
-			$convert = apply_filters( 'ginger_mo_convert_to_php_files', true );
+			$convert = apply_filters( 'ginger_mo_convert_files', true );
 
-			if ( $prefer_php && $convert ) {
+			if ( 'mo' !== $preferred_format && $convert ) {
 				$source      = Ginger_MO_Translation_File::create( $mofile );
-				$destination = Ginger_MO_Translation_File::create( $php_mo, 'write' );
+				$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
 				if ( $source && $destination ) {
 					$source->export( $destination );
 				}

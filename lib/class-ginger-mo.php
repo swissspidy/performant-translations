@@ -285,7 +285,7 @@ class Ginger_MO {
 
 		$headers = array();
 
-		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
+		foreach ( $this->get_files( $textdomain ) as $moe ) {
 			foreach ( $moe->headers() as $header => $value ) {
 				$headers[ $this->normalize_header( $header ) ] = $value;
 			}
@@ -323,7 +323,7 @@ class Ginger_MO {
 
 		$entries = array();
 
-		foreach ( $this->get_mo_files( $textdomain ) as $moe ) {
+		foreach ( $this->get_files( $textdomain ) as $moe ) {
 			$entries = array_merge( $entries, $moe->entries() );
 		}
 
@@ -349,7 +349,7 @@ class Ginger_MO {
 		}
 
 		// Find the translation in all loaded files for this text domain.
-		foreach ( $this->get_mo_files( $textdomain, $locale ) as $moe ) {
+		foreach ( $this->get_files( $textdomain, $locale ) as $moe ) {
 			$translation = $moe->translate( $singular );
 			if ( false !== $translation ) {
 				return array(
@@ -374,7 +374,7 @@ class Ginger_MO {
 	 * @param string $locale     Optional. Locale. Default current locale.
 	 * @return Ginger_MO_Translation_File[] List of translation files.
 	 */
-	protected function get_mo_files( $textdomain = null, $locale = null ) {
+	protected function get_files( $textdomain = null, $locale = null ) {
 		if ( ! $locale ) {
 			$locale = $this->current_locale;
 		}

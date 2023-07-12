@@ -44,7 +44,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @covers ::is_loaded
 	 * @covers ::translate
 	 * @covers ::locate_translation
-	 * @covers ::get_mo_files
+	 * @covers ::get_files
 	 *
 	 * @return void
 	 */
@@ -127,7 +127,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @covers ::translate
 	 * @covers ::translate_plural
 	 * @covers ::locate_translation
-	 * @covers ::get_mo_files
+	 * @covers ::get_files
 	 *
 	 * @dataProvider data_simple_example_files
 	 *
@@ -174,7 +174,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @covers ::translate
 	 * @covers ::translate_plural
 	 * @covers ::locate_translation
-	 * @covers ::get_mo_files
+	 * @covers ::get_files
 	 * @covers Ginger_MO_Translation_File::get_plural_form
 	 * @covers Ginger_MO_Translation_File::make_plural_form_function
 	 *

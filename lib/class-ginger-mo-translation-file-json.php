@@ -25,27 +25,44 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 		$data = json_decode( $data, true );
 
 		if ( ! $data || ! is_array( $data ) ) {
-			$this->error = 'JSON Error: ' . json_last_error_msg();
+			$this->error = json_last_error_msg();
 			return;
 		}
 
-		// Support JED JSON files which wrap po2json.
-		if ( isset( $data['domain'] ) && isset( $data['locale_data'][ $data['domain'] ] ) ) {
-			$data = $data['locale_data'][ $data['domain'] ];
+		if ( ! isset( $data['domain'] ) | ! isset( $data['locale_data'][ $data['domain'] ] ) ) {
+			$this->error = true;
+			return;
 		}
 
-		if ( isset( $data[''] ) ) {
-			$this->headers = array_change_key_case( $data[''] );
-			unset( $data[''] );
+		if ( isset( $data['translation-revision-date'] ) ) {
+			$this->headers['po-revision-date'] = $data['translation-revision-date'];
 		}
 
-		foreach ( $data as $key => $item ) {
+		$entries = $data['locale_data'][ $data['domain'] ];
+
+		foreach ( $entries as $key => $item ) {
+			if ( '' === $key ) {
+				$headers = array_change_key_case( $item );
+				if ( isset( $headers['lang'] ) ) {
+					$this->headers['language'] = $headers['lang'];
+					unset( $headers['lang'] );
+				}
+
+				$this->headers = array_merge(
+					$this->headers,
+					$headers
+				);
+				continue;
+			}
+
 			if ( is_string( $item ) ) {
 				$this->entries[ (string) $key ] = $item;
 			} elseif ( is_array( $item ) ) {
 				$this->entries[ (string) $key ] = implode( "\0", $item );
 			}
 		}
+
+		unset( $this->headers['domain'] );
 
 		$this->parsed = true;
 	}
@@ -58,12 +75,42 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_file( $headers, $entries ) {
-		// json headers are lowercase.
 		$headers = array_change_key_case( $headers );
-		// Prefix as the first key.
-		$entries = array_merge( array( '' => $headers ), $entries );
 
-		$json = json_encode( (array) $entries, JSON_PRETTY_PRINT );
+		$domain = isset( $headers['domain'] ) ? $headers['domain'] : 'messages';
+
+		$data = array(
+			'domain'      => $domain,
+			'locale_data' => array(
+				$domain => $entries,
+			),
+		);
+
+		if ( isset( $headers['po-revision-date'] ) ) {
+			$data['translation-revision-date'] = $headers['po-revision-date'];
+		}
+
+		if ( isset( $headers['x-generator'] ) ) {
+			$data['generator'] = $headers['x-generator'];
+		}
+
+		$data['locale_data'][ $domain ][''] = array(
+			'domain' => $domain,
+		);
+
+		if ( isset( $headers['plural-forms'] ) ) {
+			$data['locale_data'][ $domain ]['']['plural-forms'] = $headers['plural-forms'];
+		}
+
+		if ( isset( $headers['language'] ) ) {
+			$data['locale_data'][ $domain ]['']['lang'] = $headers['language'];
+		}
+
+		$json = json_encode( $data, JSON_PRETTY_PRINT );
+
+		if ( ! $json ) {
+			return false;
+		}
 
 		return (bool) file_put_contents( $this->file, $json );
 	}

@@ -10,43 +10,74 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 			objectCache ? 'Yes' : 'No'
 		}`, () => {
 			test.beforeAll( async ( { requestUtils } ) => {
-				await Promise.all( [
-					objectCache &&
-						requestUtils.activatePlugin( 'sq-lite-object-cache' ),
-					scenario === Scenario.Dynamo &&
-						requestUtils.activatePlugin( 'dyna-mo' ),
-					scenario === Scenario.NativeGettext &&
-						requestUtils.activatePlugin( 'native-gettext' ),
-					scenario === Scenario.ObjectCache &&
-						requestUtils.activatePlugin( 'wp-performance-pack' ),
-					scenario === Scenario.Apcu &&
-						requestUtils.activatePlugin( 'translations-cache' ),
-					( scenario === Scenario.GingerMo ||
-						scenario === Scenario.GingerMoPhp ) &&
-						requestUtils.activatePlugin( 'ginger-mo' ),
-					scenario === Scenario.GingerMo &&
-						requestUtils.activatePlugin( 'ginger-mo-no-php' ),
-				] );
+				if ( objectCache ) {
+					await requestUtils.activatePlugin( 'sq-lite-object-cache' );
+				}
+
+				if ( scenario === Scenario.Dynamo ) {
+					await requestUtils.activatePlugin( 'dyna-mo' );
+				}
+
+				if ( scenario === Scenario.NativeGettext ) {
+					await requestUtils.activatePlugin( 'native-gettext' );
+				}
+
+				if ( scenario === Scenario.ObjectCache ) {
+					await requestUtils.activatePlugin( 'wp-performance-pack' );
+				}
+
+				if ( scenario === Scenario.Apcu ) {
+					await requestUtils.activatePlugin( 'translations-cache' );
+				}
+
+				if (
+					scenario === Scenario.GingerMo ||
+					scenario === Scenario.GingerMoPhp ||
+					scenario === Scenario.GingerMoJson
+				) {
+					await requestUtils.activatePlugin( 'ginger-mo' );
+				}
+
+				if ( scenario === Scenario.GingerMo ) {
+					await requestUtils.activatePlugin( 'ginger-mo-prefer-mo' );
+				}
+
+				if ( scenario === Scenario.GingerMoJson ) {
+					await requestUtils.activatePlugin(
+						'ginger-mo-prefer-json'
+					);
+				}
 			} );
 
 			test.afterAll( async ( { requestUtils } ) => {
-				await Promise.all( [
-					requestUtils.deactivatePlugin( 'dyna-mo' ),
-					requestUtils.deactivatePlugin( 'ginger-mo' ),
-					requestUtils.deactivatePlugin( 'ginger-mo-no-php' ),
-					requestUtils.deactivatePlugin( 'sq-lite-object-cache' ),
-					requestUtils.deactivatePlugin( 'native-gettext' ),
-					requestUtils.deactivatePlugin( 'wp-performance-pack' ),
-					requestUtils.deactivatePlugin( 'translations-cache' ),
-				] );
+				await requestUtils.deactivatePlugin( 'dyna-mo' );
+				await requestUtils.deactivatePlugin( 'ginger-mo' );
+				await requestUtils.deactivatePlugin( 'ginger-mo-prefer-json' );
+				await requestUtils.deactivatePlugin( 'ginger-mo-prefer-mo' );
+				await requestUtils.deactivatePlugin( 'sq-lite-object-cache' );
+				await requestUtils.deactivatePlugin( 'native-gettext' );
+				await requestUtils.deactivatePlugin( 'wp-performance-pack' );
+				await requestUtils.deactivatePlugin( 'translations-cache' );
 			} );
 
 			test( 'Server Timing Metrics', async ( {
+				page,
 				admin,
+				requestUtils,
 				settingsPage,
 				wpPerformancePack,
 				metrics,
 			}, testInfo ) => {
+				await page.request.head(
+					`${ requestUtils.baseURL }/?clear-cache=opcache`
+				);
+				await page.request.head(
+					`${ requestUtils.baseURL }/?clear-cache=object-cache`
+				);
+				await page.request.head(
+					`${ requestUtils.baseURL }/?clear-cache=apcu`
+				);
+
 				await settingsPage.setLocale( locale );
 
 				if ( scenario === Scenario.ObjectCache ) {
@@ -61,7 +92,11 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 					await admin.visitAdminPage( 'index.php', '' );
 
 					const allMetrics = {
-						...( await metrics.getServerTiming() ),
+						...( await metrics.getServerTiming( [
+							'wp-memory-usage',
+							'wp-total',
+						] ) ),
+						TTFB: await metrics.getTimeToFirstByte(),
 					};
 
 					for ( const [ key, value ] of Object.entries(
