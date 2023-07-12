@@ -368,9 +368,10 @@ jobs:
                   BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.event.base_ref }}
                   BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
 
+            # Run tests without causing job to fail if they don't pass (e.g. because of env issues).
             - name: Run tests for base
               run: |
-                  npm run test:performance
+                  npm run test:performance || true
                   if [ -f "{{ env.WP_ARTIFACTS_PATH }}/performance-results.json" ]; then
                     mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_before.json
                   fi;
