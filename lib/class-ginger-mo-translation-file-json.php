@@ -38,21 +38,19 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 			$this->headers['po-revision-date'] = $data['translation-revision-date'];
 		}
 
-		if ( isset( $data['locale_data'][ $data['domain'] ][''] ) ) {
-			$this->headers = array_merge(
-				$this->headers,
-				array_change_key_case( $data['locale_data'][ $data['domain'] ][''] )
-			);
-			unset( $data['locale_data'][ $data['domain'] ][''] );
-		}
-
 		$entries = $data['locale_data'][ $data['domain'] ];
 
 		foreach ( $entries as $key => $item ) {
 			if ( '' === $key ) {
+				$headers = array_change_key_case( $item );
+				if ( isset( $headers['lang'] ) ) {
+					$this->headers['language'] = $headers['lang'];
+					unset( $headers['lang'] );
+				}
+
 				$this->headers = array_merge(
 					$this->headers,
-					array_change_key_case( $item )
+					$headers
 				);
 				continue;
 			}

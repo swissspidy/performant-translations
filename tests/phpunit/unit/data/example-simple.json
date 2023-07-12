@@ -3,7 +3,9 @@
 	"locale_data": {
 		"unittest": {
 			"": {
-				"domain": "unittest"
+				"domain": "unittest",
+				"plural-forms": "nplurals=2; plural=n != 1;",
+				"lang": "de"
 			},
 			"original": "translation",
 			"context\u0004original with context": [
