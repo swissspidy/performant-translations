@@ -2,6 +2,9 @@
 	"domain": "unittest",
 	"locale_data": {
 		"unittest": {
+			"": {
+				"domain": "unittest"
+			},
 			"original": "translation",
 			"context\u0004original with context": [
 				"translation with context"
