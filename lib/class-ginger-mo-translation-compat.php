@@ -38,7 +38,7 @@ class Ginger_MO_Translation_Compat {
 		 *
 		 * @param string $convert Preferred file format. Possible values: 'php', 'mo', 'json'. Default: 'php'.
 		 */
-		$preferred_format = apply_filters( 'ginger_mo_preferred_format', 'json' );
+		$preferred_format = apply_filters( 'ginger_mo_preferred_format', 'php' );
 		if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
 			$preferred_format = 'php';
 		}
