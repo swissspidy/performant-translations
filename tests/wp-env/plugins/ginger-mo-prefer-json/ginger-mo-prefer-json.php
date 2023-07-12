@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: Ginger MO No PHP
- * Description: Disable PHP file support in Ginger MO
+ * Plugin Name: Ginger MO Prefer JSON
+ * Description: Prefer PHP file format.
  * Version: 0.1.0
  * Author: Pascal Birchler
  * Author URI: https://pascalbirchler.com
@@ -9,4 +9,9 @@
  * License URI: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
-add_filter( 'ginger_mo_prefer_php_files', '__return_false' );
+add_filter(
+	'ginger_mo_preferred_format',
+	static function () {
+		return 'json';
+	}
+);

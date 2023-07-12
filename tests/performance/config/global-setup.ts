@@ -27,7 +27,8 @@ async function globalSetup( config: FullConfig ) {
 
 	await requestUtils.deactivatePlugin( 'dyna-mo' );
 	await requestUtils.deactivatePlugin( 'ginger-mo' );
-	await requestUtils.deactivatePlugin( 'ginger-mo-no-php' );
+	await requestUtils.deactivatePlugin( 'ginger-mo-prefer-json' );
+	await requestUtils.deactivatePlugin( 'ginger-mo-prefer-mo' );
 	await requestUtils.deactivatePlugin( 'sq-lite-object-cache' );
 	await requestUtils.deactivatePlugin( 'native-gettext' );
 	await requestUtils.deactivatePlugin( 'wp-performance-pack' );

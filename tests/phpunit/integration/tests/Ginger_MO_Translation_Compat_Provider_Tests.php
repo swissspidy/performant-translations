@@ -153,7 +153,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 	public function test_get_headers() {
 		global $l10n;
 
-		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+		$load_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 
 		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
 
@@ -161,6 +161,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
+		$this->assertTrue( $load_successful, 'Text domain not successfully loaded' );
 		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSetsWithIndex(

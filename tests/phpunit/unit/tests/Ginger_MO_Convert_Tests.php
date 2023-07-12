@@ -61,17 +61,13 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	 * @return array<array{0:string, 1: string}>
 	 */
 	public function data_export_matrix() {
-		$sources = array(
-			'example-simple.json',
-			'example-simple.mo',
-			'example-simple.php',
-		);
-		$outputs = array( 'mo', 'json', 'php' );
+		$formats = array( 'mo', 'json', 'php' );
 
 		$matrix = array();
-		foreach ( $sources as $s ) {
-			foreach ( $outputs as $output_format ) {
-				$matrix[] = array( GINGER_MO_TEST_DATA . $s, $output_format );
+
+		foreach ( $formats as $input_format ) {
+			foreach ( $formats as $output_format ) {
+				$matrix[ "$input_format to $output_format" ] = array( GINGER_MO_TEST_DATA . 'example-simple.' . $input_format, $output_format );
 			}
 		}
 

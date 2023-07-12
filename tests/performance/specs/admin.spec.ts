@@ -32,20 +32,28 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 
 				if (
 					scenario === Scenario.GingerMo ||
-					scenario === Scenario.GingerMoPhp
+					scenario === Scenario.GingerMoPhp ||
+					scenario === Scenario.GingerMoJson
 				) {
 					await requestUtils.activatePlugin( 'ginger-mo' );
 				}
 
 				if ( scenario === Scenario.GingerMo ) {
-					await requestUtils.activatePlugin( 'ginger-mo-no-php' );
+					await requestUtils.activatePlugin( 'ginger-mo-prefer-mo' );
+				}
+
+				if ( scenario === Scenario.GingerMoJson ) {
+					await requestUtils.activatePlugin(
+						'ginger-mo-prefer-json'
+					);
 				}
 			} );
 
 			test.afterAll( async ( { requestUtils } ) => {
 				await requestUtils.deactivatePlugin( 'dyna-mo' );
 				await requestUtils.deactivatePlugin( 'ginger-mo' );
-				await requestUtils.deactivatePlugin( 'ginger-mo-no-php' );
+				await requestUtils.deactivatePlugin( 'ginger-mo-prefer-json' );
+				await requestUtils.deactivatePlugin( 'ginger-mo-prefer-mo' );
 				await requestUtils.deactivatePlugin( 'sq-lite-object-cache' );
 				await requestUtils.deactivatePlugin( 'native-gettext' );
 				await requestUtils.deactivatePlugin( 'wp-performance-pack' );
