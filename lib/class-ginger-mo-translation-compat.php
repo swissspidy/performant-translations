@@ -43,7 +43,7 @@ class Ginger_MO_Translation_Compat {
 			$preferred_format = 'php';
 		}
 
-		$mofile_preferred = str_replace( '.mo', ".${preferred_format}", $mofile );
+		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $mofile );
 
 		if ( 'mo' !== $preferred_format ) {
 			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain );
