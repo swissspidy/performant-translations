@@ -38,19 +38,22 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 					Locale: locale,
 					Scenario: scenario,
 					'Object Cache': objectCache,
-					...( await iterate( async () => ( {
-						...( await metrics.getServerTiming( [
-							'wp-memory-usage',
-							'wp-total',
-						] ) ),
-						TTFB: await metrics.getTimeToFirstByte(),
-					} ) ) ),
-					...( await iterate(
-						async () => ( {
+					...( await iterate( async () => {
+						await testPage.visitHomepage();
+						return {
+							...( await metrics.getServerTiming( [
+								'wp-memory-usage',
+								'wp-total',
+							] ) ),
+							TTFB: await metrics.getTimeToFirstByte(),
+						};
+					} ) ),
+					...( await iterate( async () => {
+						await testPage.visitHomepage();
+						return {
 							...( await metrics.getLighthouseReport() ),
-						} ),
-						Number( process.env.LIGHTHOUSE_RUNS )
-					) ),
+						};
+					}, Number( process.env.LIGHTHOUSE_RUNS ) ) ),
 				};
 
 				await testPage.setLocale( 'en_US' );
