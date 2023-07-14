@@ -8,3 +8,9 @@ export enum Scenario {
 	Apcu = 'Cache in APCu',
 	NativeGettext = 'Native Gettext',
 }
+
+export type TestCase = {
+	locale: string;
+	scenario: Scenario;
+	objectCache: boolean;
+};
