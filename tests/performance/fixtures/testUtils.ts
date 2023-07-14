@@ -8,10 +8,11 @@ class TestUtils {
 		this.requestUtils = requestUtils;
 	}
 
-	async prepareTestCase( {
-		objectCache,
-		scenario,
-	}: Omit< TestCase, 'locale' > ) {
+	async prepareTestCase( { objectCache, scenario, locale }: TestCase ) {
+		await this.requestUtils.updateSiteSettings( {
+			language: locale,
+		} );
+
 		if ( objectCache ) {
 			await this.requestUtils.activatePlugin( 'sq-lite-object-cache' );
 		}
@@ -47,10 +48,16 @@ class TestUtils {
 		if ( scenario === Scenario.GingerMoJson ) {
 			await this.requestUtils.activatePlugin( 'ginger-mo-prefer-json' );
 		}
+
+		await this.clearCaches();
 	}
 
 	// Not using Promise.all() to avoid race conditions.
-	async teardown() {
+	async resetSite() {
+		await this.requestUtils.updateSiteSettings( {
+			language: 'en_US',
+		} );
+
 		await this.requestUtils.deactivatePlugin( 'dyna-mo' );
 		await this.requestUtils.deactivatePlugin( 'ginger-mo' );
 		await this.requestUtils.deactivatePlugin( 'ginger-mo-prefer-json' );
@@ -59,6 +66,20 @@ class TestUtils {
 		await this.requestUtils.deactivatePlugin( 'native-gettext' );
 		await this.requestUtils.deactivatePlugin( 'wp-performance-pack' );
 		await this.requestUtils.deactivatePlugin( 'translations-cache' );
+
+		await this.clearCaches();
+	}
+
+	private async clearCaches() {
+		await this.requestUtils.request.head(
+			`${ this.requestUtils.baseURL }/?clear-cache=opcache`
+		);
+		await this.requestUtils.request.head(
+			`${ this.requestUtils.baseURL }/?clear-cache=object-cache`
+		);
+		await this.requestUtils.request.head(
+			`${ this.requestUtils.baseURL }/?clear-cache=apcu`
+		);
 	}
 }
 

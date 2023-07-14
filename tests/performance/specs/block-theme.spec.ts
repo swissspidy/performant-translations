@@ -14,11 +14,11 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 			objectCache ? 'Yes' : 'No'
 		}`, () => {
 			test.beforeAll( async ( { testUtils } ) => {
-				await testUtils.prepareTestCase( { scenario, objectCache } );
+				await testUtils.prepareTestCase( testCase );
 			} );
 
 			test.afterAll( async ( { testUtils } ) => {
-				await testUtils.teardown();
+				await testUtils.resetSite();
 			} );
 
 			test( 'Server Timing Metrics', async ( {
@@ -26,10 +26,6 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 				wpPerformancePack,
 				metrics,
 			}, testInfo ) => {
-				await testPage.clearCaches();
-
-				await testPage.setLocale( locale );
-
 				if ( scenario === Scenario.ObjectCache ) {
 					await wpPerformancePack.enableL10n();
 				}
@@ -55,8 +51,6 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 						};
 					}, Number( process.env.LIGHTHOUSE_RUNS ) ) ),
 				};
-
-				await testPage.setLocale( 'en_US' );
 
 				await testInfo.attach( 'results', {
 					body: JSON.stringify( results, null, 2 ),
