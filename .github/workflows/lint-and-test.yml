@@ -332,8 +332,6 @@ jobs:
             - name: Configure WordPress version
               run: |
                   echo "{\"core\":\"WordPress/WordPress#master\"}" >> .wp-env.override.json
-              env:
-                  WP_VERSION: ${{ matrix.wp }}
 
             - name: Install WordPress
               run: |
