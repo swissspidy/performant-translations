@@ -9,7 +9,7 @@ import type {
 } from '@playwright/test/reporter';
 
 class PerformanceReporter implements Reporter {
-	private shard?: string;
+	private shard?: FullConfig[ 'shard' ];
 
 	allResults: Record<
 		string,
@@ -21,7 +21,7 @@ class PerformanceReporter implements Reporter {
 
 	onBegin( config: FullConfig ) {
 		if ( config.shard ) {
-			this.shard = `${ config.shard.current }-${ config.shard.total }`;
+			this.shard = config.shard;
 		}
 	}
 
@@ -46,7 +46,13 @@ class PerformanceReporter implements Reporter {
 		const summary = [];
 
 		if ( Object.keys( this.allResults ).length > 0 ) {
-			console.log( `\nPerformance Test Results ${ this.shard }` );
+			if ( this.shard ) {
+				console.log(
+					`\nPerformance Test Results ${ this.shard.current }/${ this.shard.total }`
+				);
+			} else {
+				console.log( `\nPerformance Test Results` );
+			}
 			console.log( `Status: ${ result.status }` );
 		}
 
@@ -67,7 +73,7 @@ class PerformanceReporter implements Reporter {
 			join(
 				process.env.WP_ARTIFACTS_PATH as string,
 				this.shard
-					? `performance-results-${ this.shard }.json`
+					? `performance-results-${ this.shard.current }-${ this.shard.total }.json`
 					: 'performance-results.json'
 			),
 			JSON.stringify( summary, null, 2 )
