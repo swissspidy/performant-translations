@@ -370,8 +370,8 @@ jobs:
             - name: Run tests
               run: |
                   npm run test:performance -- --shard=${{ matrix.shard }}
-                  mkdir -p ${{ runner.temp }}/after
-                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results* ${{ runner.temp }}/after
+                  mkdir -p ${{ runner.temp }}/performance-results/after
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results* ${{ runner.temp }}/performance-results/after
 
             - name: Check out base commit
               run: |
@@ -385,8 +385,8 @@ jobs:
             - name: Run tests for base
               run: |
                   npm run test:performance -- --shard=${{ matrix.shard }} || true
-                  mkdir -p ${{ runner.temp }}/before
-                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results* ${{ runner.temp }}/before
+                  mkdir -p ${{ runner.temp }}/performance-results/before
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results* ${{ runner.temp }}/performance-results/before
 
             - name: Reset to original commit
               run: |
@@ -396,8 +396,8 @@ jobs:
               if: success()
               uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
               with:
-                  name: performance-results-${{ matrix.shard }}
-                  path: ${{ env.WP_ARTIFACTS_PATH }}/**/performance-results*
+                  name: performance-results
+                  path: ${{ runner.temp }}/performance-results/**/*.json
 
             - name: Archive debug artifacts (screenshots, HTML snapshots)
               uses: actions/upload-artifact@v3
@@ -425,6 +425,7 @@ jobs:
             - name: Download performance results
               uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a
               with:
+                  name: performance-results
                   path: ${{ env.WP_ARTIFACTS_PATH }}
 
             - name: Combine files into one
