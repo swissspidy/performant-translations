@@ -371,7 +371,7 @@ jobs:
               run: |
                   npm run test:performance -- --shard=${{ matrix.shard }}
                   mkdir -p ${{ runner.temp }}/after
-                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/after
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results* ${{ runner.temp }}/after
 
             - name: Check out base commit
               run: |
@@ -386,7 +386,7 @@ jobs:
               run: |
                   npm run test:performance -- --shard=${{ matrix.shard }} || true
                   mkdir -p ${{ runner.temp }}/before
-                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/before
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results* ${{ runner.temp }}/before
 
             - name: Reset to original commit
               run: |
