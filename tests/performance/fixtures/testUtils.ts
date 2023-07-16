@@ -10,7 +10,7 @@ class TestUtils {
 
 	async prepareTestCase( { objectCache, scenario, locale }: TestCase ) {
 		await this.requestUtils.updateSiteSettings( {
-			language: locale,
+			language: 'en_US' === locale ? '' : locale,
 		} );
 
 		if ( objectCache ) {
@@ -55,7 +55,7 @@ class TestUtils {
 	// Not using Promise.all() to avoid race conditions.
 	async resetSite() {
 		await this.requestUtils.updateSiteSettings( {
-			language: 'en_US',
+			language: '',
 		} );
 
 		await this.requestUtils.deactivatePlugin( 'dyna-mo' );
