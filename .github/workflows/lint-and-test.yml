@@ -6,6 +6,9 @@ on:
             - main
     pull_request:
 
+env:
+    WP_ARTIFACTS_PATH: ${{ github.workspace }}/artifacts
+
 jobs:
     lint-js:
         name: JS Lints
@@ -312,10 +315,11 @@ jobs:
                   vendor/bin/phpunit --group=l10n,i18n,pomo
 
     performance-tests:
-        name: 'Performance Tests (trunk)'
+        name: 'Performance Tests (${{ matrix.shard }})'
         runs-on: ubuntu-latest
-        env:
-            WP_ARTIFACTS_PATH: ${{ github.workspace }}/artifacts
+        strategy:
+            matrix:
+                shard: ['1/3', '2/3', '3/3']
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -365,8 +369,9 @@ jobs:
 
             - name: Run tests
               run: |
-                  npm run test:performance
-                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_after.json
+                  npm run test:performance -- --shard=${{ matrix.shard }}
+                  mkdir -p ${{ runner.temp }}/after
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/after
 
             - name: Check out base commit
               run: |
@@ -379,22 +384,57 @@ jobs:
             # Run tests without causing job to fail if they don't pass (e.g. because of env issues).
             - name: Run tests for base
               run: |
-                  npm run test:performance || true
-                  if [ -f "{{ env.WP_ARTIFACTS_PATH }}/performance-results.json" ]; then
-                    mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/results_before.json
-                  fi;
+                  npm run test:performance -- --shard=${{ matrix.shard }} || true
+                  mkdir -p ${{ runner.temp }}/before
+                  mv ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json ${{ runner.temp }}/before
 
             - name: Reset to original commit
               run: |
                   git reset --hard $GITHUB_SHA
 
+            - name: Archive performance results
+              if: success()
+              uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+              with:
+                  name: performance-results-${{ matrix.shard }}
+                  path: ${{ env.WP_ARTIFACTS_PATH }}/**/performance-results*
+
+            - name: Archive debug artifacts (screenshots, HTML snapshots)
+              uses: actions/upload-artifact@v3
+              if: failure()
+              with:
+                  name: failures-artifacts-${{ matrix.shard }}
+                  path: artifacts
+                  if-no-files-found: ignore
+
+    performance-tests-results:
+        name: Post performance test results
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        needs: [performance-tests]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: npm
+
+            - name: Download performance results
+              uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a
+              with:
+                  path: ${{ env.WP_ARTIFACTS_PATH }}
+
+            - name: Combine files into one
+              run: |
+                  jq -s add ${{ env.WP_ARTIFACTS_PATH }}/after/*.json > ${{ env.WP_ARTIFACTS_PATH }}/after.json
+                  jq -s add ${{ env.WP_ARTIFACTS_PATH }}/before/*.json > ${{ env.WP_ARTIFACTS_PATH }}/before.json
+
             - name: Compare results with base
               run: |
-                  if [ -f "${{ runner.temp }}/results_before.json" ]; then
-                    node tests/performance/cli/results.js ${{ runner.temp }}/results_after.json ${{ runner.temp }}/results_before.json
-                  else
-                    node tests/performance/cli/results.js ${{ runner.temp }}/results_after.json
-                  fi;
+                  node tests/performance/cli/results.js ${{ env.WP_ARTIFACTS_PATH }}/after.json ${{ env.WP_ARTIFACTS_PATH }}/before.json
 
             - name: Check if a comment was already made
               id: find-comment
@@ -422,18 +462,3 @@ jobs:
             - name: Add workflow summary
               run: |
                   cat ${{ env.WP_ARTIFACTS_PATH }}/performance-results.md >> $GITHUB_STEP_SUMMARY
-
-            - name: Archive performance results
-              if: success()
-              uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
-              with:
-                  name: performance-results
-                  path: ${{ env.WP_ARTIFACTS_PATH }}/performance-results.json
-
-            - name: Archive debug artifacts (screenshots, HTML snapshots)
-              uses: actions/upload-artifact@v3
-              if: failure()
-              with:
-                  name: failures-artifacts
-                  path: artifacts
-                  if-no-files-found: ignore
