@@ -20,12 +20,12 @@ class TestPage {
 		this.requestUtils = requestUtils;
 	}
 
-	async visitHomepage() {
-		await this.page.goto( '/' );
+	async visitHomepage( query?: string ) {
+		await this.page.goto( '/' + ( query ? `?${ query }` : '' ) );
 	}
 
-	async visitDashboard() {
-		await this.admin.visitAdminPage( 'index.php', '' );
+	async visitDashboard( query: string = '' ) {
+		await this.admin.visitAdminPage( 'index.php', query );
 	}
 }
 

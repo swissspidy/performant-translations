@@ -1,14 +1,11 @@
 import { test } from '../fixtures';
 import { testCases, iterate } from '../utils';
-import { Scenario } from '../utils/types';
 
-test.describe( 'Server Timing - WordPress Admin', () => {
+test.describe( 'WordPress Admin', () => {
 	for ( const testCase of testCases ) {
-		const { locale, scenario, objectCache } = testCase;
+		const { locale, scenario } = testCase;
 
-		test.describe( `Locale: ${ locale }, Scenario: ${ scenario }, Object Cache: ${
-			objectCache ? 'Yes' : 'No'
-		}`, () => {
+		test.describe( `Locale: ${ locale }, Scenario: ${ scenario }`, () => {
 			test.beforeAll( async ( { testUtils } ) => {
 				await testUtils.prepareTestCase( testCase );
 			} );
@@ -17,27 +14,21 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 				await testUtils.resetSite();
 			} );
 
-			test( 'Server Timing Metrics', async ( {
+			test( 'Collect Metrics', async ( {
 				testPage,
-				wpPerformancePack,
 				metrics,
 			}, testInfo ) => {
-				if ( scenario === Scenario.ObjectCache ) {
-					await wpPerformancePack.enableL10n();
-				}
-
 				const results = {
 					Locale: locale,
 					Scenario: scenario,
-					'Object Cache': objectCache,
 					...( await iterate( async () => {
 						await testPage.visitDashboard();
 						return {
 							...( await metrics.getServerTiming( [
 								'wp-memory-usage',
 								'wp-total',
+								'wp-locale-switching',
 							] ) ),
-							TTFB: await metrics.getTimeToFirstByte(),
 						};
 					} ) ),
 					...( await iterate( async () => {
