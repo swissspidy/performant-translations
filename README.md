@@ -20,67 +20,67 @@ The following numbers are for a site running 6.3 Beta with multiple active plugi
 
 | Locale |       Scenario        | Object Cache | wp-memory-usage | wp-total  | TTFB      |
 |:-------|:---------------------:|:------------:|:---------------:|:---------:|:----------|
-| en_US  |        Default        |              |     5.74 MB     | 139.61 ms | 145.05 ms |
-| de_DE  |        Default        |              |    12.74 MB     | 188.56 ms | 194.20 ms |
-| de_DE  |    Ginger MO (MO)     |              |     7.58 MB     | 167.98 ms | 173.35 ms |
-| de_DE  |    Ginger MO (PHP)    |              |     6.47 MB     | 146.23 ms | 151.55 ms |
-| de_DE  |   Ginger MO (JSON)    |              |     7.58 MB     | 161.83 ms | 167.15 ms |
-| de_DE  |    Native Gettext     |              |     5.82 MB     | 147.75 ms | 153.40 ms |
-| de_DE  |        DynaMo         |              |     7.34 MB     | 164.17 ms | 169.85 ms |
-| de_DE  |     Cache in APCu     |              |    23.89 MB     | 187.04 ms | 192.85 ms |
-| en_US  |        Default        |      ✅       |     5.81 MB     | 128.12 ms | 133.60 ms |
-| de_DE  |        Default        |      ✅       |    12.74 MB     | 179.25 ms | 185.20 ms |
-| de_DE  |    Ginger MO (MO)     |      ✅       |     7.58 MB     | 159.45 ms | 165.30 ms |
-| de_DE  |    Ginger MO (PHP)    |      ✅       |     6.47 MB     | 138.03 ms | 143.80 ms |
-| de_DE  |   Ginger MO (JSON)    |      ✅       |     7.58 MB     | 154.23 ms | 160.05 ms |
-| de_DE  |    Native Gettext     |      ✅       |     5.82 MB     | 138.91 ms | 144.65 ms |
-| de_DE  |        DynaMo         |      ✅       |     7.42 MB     | 141.01 ms | 146.70 ms |
-| de_DE  |     Cache in APCu     |      ✅       |    23.96 MB     | 180.63 ms | 186.85 ms |
-| de_DE  | Cache in object cache |      ✅       |    12.75 MB     | 182.44 ms | 188.70 ms |
+| en_US  |        Default        |              |    15.62 MB     | 157.27 ms | 162.90 ms |
+| de_DE  |        Default        |              |    29.12 MB     | 211.01 ms | 217.10 ms |
+| de_DE  |    Ginger MO (MO)     |              |    19.26 MB     | 187.72 ms | 193.40 ms |
+| de_DE  |    Ginger MO (PHP)    |              |    17.00 MB     | 164.92 ms | 170.60 ms |
+| de_DE  |   Ginger MO (JSON)    |              |    19.26 MB     | 180.43 ms | 186.10 ms |
+| de_DE  |    Native Gettext     |              |    16.02 MB     | 167.00 ms | 172.70 ms |
+| de_DE  |        DynaMo         |              |    19.60 MB     | 186.78 ms | 193.10 ms |
+| de_DE  |     Cache in APCu     |              |    50.26 MB     | 219.16 ms | 225.25 ms |
+| en_US  |        Default        |      ✅       |    15.70 MB     | 141.71 ms | 147.90 ms |
+| de_DE  |        Default        |      ✅       |    28.99 MB     | 193.13 ms | 200.05 ms |
+| de_DE  |    Ginger MO (MO)     |      ✅       |    19.13 MB     | 174.06 ms | 180.30 ms |
+| de_DE  |    Ginger MO (PHP)    |      ✅       |    16.88 MB     | 149.77 ms | 155.65 ms |
+| de_DE  |   Ginger MO (JSON)    |      ✅       |    19.13 MB     | 167.30 ms | 173.35 ms |
+| de_DE  |    Native Gettext     |      ✅       |    15.89 MB     | 151.55 ms | 157.75 ms |
+| de_DE  |        DynaMo         |      ✅       |    18.59 MB     | 156.32 ms | 162.20 ms |
+| de_DE  |     Cache in APCu     |      ✅       |    50.19 MB     | 202.61 ms | 209.15 ms |
+| de_DE  | Cache in object cache |      ✅       |    29.04 MB     | 196.95 ms | 203.75 ms |
 
 **Twenty Twenty-One**
 
 | Locale |       Scenario        | Object Cache | wp-memory-usage | wp-total  | TTFB      |
 |:-------|:---------------------:|:------------:|:---------------:|:---------:|:----------|
-| en_US  |        Default        |              |     5.73 MB     | 124.66 ms | 129.65 ms |
-| de_DE  |        Default        |              |    12.73 MB     | 172.44 ms | 177.85 ms |
-| de_DE  |    Ginger MO (MO)     |              |     7.57 MB     | 151.11 ms | 156.30 ms |
-| de_DE  |    Ginger MO (PHP)    |              |     6.46 MB     | 130.10 ms | 135.10 ms |
-| de_DE  |   Ginger MO (JSON)    |              |     7.57 MB     | 146.06 ms | 151.05 ms |
-| de_DE  |    Native Gettext     |              |     5.81 MB     | 132.91 ms | 137.90 ms |
-| de_DE  |        DynaMo         |              |     7.34 MB     | 150.18 ms | 155.50 ms |
-| de_DE  |     Cache in APCu     |              |    23.90 MB     | 171.78 ms | 177.50 ms |
-| en_US  |        Default        |      ✅       |     5.80 MB     | 111.89 ms | 117.15 ms |
-| de_DE  |        Default        |      ✅       |    12.73 MB     | 161.84 ms | 167.35 ms |
-| de_DE  |    Ginger MO (MO)     |      ✅       |     7.58 MB     | 138.71 ms | 143.90 ms |
-| de_DE  |    Ginger MO (PHP)    |      ✅       |     6.47 MB     | 118.71 ms | 124.00 ms |
-| de_DE  |   Ginger MO (JSON)    |      ✅       |     7.58 MB     | 134.22 ms | 139.45 ms |
-| de_DE  |    Native Gettext     |      ✅       |     5.81 MB     | 119.22 ms | 124.50 ms |
-| de_DE  |        DynaMo         |      ✅       |     7.43 MB     | 122.87 ms | 128.35 ms |
-| de_DE  |     Cache in APCu     |      ✅       |    23.97 MB     | 160.44 ms | 166.30 ms |
-| de_DE  | Cache in object cache |      ✅       |    12.75 MB     | 161.53 ms | 167.45 ms |
+| en_US  |        Default        |              |    15.38 MB     | 140.26 ms | 145.50 ms |
+| de_DE  |        Default        |              |    28.77 MB     | 192.69 ms | 199.00 ms |
+| de_DE  |    Ginger MO (MO)     |              |    18.86 MB     | 171.89 ms | 177.60 ms |
+| de_DE  |    Ginger MO (PHP)    |              |    16.59 MB     | 147.50 ms | 152.80 ms |
+| de_DE  |   Ginger MO (JSON)    |              |    18.86 MB     | 162.50 ms | 167.80 ms |
+| de_DE  |    Native Gettext     |              |    15.61 MB     | 150.07 ms | 155.45 ms |
+| de_DE  |        DynaMo         |              |    19.22 MB     | 172.42 ms | 178.90 ms |
+| de_DE  |     Cache in APCu     |              |    50.02 MB     | 200.39 ms | 206.25 ms |
+| en_US  |        Default        |      ✅       |    15.22 MB     | 122.90 ms | 128.80 ms |
+| de_DE  |        Default        |      ✅       |    28.57 MB     | 174.61 ms | 181.00 ms |
+| de_DE  |    Ginger MO (MO)     |      ✅       |    18.66 MB     | 153.67 ms | 159.80 ms |
+| de_DE  |    Ginger MO (PHP)    |      ✅       |    16.40 MB     | 130.44 ms | 136.40 ms |
+| de_DE  |   Ginger MO (JSON)    |      ✅       |    18.66 MB     | 150.01 ms | 156.25 ms |
+| de_DE  |    Native Gettext     |      ✅       |    15.41 MB     | 132.34 ms | 138.05 ms |
+| de_DE  |        DynaMo         |      ✅       |    18.12 MB     | 137.01 ms | 143.20 ms |
+| de_DE  |     Cache in APCu     |      ✅       |    49.88 MB     | 182.54 ms | 188.65 ms |
+| de_DE  | Cache in object cache |      ✅       |    28.63 MB     | 175.69 ms | 182.45 ms |
 
 **WordPress Admin**
 
 | Locale |       Scenario        | Object Cache | wp-memory-usage | wp-total  | TTFB      |
 |:-------|:---------------------:|:------------:|:---------------:|:---------:|:----------|
-| en_US  |        Default        |              |     5.61 MB     | 165.06 ms | 179.80 ms |
-| de_DE  |        Default        |              |    14.51 MB     | 198.29 ms | 209.70 ms |
-| de_DE  |    Ginger MO (MO)     |              |     7.97 MB     | 170.97 ms | 181.05 ms |
-| de_DE  |    Ginger MO (PHP)    |              |     6.51 MB     | 150.53 ms | 161.70 ms |
-| de_DE  |   Ginger MO (JSON)    |              |     7.97 MB     | 168.62 ms | 179.55 ms |
-| de_DE  |    Native Gettext     |              |     5.69 MB     | 154.93 ms | 165.20 ms |
-| de_DE  |        DynaMo         |              |     7.68 MB     | 172.49 ms | 183.50 ms |
-| de_DE  |     Cache in APCu     |              |    28.76 MB     | 198.75 ms | 211.30 ms |
-| en_US  |        Default        |      ✅       |     5.70 MB     | 116.78 ms | 126.60 ms |
-| de_DE  |        Default        |      ✅       |    14.53 MB     | 173.75 ms | 184.70 ms |
-| de_DE  |    Ginger MO (MO)     |      ✅       |     8.00 MB     | 149.42 ms | 160.30 ms |
-| de_DE  |    Ginger MO (PHP)    |      ✅       |     6.53 MB     | 125.66 ms | 136.70 ms |
-| de_DE  |   Ginger MO (JSON)    |      ✅       |     8.00 MB     | 154.01 ms | 168.25 ms |
-| de_DE  |    Native Gettext     |      ✅       |     5.71 MB     | 129.21 ms | 140.05 ms |
-| de_DE  |        DynaMo         |      ✅       |     7.71 MB     | 131.91 ms | 142.30 ms |
-| de_DE  |     Cache in APCu     |      ✅       |    28.79 MB     | 174.77 ms | 186.05 ms |
-| de_DE  | Cache in object cache |      ✅       |    14.55 MB     | 174.39 ms | 185.40 ms |
+| en_US  |        Default        |              |    15.45 MB     | 159.38 ms | 169.70 ms |
+| de_DE  |        Default        |              |    31.92 MB     | 227.88 ms | 246.85 ms |
+| de_DE  |    Ginger MO (MO)     |              |    20.08 MB     | 198.58 ms | 213.20 ms |
+| de_DE  |    Ginger MO (PHP)    |              |    17.11 MB     | 168.39 ms | 179.90 ms |
+| de_DE  |   Ginger MO (JSON)    |              |    20.08 MB     | 188.22 ms | 206.85 ms |
+| de_DE  |    Native Gettext     |              |    15.97 MB     | 169.81 ms | 181.05 ms |
+| de_DE  |        DynaMo         |              |    20.61 MB     | 203.86 ms | 221.60 ms |
+| de_DE  |     Cache in APCu     |              |    58.10 MB     | 230.67 ms | 245.10 ms |
+| en_US  |        Default        |      ✅       |    15.69 MB     | 129.18 ms | 147.65 ms |
+| de_DE  |        Default        |      ✅       |    31.85 MB     | 190.05 ms | 205.95 ms |
+| de_DE  |    Ginger MO (MO)     |      ✅       |    20.01 MB     | 165.63 ms | 180.00 ms |
+| de_DE  |    Ginger MO (PHP)    |      ✅       |    17.04 MB     | 141.34 ms | 153.15 ms |
+| de_DE  |   Ginger MO (JSON)    |      ✅       |    20.01 MB     | 159.72 ms | 173.80 ms |
+| de_DE  |    Native Gettext     |      ✅       |    15.89 MB     | 144.95 ms | 156.65 ms |
+| de_DE  |        DynaMo         |      ✅       |    19.75 MB     | 147.13 ms | 158.30 ms |
+| de_DE  |     Cache in APCu     |      ✅       |    58.02 MB     | 200.69 ms | 214.55 ms |
+| de_DE  | Cache in object cache |      ✅       |    31.87 MB     | 195.01 ms | 211.35 ms |
 
 ## Credits
 
