@@ -120,6 +120,10 @@ function formatValue( value, key ) {
 		return value.toFixed( 2 );
 	}
 
+	if ( key === 'wp-db-queries' ) {
+		return value.toFixed( 0 );
+	}
+
 	if ( key === 'wp-memory-usage' ) {
 		return `${ ( value / Math.pow( 10, 6 ) ).toFixed( 2 ) } MB`;
 	}

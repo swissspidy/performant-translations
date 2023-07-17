@@ -332,8 +332,6 @@ jobs:
             - name: Configure WordPress version
               run: |
                   echo "{\"core\":\"WordPress/WordPress#master\"}" >> .wp-env.override.json
-              env:
-                  WP_VERSION: ${{ matrix.wp }}
 
             - name: Install WordPress
               run: |
@@ -372,10 +370,15 @@ jobs:
 
             - name: Check out base commit
               run: |
-                  git fetch -n origin $BASE_REF || git fetch -n origin $BASE_SHA
-                  git reset --hard $BASE_REF || git reset --hard $BASE_SHA
+                  if [[ -z "$BASE_REF" ]]; then
+                    git fetch -n origin $BASE_SHA
+                    git reset --hard $BASE_SHA
+                  else
+                    git fetch -n origin $BASE_REF
+                    git reset --hard $BASE_SHA
+                  fi
               env:
-                  BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.event.base_ref }}
+                  BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || '' }}
                   BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
 
             # Run tests without causing job to fail if they don't pass (e.g. because of env issues).
