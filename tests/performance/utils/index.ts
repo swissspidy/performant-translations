@@ -1,20 +1,14 @@
 import { Scenario, type TestCase } from './types';
 
 export const testCases: TestCase[] = [
-	{ locale: 'en_US', scenario: Scenario.Default, localeSwitching: false },
-	{ locale: 'de_DE', scenario: Scenario.Default, localeSwitching: false },
-	{ locale: 'de_DE', scenario: Scenario.GingerMo, localeSwitching: false },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, localeSwitching: false },
+	{ locale: 'en_US', scenario: Scenario.Default },
+	{ locale: 'de_DE', scenario: Scenario.Default },
+	{ locale: 'de_DE', scenario: Scenario.GingerMo },
+	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp },
 	{
 		locale: 'de_DE',
 		scenario: Scenario.GingerMoJson,
-		localeSwitching: false,
 	},
-	{ locale: 'en_US', scenario: Scenario.Default, localeSwitching: true },
-	{ locale: 'de_DE', scenario: Scenario.Default, localeSwitching: true },
-	{ locale: 'de_DE', scenario: Scenario.GingerMo, localeSwitching: true },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, localeSwitching: true },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoJson, localeSwitching: true },
 ];
 
 type IterationCallback = () => Promise< Record< string, number > >;

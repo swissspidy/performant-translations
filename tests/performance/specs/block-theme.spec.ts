@@ -1,17 +1,15 @@
 import { test } from '../fixtures';
 import { testCases, iterate } from '../utils';
 
-test.describe( 'Server Timing - Twenty Twenty-Three', () => {
+test.describe( 'Twenty Twenty-Three', () => {
 	test.beforeAll( async ( { requestUtils } ) => {
 		await requestUtils.activateTheme( 'twentytwentythree' );
 	} );
 
 	for ( const testCase of testCases ) {
-		const { locale, scenario, localeSwitching } = testCase;
+		const { locale, scenario } = testCase;
 
-		test.describe( `Locale: ${ locale }, Scenario: ${ scenario }, Object Cache: ${
-			localeSwitching ? 'Yes' : 'No'
-		}`, () => {
+		test.describe( `Locale: ${ locale }, Scenario: ${ scenario }`, () => {
 			test.beforeAll( async ( { testUtils } ) => {
 				await testUtils.prepareTestCase( testCase );
 			} );
@@ -20,25 +18,21 @@ test.describe( 'Server Timing - Twenty Twenty-Three', () => {
 				await testUtils.resetSite();
 			} );
 
-			test( 'Server Timing Metrics', async ( {
+			test( 'Collect Metrics', async ( {
 				testPage,
 				metrics,
 			}, testInfo ) => {
 				const results = {
 					Locale: locale,
 					Scenario: scenario,
-					'Locale Switching': localeSwitching,
 					...( await iterate( async () => {
-						await testPage.visitHomepage(
-							localeSwitching ? 'switch-locales=1' : ''
-						);
+						await testPage.visitHomepage();
 						return {
 							...( await metrics.getServerTiming( [
 								'wp-memory-usage',
 								'wp-total',
 								'wp-locale-switching',
 							] ) ),
-							TTFB: await metrics.getTimeToFirstByte(),
 						};
 					} ) ),
 					...( await iterate( async () => {

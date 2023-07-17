@@ -8,5 +8,4 @@ export enum Scenario {
 export type TestCase = {
 	locale: string;
 	scenario: Scenario;
-	localeSwitching: boolean;
 };
