@@ -375,8 +375,13 @@ jobs:
 
             - name: Check out base commit
               run: |
-                  git fetch -n origin $BASE_REF || git fetch -n origin $BASE_SHA
-                  git reset --hard $BASE_REF || git reset --hard $BASE_SHA
+                  if [[ -z "$BASE_REF" ]]; then
+                    git fetch -n origin $BASE_SHA
+                    git reset --hard $BASE_SHA
+                  else
+                    git fetch -n origin $BASE_REF
+                    git reset --hard $BASE_REF
+                  fi
               env:
                   BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.event.base_ref }}
                   BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
