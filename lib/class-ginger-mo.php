@@ -64,7 +64,8 @@ class Ginger_MO {
 		}
 
 		if ( ! empty( $this->loaded_files[ $translation_file ][ $textdomain ] ) ) {
-			return false !== $this->loaded_files[ $translation_file ][ $textdomain ]->error();
+			// TODO: Add test coverage for this case.
+			return false === $this->loaded_files[ $translation_file ][ $textdomain ]->error();
 		}
 
 		if ( ! empty( $this->loaded_files[ $translation_file ] ) ) {
