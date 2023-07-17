@@ -20,7 +20,12 @@ add_action(
 			'memory-usage',
 			array(
 				'measure_callback' => function( Perflab_Server_Timing_Metric $metric ) {
-					$metric->set_value( memory_get_usage() );
+					add_action(
+						'perflab_server_timing_send_header',
+						static function() use ( $metric ) {
+							$metric->set_value( memory_get_usage() );
+						}
+					);
 				},
 				'access_cap'       => 'exist',
 			)
