@@ -1,13 +1,12 @@
 import { test } from '../fixtures';
 import { testCases, iterate } from '../utils';
-import { Scenario } from '../utils/types';
 
 test.describe( 'Server Timing - WordPress Admin', () => {
 	for ( const testCase of testCases ) {
-		const { locale, scenario, objectCache } = testCase;
+		const { locale, scenario, localeSwitching } = testCase;
 
 		test.describe( `Locale: ${ locale }, Scenario: ${ scenario }, Object Cache: ${
-			objectCache ? 'Yes' : 'No'
+			localeSwitching ? 'Yes' : 'No'
 		}`, () => {
 			test.beforeAll( async ( { testUtils } ) => {
 				await testUtils.prepareTestCase( testCase );
@@ -19,23 +18,21 @@ test.describe( 'Server Timing - WordPress Admin', () => {
 
 			test( 'Server Timing Metrics', async ( {
 				testPage,
-				wpPerformancePack,
 				metrics,
 			}, testInfo ) => {
-				if ( scenario === Scenario.ObjectCache ) {
-					await wpPerformancePack.enableL10n();
-				}
-
 				const results = {
 					Locale: locale,
 					Scenario: scenario,
-					'Object Cache': objectCache,
+					'Locale Switching': localeSwitching,
 					...( await iterate( async () => {
-						await testPage.visitDashboard();
+						await testPage.visitDashboard(
+							localeSwitching ? 'switch-locales=1' : ''
+						);
 						return {
 							...( await metrics.getServerTiming( [
 								'wp-memory-usage',
 								'wp-total',
+								'wp-locale-switching',
 							] ) ),
 							TTFB: await metrics.getTimeToFirstByte(),
 						};

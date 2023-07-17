@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Maybe clear caches
- * Description: Allows clearing caches (OPCache, object cache, APCU) visiting example.com?action=clear-XYZ
+ * Description: Allows clearing caches (OPCache, object cache) visiting example.com?action=clear-XYZ
  * Version: 0.1.0
  * Author: Pascal Birchler
  * Author URI: https://pascalbirchler.com
@@ -23,15 +23,7 @@ add_action(
 					die;
 
 				case 'object-cache':
-					if ( function_exists( 'opcache_reset' ) && opcache_reset() ) {
-						status_header( 202 );
-					} else {
-						status_header( 400 );
-					}
-					die;
-
-				case 'apcu-cache':
-					if ( function_exists( 'apcu_clear_cache' ) && apcu_clear_cache() ) {
+					if ( wp_cache_flush() ) {
 						status_header( 202 );
 					} else {
 						status_header( 400 );
