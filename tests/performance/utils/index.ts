@@ -1,23 +1,14 @@
 import { Scenario, type TestCase } from './types';
 
 export const testCases: TestCase[] = [
-	{ locale: 'en_US', scenario: Scenario.Default, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.Default, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.GingerMo, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoJson, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.NativeGettext, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.Dynamo, objectCache: false },
-	{ locale: 'de_DE', scenario: Scenario.Apcu, objectCache: false },
-	{ locale: 'en_US', scenario: Scenario.Default, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.Default, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.GingerMo, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.GingerMoJson, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.NativeGettext, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.Dynamo, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.Apcu, objectCache: true },
-	{ locale: 'de_DE', scenario: Scenario.ObjectCache, objectCache: true },
+	{ locale: 'en_US', scenario: Scenario.Default },
+	{ locale: 'de_DE', scenario: Scenario.Default },
+	{ locale: 'de_DE', scenario: Scenario.GingerMo },
+	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp },
+	{
+		locale: 'de_DE',
+		scenario: Scenario.GingerMoJson,
+	},
 ];
 
 type IterationCallback = () => Promise< Record< string, number > >;

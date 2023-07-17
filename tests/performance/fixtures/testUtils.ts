@@ -8,30 +8,10 @@ class TestUtils {
 		this.requestUtils = requestUtils;
 	}
 
-	async prepareTestCase( { objectCache, scenario, locale }: TestCase ) {
+	async prepareTestCase( { scenario, locale }: TestCase ) {
 		await this.requestUtils.updateSiteSettings( {
 			language: 'en_US' === locale ? '' : locale,
 		} );
-
-		if ( objectCache ) {
-			await this.requestUtils.activatePlugin( 'sq-lite-object-cache' );
-		}
-
-		if ( scenario === Scenario.Dynamo ) {
-			await this.requestUtils.activatePlugin( 'dyna-mo' );
-		}
-
-		if ( scenario === Scenario.NativeGettext ) {
-			await this.requestUtils.activatePlugin( 'native-gettext' );
-		}
-
-		if ( scenario === Scenario.ObjectCache ) {
-			await this.requestUtils.activatePlugin( 'wp-performance-pack' );
-		}
-
-		if ( scenario === Scenario.Apcu ) {
-			await this.requestUtils.activatePlugin( 'translations-cache' );
-		}
 
 		if (
 			scenario === Scenario.GingerMo ||
@@ -58,14 +38,9 @@ class TestUtils {
 			language: '',
 		} );
 
-		await this.requestUtils.deactivatePlugin( 'dyna-mo' );
 		await this.requestUtils.deactivatePlugin( 'ginger-mo' );
 		await this.requestUtils.deactivatePlugin( 'ginger-mo-prefer-json' );
 		await this.requestUtils.deactivatePlugin( 'ginger-mo-prefer-mo' );
-		await this.requestUtils.deactivatePlugin( 'sq-lite-object-cache' );
-		await this.requestUtils.deactivatePlugin( 'native-gettext' );
-		await this.requestUtils.deactivatePlugin( 'wp-performance-pack' );
-		await this.requestUtils.deactivatePlugin( 'translations-cache' );
 
 		await this.clearCaches();
 	}
@@ -76,9 +51,6 @@ class TestUtils {
 		);
 		await this.requestUtils.request.head(
 			`${ this.requestUtils.baseURL }/?clear-cache=object-cache`
-		);
-		await this.requestUtils.request.head(
-			`${ this.requestUtils.baseURL }/?clear-cache=apcu`
 		);
 	}
 }
