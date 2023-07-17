@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: Server Timing Memory Usage
- * Description: Add memory usage to the Performance Lab plugin's Server Timing API.
+ * Plugin Name: Server Timing DB Queries
+ * Description: Add total number of db queries to the Performance Lab plugin's Server Timing API.
  * Version: 0.1.0
  * Author: Pascal Birchler
  * Author URI: https://pascalbirchler.com
@@ -17,13 +17,14 @@ add_action(
 		}
 
 		perflab_server_timing_register_metric(
-			'memory-usage',
+			'db-queries',
 			array(
 				'measure_callback' => function( Perflab_Server_Timing_Metric $metric ) {
 					add_action(
 						'perflab_server_timing_send_header',
 						static function() use ( $metric ) {
-							$metric->set_value( memory_get_usage() );
+							global $wpdb;
+							$metric->set_value( $wpdb->num_queries );
 						}
 					);
 				},
