@@ -15,7 +15,7 @@ process.env.ASSETS_PATH = join(
 	'assets'
 );
 process.env.TEST_RUNS ??= '30';
-process.env.LIGHTHOUSE_RUNS ??= '0';
+process.env.LIGHTHOUSE_RUNS ??= '2';
 
 const config = defineConfig( {
 	reporter: process.env.CI
