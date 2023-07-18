@@ -26,7 +26,7 @@ class Ginger_MO_Translation_Compat {
 			return $override;
 		}
 
-		if ( ! $locale ) {
+		if ( null === $locale ) {
 			$locale = determine_locale();
 		}
 
@@ -91,7 +91,7 @@ class Ginger_MO_Translation_Compat {
 			if ( 'mo' !== $preferred_format && $convert ) {
 				$source      = Ginger_MO_Translation_File::create( $mofile );
 				$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
-				if ( $source && $destination ) {
+				if ( false !== $source && false !== $destination ) {
 					$source->export( $destination );
 				}
 			}

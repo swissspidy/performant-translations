@@ -84,37 +84,42 @@ class Ginger_MO {
 	 * @return bool True on success, false otherwise.
 	 */
 	public function load( $translation_file, $textdomain = null, $locale = null ) {
-		if ( ! $textdomain ) {
+		if ( null === $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
 
-		if ( ! $locale ) {
+		if ( null === $locale ) {
 			$locale = $this->current_locale;
 		}
 
 		$translation_file = realpath( $translation_file );
 
-		if ( ! $translation_file ) {
+		if ( false === $translation_file ) {
 			return false;
 		}
 
-		if ( ! empty( $this->loaded_files[ $translation_file ][ $locale ][ $textdomain ] ) ) {
-			// TODO: Add test coverage for this case.
+		if (
+			isset( $this->loaded_files[ $translation_file ][ $locale ][ $textdomain ] ) &&
+			false !== $this->loaded_files[ $translation_file ][ $locale ][ $textdomain ]
+		) {
 			return false === $this->loaded_files[ $translation_file ][ $locale ][ $textdomain ]->error();
 		}
 
-		if ( ! empty( $this->loaded_files[ $translation_file ][ $locale ] ) ) {
+		if (
+			isset( $this->loaded_files[ $translation_file ][ $locale ] ) &&
+			array() !== $this->loaded_files[ $translation_file ][ $locale ]
+		) {
 			$moe = reset( $this->loaded_files[ $translation_file ][ $locale ] );
 		} else {
 			$moe = Ginger_MO_Translation_File::create( $translation_file );
-			if ( ! $moe || $moe->error() ) {
+			if ( false === $moe || false !== $moe->error() ) {
 				$moe = false;
 			}
 		}
 
 		$this->loaded_files[ $translation_file ][ $locale ][ $textdomain ] = $moe;
 
-		if ( ! $moe ) {
+		if ( ! $moe instanceof Ginger_MO_Translation_File ) {
 			return false;
 		}
 
@@ -141,8 +146,8 @@ class Ginger_MO {
 			return false;
 		}
 
-		if ( $mo ) {
-			if ( $locale ) {
+		if ( null !== $mo ) {
+			if ( null !== $locale ) {
 				foreach ( $this->loaded_translations[ $locale ][ $textdomain ] as $i => $moe ) {
 					if ( $mo === $moe || $mo === $moe->get_file() ) {
 						unset( $this->loaded_translations[ $locale ][ $textdomain ][ $i ] );
@@ -154,11 +159,11 @@ class Ginger_MO {
 				return true;
 			}
 
-			foreach ( $this->loaded_translations as $locale => $domains ) {
+			foreach ( $this->loaded_translations as $l => $domains ) {
 				foreach ( $domains[ $textdomain ] as $i => $moe ) {
 					if ( $mo === $moe || $mo === $moe->get_file() ) {
-						unset( $this->loaded_translations[ $locale ][ $textdomain ][ $i ] );
-						unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
+						unset( $this->loaded_translations[ $l ][ $textdomain ][ $i ] );
+						unset( $this->loaded_files[ $moe->get_file() ][ $l ][ $textdomain ] );
 						return true;
 					}
 				}
@@ -167,7 +172,7 @@ class Ginger_MO {
 			return true;
 		}
 
-		if ( $locale ) {
+		if ( null !== $locale ) {
 			foreach ( $this->loaded_translations[ $locale ][ $textdomain ] as $moe ) {
 				unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
 			}
@@ -177,16 +182,16 @@ class Ginger_MO {
 			return true;
 		}
 
-		foreach ( $this->loaded_translations as $locale => $domains ) {
+		foreach ( $this->loaded_translations as $l => $domains ) {
 			if ( ! isset( $domains[ $textdomain ] ) ) {
 				continue;
 			}
 
 			foreach ( $domains[ $textdomain ] as $moe ) {
-				unset( $this->loaded_files[ $moe->get_file() ][ $locale ][ $textdomain ] );
+				unset( $this->loaded_files[ $moe->get_file() ][ $l ][ $textdomain ] );
 			}
 
-			unset( $this->loaded_translations[ $locale ][ $textdomain ] );
+			unset( $this->loaded_translations[ $l ][ $textdomain ] );
 		}
 
 		return true;
@@ -200,11 +205,12 @@ class Ginger_MO {
 	 * @return bool True if there are any loaded translations, false otherwise.
 	 */
 	public function is_loaded( $textdomain, $locale = null ) {
-		if ( ! $locale ) {
+		if ( null === $locale ) {
 			$locale = $this->current_locale;
 		}
 
-		return ! empty( $this->loaded_translations[ $locale ][ $textdomain ] );
+		return isset( $this->loaded_translations[ $locale ][ $textdomain ] ) &&
+			array() !== $this->loaded_translations[ $locale ][ $textdomain ];
 	}
 
 	/**
@@ -217,13 +223,13 @@ class Ginger_MO {
 	 * @return string|false Translation on success, false otherwise.
 	 */
 	public function translate( $text, $context = null, $textdomain = null, $locale = null ) {
-		if ( $context ) {
+		if ( null !== $context && '' !== $context ) {
 			$context .= "\4";
 		}
 
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain, $locale );
 
-		if ( ! $translation ) {
+		if ( false === $translation ) {
 			return false;
 		}
 
@@ -246,18 +252,18 @@ class Ginger_MO {
 	 * @return string|false Translation on success, false otherwise.
 	 */
 	public function translate_plural( $plurals, $number, $context = null, $textdomain = null, $locale = null ) {
-		if ( $context ) {
+		if ( null !== $context && '' !== $context ) {
 			$context .= "\4";
 		}
 
 		$text        = implode( "\0", $plurals );
 		$translation = $this->locate_translation( "{$context}{$text}", $textdomain, $locale );
 
-		if ( ! $translation ) {
+		if ( false === $translation ) {
 			$text        = $plurals[0];
 			$translation = $this->locate_translation( "{$context}{$text}", $textdomain, $locale );
 
-			if ( ! $translation ) {
+			if ( false === $translation ) {
 				return false;
 			}
 		}
@@ -276,11 +282,11 @@ class Ginger_MO {
 	 * @return array<string, string> Headers.
 	 */
 	public function get_headers( $textdomain = null ) {
-		if ( ! $this->loaded_translations ) {
+		if ( array() === $this->loaded_translations ) {
 			return array();
 		}
 
-		if ( ! $textdomain ) {
+		if ( null === $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
 
@@ -314,11 +320,11 @@ class Ginger_MO {
 	 * @return array<string, string> Entries.
 	 */
 	public function get_entries( $textdomain = null ) {
-		if ( ! $this->loaded_translations ) {
+		if ( array() === $this->loaded_translations ) {
 			return array();
 		}
 
-		if ( ! $textdomain ) {
+		if ( null === $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
 
@@ -341,11 +347,11 @@ class Ginger_MO {
 	 * @return array{source: Ginger_MO_Translation_File, entries: string[]}|false Translations on success, false otherwise.
 	 */
 	protected function locate_translation( $singular, $textdomain = null, $locale = null ) {
-		if ( ! $this->loaded_translations ) {
+		if ( array() === $this->loaded_translations ) {
 			return false;
 		}
 
-		if ( ! $textdomain ) {
+		if ( null === $textdomain ) {
 			$textdomain = $this->default_textdomain;
 		}
 
@@ -358,7 +364,7 @@ class Ginger_MO {
 					'source'  => $moe,
 				);
 			}
-			if ( $moe->error() ) {
+			if ( false !== $moe->error() ) {
 				// Unload this file, something is wrong.
 				$this->unload( $textdomain, $moe, $locale );
 			}
@@ -376,7 +382,7 @@ class Ginger_MO {
 	 * @return Ginger_MO_Translation_File[] List of translation files.
 	 */
 	protected function get_files( $textdomain = null, $locale = null ) {
-		if ( ! $locale ) {
+		if ( null === $locale ) {
 			$locale = $this->current_locale;
 		}
 

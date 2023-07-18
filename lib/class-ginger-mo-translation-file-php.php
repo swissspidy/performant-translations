@@ -22,9 +22,12 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 		}
 
 		if ( isset( $result['messages'] ) && is_array( $result['messages'] ) ) {
-			// $this->entries = $result['messages'];
 			foreach ( $result['messages'] as $singular => $translations ) {
-				$this->entries[ $singular ] = is_array( $translations ) ? implode( "\0", $translations ) : $translations;
+				if ( is_array( $translations ) ) {
+					$this->entries[ $singular ] = implode( "\0", $translations );
+				} elseif ( is_string( $translations ) ) {
+					$this->entries[ $singular ] = $translations;
+				}
 			}
 			unset( $result['messages'] );
 		}
@@ -37,7 +40,7 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	 * Writes translations to file.
 	 *
 	 * @param array<string, string> $headers Headers.
-	 * @param string[]              $entries Entries.
+	 * @param array<string, string> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_file( $headers, $entries ) {
