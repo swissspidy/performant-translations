@@ -22,7 +22,7 @@
 		"get-port": "^7.0.0",
 		"glob": "^10.3.0",
 		"lighthouse": "^10.3.0",
-		"patch-package": "^7.0.0",
+		"patch-package": "^7.0.2",
 		"playwright": "^1.35.1",
 		"tablemark": "^3.0.0"
 	},
