@@ -260,6 +260,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 	/**
 	 * @covers ::unload
+	 * @covers Ginger_MO_Translation_File::get_file
 	 *
 	 * @return void
 	 */
