@@ -17,19 +17,19 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	protected function parse_file() {
 		$data = file_get_contents( $this->file );
 
-		if ( ! $data ) {
+		if ( false === $data ) {
 			$this->error = true;
 			return;
 		}
 
 		$data = json_decode( $data, true );
 
-		if ( ! $data || ! is_array( $data ) ) {
+		if ( false === $data || ! is_array( $data ) ) {
 			$this->error = json_last_error_msg();
 			return;
 		}
 
-		if ( ! isset( $data['domain'] ) | ! isset( $data['locale_data'][ $data['domain'] ] ) ) {
+		if ( ! isset( $data['domain'] ) || ! isset( $data['locale_data'][ $data['domain'] ] ) ) {
 			$this->error = true;
 			return;
 		}
@@ -71,7 +71,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	 * Writes translations to file.
 	 *
 	 * @param array<string, string> $headers Headers.
-	 * @param string[]              $entries Entries.
+	 * @param array<string, string> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_file( $headers, $entries ) {
@@ -108,7 +108,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 
 		$json = json_encode( $data, JSON_PRETTY_PRINT );
 
-		if ( ! $json ) {
+		if ( false === $json ) {
 			return false;
 		}
 

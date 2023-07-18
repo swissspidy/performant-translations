@@ -46,25 +46,25 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	protected function detect_endian_and_validate_file( $header ) {
 		$big = unpack( 'N', $header );
 
-		if ( ! $big ) {
+		if ( false === $big ) {
 			return false;
 		}
 
 		$big = reset( $big );
 
-		if ( ! $big ) {
+		if ( false === $big ) {
 			return false;
 		}
 
 		$little = unpack( 'V', $header );
 
-		if ( ! $little ) {
+		if ( false === $little ) {
 			return false;
 		}
 
 		$little = reset( $little );
 
-		if ( ! $little ) {
+		if ( false === $little ) {
 			return false;
 		}
 
@@ -102,18 +102,20 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		}
 
 		$this->uint32 = $this->detect_endian_and_validate_file( substr( $file_contents, 0, 4 ) );
-		if ( ! $this->uint32 ) {
+
+		if ( false === $this->uint32 ) {
 			return false;
 		}
 
 		$offsets = substr( $file_contents, 4, 24 );
-		if ( ! $offsets ) {
+
+		if ( false === $offsets ) {
 			return false;
 		}
 
 		$offsets = unpack( "{$this->uint32}rev/{$this->uint32}total/{$this->uint32}originals_addr/{$this->uint32}translations_addr/{$this->uint32}hash_length/{$this->uint32}hash_addr", $offsets );
 
-		if ( ! $offsets ) {
+		if ( false === $offsets ) {
 			return false;
 		}
 
@@ -138,7 +140,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			$o = unpack( "{$this->uint32}length/{$this->uint32}pos", $original_data[ $i ] );
 			$t = unpack( "{$this->uint32}length/{$this->uint32}pos", $translations_data[ $i ] );
 
-			if ( ! $o || ! $t ) {
+			if ( false === $o || false === $t ) {
 				continue;
 			}
 
@@ -150,7 +152,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			// Metadata about the MO file is stored in the first translation entry.
 			if ( '' === $original ) {
 				foreach ( explode( "\n", $translation ) as $meta_line ) {
-					if ( ! $meta_line ) {
+					if ( '' === $meta_line ) {
 						continue;
 					}
 
@@ -169,8 +171,8 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	/**
 	 * Writes translations to file.
 	 *
-	 * @param array<string, string>   $headers Headers.
-	 * @param array<string, string[]> $entries Entries.
+	 * @param array<string, string> $headers Headers.
+	 * @param array<string, string> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_file( $headers, $entries ) {
@@ -182,7 +184,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$entries     = array_merge( array( '' => $headers_string ), $entries );
 		$entry_count = count( $entries );
 
-		if ( ! $this->uint32 ) {
+		if ( false === $this->uint32 ) {
 			$this->uint32 = 'V';
 		}
 
@@ -194,10 +196,6 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		$entry_offsets     = $hash_addr;
 
 		$file_header = pack( $this->uint32 . '*', self::MAGIC_MARKER, 0 /* rev */, $entry_count, $originals_addr, $translations_addr, 0 /* hash_length */, $hash_addr );
-
-		if ( ! $file_header ) {
-			$file_header = '';
-		}
 
 		$o_entries = '';
 		$t_entries = '';
@@ -211,10 +209,9 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 		}
 
 		foreach ( $entries as $translations ) {
-			$translation    = is_array( $translations ) ? implode( "\0", $translations ) : $translations;
-			$t_addr        .= pack( $this->uint32 . '*', strlen( $translation ), $entry_offsets );
-			$entry_offsets += strlen( $translation ) + 1;
-			$t_entries     .= $translation . pack( 'x' );
+			$t_addr        .= pack( $this->uint32 . '*', strlen( $translations ), $entry_offsets );
+			$entry_offsets += strlen( $translations ) + 1;
+			$t_entries     .= $translations . pack( 'x' );
 		}
 
 		return (bool) file_put_contents( $this->file, $file_header . $o_addr . $t_addr . $o_entries . $t_entries );

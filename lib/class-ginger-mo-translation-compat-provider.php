@@ -106,7 +106,7 @@ class Ginger_MO_Translation_Compat_Provider {
 	 */
 	public function translate_plural( $singular, $plural, $count = 1, $context = '' ) {
 		$translation = Ginger_MO::instance()->translate_plural( array( $singular, $plural ), $count, $context, $this->textdomain );
-		if ( $translation ) {
+		if ( false !== $translation ) {
 			return $translation;
 		}
 
@@ -123,7 +123,7 @@ class Ginger_MO_Translation_Compat_Provider {
 	 */
 	public function translate( $singular, $context = '' ) {
 		$translation = Ginger_MO::instance()->translate( $singular, $context, $this->textdomain );
-		if ( $translation ) {
+		if ( false !== $translation ) {
 			return $translation;
 		}
 
