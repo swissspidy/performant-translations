@@ -5,7 +5,7 @@
  */
 class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	/**
-	 * @covers >:instance
+	 * @covers ::instance
 	 *
 	 * @return void
 	 */
@@ -13,8 +13,6 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$instance  = Ginger_MO::instance();
 		$instance2 = Ginger_MO::instance();
 
-		$this->assertInstanceOf( Ginger_MO::class, $instance );
-		$this->assertInstanceOf( Ginger_MO::class, $instance2 );
 		$this->assertSame( $instance, $instance2 );
 	}
 
@@ -86,7 +84,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 		$this->assertNotFalse( $instance->error() );
 
-		if ( $expected_error ) {
+		if ( null !== $expected_error ) {
 			$this->assertSame( $expected_error, $instance->error() );
 		}
 	}
@@ -217,5 +215,143 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'simple.mo' ) );
 
 		$this->assertFalse( $ginger_mo->translate( 'baba', null, 'unittest' ) );
+	}
+
+	/**
+	 * @covers ::load
+	 * @covers ::locate_translation
+	 *
+	 * @return void
+	 */
+	public function test_load_with_default_textdomain() {
+		$ginger_mo = new Ginger_MO();
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo' ) );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo' ) );
+		$this->assertFalse( $ginger_mo->is_loaded( 'unittest' ) );
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original' ) );
+	}
+
+	/**
+	 * @covers ::load
+	 *
+	 * @return void
+	 */
+	public function test_load_same_file_twice() {
+		$ginger_mo = new Ginger_MO();
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
+	}
+
+	/**
+	 * @covers ::load
+	 *
+	 * @return void
+	 */
+	public function test_load_file_is_already_loaded_for_different_textdomain() {
+		$ginger_mo = new Ginger_MO();
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'foo' ) );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'bar' ) );
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'foo' ) );
+		$this->assertTrue( $ginger_mo->is_loaded( 'bar' ) );
+	}
+
+	/**
+	 * @covers ::unload
+	 * @covers Ginger_MO_Translation_File::get_file
+	 *
+	 * @return void
+	 */
+	public function test_unload_file_is_not_actually_loaded() {
+		$ginger_mo = new Ginger_MO();
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
+		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'simple.mo' ) );
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original', null, 'unittest' ) );
+	}
+
+	/**
+	 * @covers ::get_headers
+	 *
+	 * @return void
+	 */
+	public function test_get_headers_no_loaded_translations() {
+		$ginger_mo = new Ginger_MO();
+		$headers   = $ginger_mo->get_headers();
+		$this->assertEmpty( $headers );
+	}
+
+	/**
+	 * @covers ::get_headers
+	 *
+	 * @return void
+	 */
+	public function test_get_headers_with_default_textdomain() {
+		$ginger_mo = new Ginger_MO();
+		$ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo' );
+		$headers = $ginger_mo->get_headers();
+		$this->assertSame(
+			array(
+				'Po-Revision-Date' => '2016-01-05 18:45:32+1000',
+			),
+			$headers
+		);
+	}
+
+	/**
+	 * @covers ::get_headers
+	 *
+	 * @return void
+	 */
+	public function test_get_headers_no_loaded_translations_for_domain() {
+		$ginger_mo = new Ginger_MO();
+		$ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'foo' );
+		$headers = $ginger_mo->get_headers( 'bar' );
+		$this->assertEmpty( $headers );
+	}
+
+
+	/**
+	 * @covers ::get_entries
+	 *
+	 * @return void
+	 */
+	public function test_get_entries_no_loaded_translations() {
+		$ginger_mo = new Ginger_MO();
+		$headers   = $ginger_mo->get_entries();
+		$this->assertEmpty( $headers );
+	}
+
+	/**
+	 * @covers ::get_entries
+	 *
+	 * @return void
+	 */
+	public function test_get_entries_with_default_textdomain() {
+		$ginger_mo = new Ginger_MO();
+		$ginger_mo->load( GINGER_MO_TEST_DATA . 'simple.mo' );
+		$headers = $ginger_mo->get_entries();
+		$this->assertSame(
+			array(
+				'baba'       => 'dyado',
+				"kuku\nruku" => 'yes',
+			),
+			$headers
+		);
+	}
+
+	/**
+	 * @covers ::get_entries
+	 *
+	 * @return void
+	 */
+	public function test_get_entries_no_loaded_translations_for_domain() {
+		$ginger_mo = new Ginger_MO();
+		$ginger_mo->load( GINGER_MO_TEST_DATA . 'simple.mo', 'foo' );
+		$headers = $ginger_mo->get_entries( 'bar' );
+		$this->assertEmpty( $headers );
 	}
 }

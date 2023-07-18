@@ -80,8 +80,11 @@ class Ginger_MO_Translation_File {
 	 * @return false|Ginger_MO_Translation_File
 	 */
 	public static function create( $file, $context = 'read', $filetype = null ) {
-		if ( ! $filetype ) {
-			$filetype = substr( $file, strrpos( $file, '.' ) + 1 );
+		if ( null === $filetype ) {
+			$pos = strrpos( $file, '.' );
+			if ( false !== $pos ) {
+				$filetype = substr( $file, $pos + 1 );
+			}
 		}
 
 		switch ( $filetype ) {
@@ -130,6 +133,8 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Returns the current error information.
 	 *
+	 * @phpstan-impure
+	 *
 	 * @return bool|string Error
 	 */
 	public function error() {
@@ -171,7 +176,7 @@ class Ginger_MO_Translation_File {
 		}
 
 		// In case a plural form is specified as a header, but no function included, build one.
-		if ( ! $this->plural_forms && isset( $this->headers['plural-forms'] ) ) {
+		if ( null === $this->plural_forms && isset( $this->headers['plural-forms'] ) ) {
 			$this->plural_forms = $this->make_plural_form_function( $this->headers['plural-forms'] );
 		}
 
@@ -196,7 +201,7 @@ class Ginger_MO_Translation_File {
 	 * @return bool True on success, false otherwise.
 	 */
 	public function export( Ginger_MO_Translation_File $destination ) {
-		if ( $destination->error() ) {
+		if ( false !== $destination->error() ) {
 			return false;
 		}
 
@@ -238,7 +243,7 @@ class Ginger_MO_Translation_File {
 	 * Writes translations to file.
 	 *
 	 * @param array<string, string> $headers Headers.
-	 * @param mixed                 $entries Entries.
+	 * @param array<string, string> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function create_file( $headers, $entries ) {
