@@ -31,7 +31,10 @@ class TestPage {
 	}
 
 	async visitDashboard( query: string = '' ) {
-		await this.admin.visitAdminPage( 'index.php', query );
+		await this.page.goto(
+			`${ this.baseURL || '' }/wp-admin/index.php` +
+				( query ? `?${ query }` : '' )
+		);
 	}
 }
 
