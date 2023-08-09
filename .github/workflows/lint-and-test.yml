@@ -240,8 +240,12 @@ jobs:
                   if-no-files-found: ignore
 
     core-php:
-        name: 'WP core tests'
+        name: 'WP core tests (${{ matrix.wp }})'
         runs-on: ubuntu-latest
+        strategy:
+          fail-fast: false
+          matrix:
+            wp: ['trunk', '6.3']
         services:
             mysql:
                 image: mariadb:latest
@@ -259,6 +263,7 @@ jobs:
               uses: actions/checkout@v3
               with:
                   repository: 'wordpress/wordpress-develop'
+                  ref: ${{ matrix.wp }}
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
