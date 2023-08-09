@@ -5,23 +5,29 @@ class TestPage {
 	page: Page;
 	admin: Admin;
 	requestUtils: RequestUtils;
+	baseURL?: string;
 
 	constructor( {
 		page,
 		admin,
 		requestUtils,
+		baseURL,
 	}: {
 		page: Page;
 		admin: Admin;
 		requestUtils: RequestUtils;
+		baseURL?: string;
 	} ) {
 		this.page = page;
 		this.admin = admin;
 		this.requestUtils = requestUtils;
+		this.baseURL = baseURL;
 	}
 
 	async visitHomepage( query?: string ) {
-		await this.page.goto( '/' + ( query ? `?${ query }` : '' ) );
+		await this.page.goto(
+			`${ this.baseURL || '' }/` + ( query ? `?${ query }` : '' )
+		);
 	}
 
 	async visitDashboard( query: string = '' ) {

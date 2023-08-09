@@ -66,8 +66,8 @@ export const test = base.extend<
 		},
 		{ scope: 'worker', auto: true },
 	],
-	testPage: async ( { page, admin, requestUtils }, use ) => {
-		await use( new TestPage( { page, admin, requestUtils } ) );
+	testPage: async ( { baseURL, page, admin, requestUtils }, use ) => {
+		await use( new TestPage( { page, baseURL, admin, requestUtils } ) );
 	},
 } );
 
