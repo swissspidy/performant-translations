@@ -76,7 +76,7 @@ jobs:
         continue-on-error: ${{ matrix.experimental }}
         strategy:
             matrix:
-                php: ['7.4', '7.3.', '7.2', '7.1', '7.0', '5.6']
+                php: ['7.4', '7.3.', '7.2', '7.1', '7.0']
                 wp: ['latest']
                 coverage: [false]
                 experimental: [false]
@@ -95,6 +95,10 @@ jobs:
                       experimental: true
 
                     - php: '8.2'
+                      wp: 'trunk'
+                      experimental: true
+
+                    - php: '8.3'
                       wp: 'trunk'
                       experimental: true
 
@@ -132,7 +136,7 @@ jobs:
             # See https://make.wordpress.org/core/handbook/references/phpunit-compatibility-and-wordpress-versions/
             - name: Update PHPUnit
               run: |
-                  if [[ $PHP_VERSION == "7.4" || $PHP_VERSION == "8.0" || $PHP_VERSION == "8.1" || $PHP_VERSION == "8.2" ]]; then
+                  if [[ $PHP_VERSION == "7.4" || $PHP_VERSION == "8.0" || $PHP_VERSION == "8.1" || $PHP_VERSION == "8.2" || $PHP_VERSION == "8.3" ]]; then
                     echo "Installing latest version of PHPUnit"
                     composer update --ignore-platform-reqs --no-interaction --no-scripts yoast/phpunit-polyfills --with-dependencies
                   fi
@@ -236,8 +240,12 @@ jobs:
                   if-no-files-found: ignore
 
     core-php:
-        name: 'WP core tests'
+        name: 'WP core tests (${{ matrix.wp }})'
         runs-on: ubuntu-latest
+        strategy:
+          fail-fast: false
+          matrix:
+            wp: ['trunk', '6.3']
         services:
             mysql:
                 image: mariadb:latest
@@ -255,6 +263,7 @@ jobs:
               uses: actions/checkout@v3
               with:
                   repository: 'wordpress/wordpress-develop'
+                  ref: ${{ matrix.wp }}
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
