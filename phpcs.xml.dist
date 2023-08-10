@@ -22,7 +22,7 @@
 	</rule>
 
 	<!-- We only support the latest major WordPress release. -->
-	<config name="minimum_wp_version" value="6.2" />
+	<config name="minimum_wp_version" value="6.3" />
 
 	<!-- Check all PHP files in directory tree by default. -->
 	<arg name="extensions" value="php"/>
