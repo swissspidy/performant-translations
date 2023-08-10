@@ -52,11 +52,11 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest' ) );
 		$this->assertTrue( $instance->is_loaded( 'unittest' ) );
 
-		$this->assertSame( 'translation', $instance->translate( 'original', null, 'unittest' ) );
+		$this->assertSame( 'translation', $instance->translate( 'original', '', 'unittest' ) );
 
 		$this->assertTrue( $instance->unload( 'unittest' ) );
 		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
-		$this->assertFalse( $instance->translate( 'original', null, 'unittest' ) );
+		$this->assertFalse( $instance->translate( 'original', '', 'unittest' ) );
 	}
 
 	/**
@@ -139,15 +139,15 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
 		$this->assertFalse( $ginger_mo->is_loaded( 'textdomain not loaded' ) );
 
-		$this->assertFalse( $ginger_mo->translate( "string that doesn't exist", null, 'unittest' ) );
-		$this->assertFalse( $ginger_mo->translate( 'original', null, 'textdomain not loaded' ) );
+		$this->assertFalse( $ginger_mo->translate( "string that doesn't exist", '', 'unittest' ) );
+		$this->assertFalse( $ginger_mo->translate( 'original', '', 'textdomain not loaded' ) );
 
-		$this->assertSame( 'translation', $ginger_mo->translate( 'original', null, 'unittest' ) );
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original', '', 'unittest' ) );
 		$this->assertSame( 'translation with context', $ginger_mo->translate( 'original with context', 'context', 'unittest' ) );
 
-		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 0, null, 'unittest' ) );
-		$this->assertSame( 'translation0', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 1, null, 'unittest' ) );
-		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 2, null, 'unittest' ) );
+		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 0, '', 'unittest' ) );
+		$this->assertSame( 'translation0', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 1, '', 'unittest' ) );
+		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 2, '', 'unittest' ) );
 
 		$this->assertSame( 'translation1 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 0, 'context', 'unittest' ) );
 		$this->assertSame( 'translation0 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 1, 'context', 'unittest' ) );
@@ -186,17 +186,17 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
 
-		$this->assertFalse( $ginger_mo->translate( "string that doesn't exist", null, 'unittest' ) );
-		$this->assertFalse( $ginger_mo->translate( 'original', null, 'textdomain not loaded' ) );
+		$this->assertFalse( $ginger_mo->translate( "string that doesn't exist", '', 'unittest' ) );
+		$this->assertFalse( $ginger_mo->translate( 'original', '', 'textdomain not loaded' ) );
 
 		// From example-simple.mo
 
-		$this->assertSame( 'translation', $ginger_mo->translate( 'original', null, 'unittest' ) );
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original', '', 'unittest' ) );
 		$this->assertSame( 'translation with context', $ginger_mo->translate( 'original with context', 'context', 'unittest' ) );
 
-		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 0, null, 'unittest' ) );
-		$this->assertSame( 'translation0', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 1, null, 'unittest' ) );
-		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 2, null, 'unittest' ) );
+		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 0, '', 'unittest' ) );
+		$this->assertSame( 'translation0', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 1, '', 'unittest' ) );
+		$this->assertSame( 'translation1', $ginger_mo->translate_plural( array( 'plural0', 'plural1' ), 2, '', 'unittest' ) );
 
 		$this->assertSame( 'translation1 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 0, 'context', 'unittest' ) );
 		$this->assertSame( 'translation0 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 1, 'context', 'unittest' ) );
@@ -204,17 +204,17 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 		// From simple.mo.
 
-		$this->assertSame( 'dyado', $ginger_mo->translate( 'baba', null, 'unittest' ) );
+		$this->assertSame( 'dyado', $ginger_mo->translate( 'baba', '', 'unittest' ) );
 
 		// From plural.mo.
 
-		$this->assertSame( 'oney dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, null, 'unittest' ), 'Actual translation does not match expected one' );
-		$this->assertSame( 'twoey dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 2, null, 'unittest' ), 'Actual translation does not match expected one' );
-		$this->assertSame( 'twoey dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), -8, null, 'unittest' ), 'Actual translation does not match expected one' );
+		$this->assertSame( 'oney dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, '', 'unittest' ), 'Actual translation does not match expected one' );
+		$this->assertSame( 'twoey dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 2, '', 'unittest' ), 'Actual translation does not match expected one' );
+		$this->assertSame( 'twoey dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), -8, '', 'unittest' ), 'Actual translation does not match expected one' );
 
 		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'simple.mo' ) );
 
-		$this->assertFalse( $ginger_mo->translate( 'baba', null, 'unittest' ) );
+		$this->assertFalse( $ginger_mo->translate( 'baba', '', 'unittest' ) );
 	}
 
 	/**
@@ -245,23 +245,23 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 		// From example-simple.mo
 
-		$this->assertSame( 'translation', $ginger_mo->translate( 'original', null, 'unittest' ), 'String should be translated in de_DE' );
-		$this->assertFalse( $ginger_mo->translate( 'original', null, 'unittest', 'es_ES' ), 'String should not be translated in es_ES' );
-		$this->assertFalse( $ginger_mo->translate( 'original', null, 'unittest', 'en_US' ), 'String should not be translated in en_US' );
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original', '', 'unittest' ), 'String should be translated in de_DE' );
+		$this->assertFalse( $ginger_mo->translate( 'original', '', 'unittest', 'es_ES' ), 'String should not be translated in es_ES' );
+		$this->assertFalse( $ginger_mo->translate( 'original', '', 'unittest', 'en_US' ), 'String should not be translated in en_US' );
 
 		// From simple.mo.
 
-		$this->assertFalse( $ginger_mo->translate( 'baba', null, 'unittest' ), 'String should not be translated in de_DE' );
-		$this->assertSame( 'dyado', $ginger_mo->translate( 'baba', null, 'unittest', 'es_ES' ), 'String should be translated in es_ES' );
-		$this->assertFalse( $ginger_mo->translate( 'baba', null, 'unittest', 'en_US' ), 'String should not be translated in en_US' );
+		$this->assertFalse( $ginger_mo->translate( 'baba', '', 'unittest' ), 'String should not be translated in de_DE' );
+		$this->assertSame( 'dyado', $ginger_mo->translate( 'baba', '', 'unittest', 'es_ES' ), 'String should be translated in es_ES' );
+		$this->assertFalse( $ginger_mo->translate( 'baba', '', 'unittest', 'en_US' ), 'String should not be translated in en_US' );
 
 		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'plural.mo', 'de_DE' ) );
 
-		$this->assertSame( 'oney dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, null, 'unittest', 'en_US' ), 'String should be translated in en_US' );
+		$this->assertSame( 'oney dragoney', $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, '', 'unittest', 'en_US' ), 'String should be translated in en_US' );
 
 		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'plural.mo', 'en_US' ) );
 
-		$this->assertFalse( $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, null, 'unittest', 'en_US' ), 'String should not be translated in en_US' );
+		$this->assertFalse( $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, '', 'unittest', 'en_US' ), 'String should not be translated in en_US' );
 	}
 
 	/**
@@ -317,7 +317,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'simple.mo' ) );
 
 		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
-		$this->assertSame( 'translation', $ginger_mo->translate( 'original', null, 'unittest' ) );
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original', '', 'unittest' ) );
 	}
 
 	/**

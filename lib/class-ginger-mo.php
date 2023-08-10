@@ -204,10 +204,10 @@ class Ginger_MO {
 	/**
 	 * Translates a singular string.
 	 *
-	 * @param string      $text       Text to translate.
-	 * @param string|null $context    Optional. Context for the string.
-	 * @param string      $textdomain Text domain.
-	 * @param string      $locale     Optional. Locale. Default current locale.
+	 * @param string $text       Text to translate.
+	 * @param string $context    Optional. Context for the string.
+	 * @param string $textdomain Text domain.
+	 * @param string $locale     Optional. Locale. Default current locale.
 	 * @return string|false Translation on success, false otherwise.
 	 */
 	public function translate( string $text, string $context = '', string $textdomain = 'default', string $locale = null ) {
@@ -234,7 +234,7 @@ class Ginger_MO {
 	 *
 	 * @param array{0: string, 1: string} $plurals    Pair of singular and plural translation.
 	 * @param int                         $number     Number of items.
-	 * @param string|null                 $context    Optional. Context for the string.
+	 * @param string                      $context    Optional. Context for the string.
 	 * @param string                      $textdomain Text domain.
 	 * @param string                      $locale     Optional. Locale. Default current locale.
 	 * @return string|false Translation on success, false otherwise.
