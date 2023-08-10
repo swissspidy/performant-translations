@@ -67,7 +67,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @param string|bool $expected_error
 	 * @return void
 	 */
-	public function test_invalid_files( $type, $file_contents, $expected_error = null ) {
+	public function test_invalid_files( string $type, string $file_contents, $expected_error = null ) {
 		$file = $this->temp_file( $file_contents );
 
 		$this->assertNotFalse( $file );
@@ -92,7 +92,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	/**
 	 * @return array{0: array{0: string, 1: string|false, 2?: string}}
 	 */
-	public function data_invalid_files() {
+	public function data_invalid_files(): array {
 		return array(
 			array( 'php', '' ),
 			array( 'php', '<?php // This is a php file without a payload' ),
@@ -132,7 +132,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @param string $file
 	 * @return void
 	 */
-	public function test_simple_translation_files( $file ) {
+	public function test_simple_translation_files( string $file ) {
 		$ginger_mo = new Ginger_MO();
 		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . $file, 'unittest' ) );
 
@@ -157,7 +157,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	/**
 	 * @return array<array{0: string}>
 	 */
-	public function data_simple_example_files() {
+	public function data_simple_example_files(): array {
 		return array(
 			array( 'example-simple.json' ),
 			array( 'example-simple.mo' ),

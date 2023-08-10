@@ -74,7 +74,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	 * @param array<string, string> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function create_file( $headers, $entries ) {
+	protected function create_file( $headers, $entries ): bool {
 		$headers = array_change_key_case( $headers );
 
 		$domain = isset( $headers['domain'] ) ? $headers['domain'] : 'messages';

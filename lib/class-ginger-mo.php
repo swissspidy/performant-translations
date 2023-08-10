@@ -10,13 +10,6 @@
  */
 class Ginger_MO {
 	/**
-	 * Default text domain.
-	 *
-	 * @var string
-	 */
-	protected $default_textdomain = 'default';
-
-	/**
 	 * Map of loaded translations per text domain.
 	 *
 	 * @var array<string, Ginger_MO_Translation_File[]>
@@ -35,7 +28,7 @@ class Ginger_MO {
 	 *
 	 * @return Ginger_MO
 	 */
-	public static function instance() {
+	public static function instance(): Ginger_MO {
 		static $instance;
 
 		if ( ! $instance ) {
@@ -52,11 +45,7 @@ class Ginger_MO {
 	 * @param string $textdomain Text domain.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function load( $translation_file, $textdomain = null ) {
-		if ( null === $textdomain ) {
-			$textdomain = $this->default_textdomain;
-		}
-
+	public function load( string $translation_file, string $textdomain = 'default' ): bool {
 		$translation_file = realpath( $translation_file );
 
 		if ( false === $translation_file ) {
@@ -102,7 +91,7 @@ class Ginger_MO {
 	 * @param Ginger_MO_Translation_File|string $mo         Translation file instance or file name.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function unload( $textdomain, $mo = null ) {
+	public function unload( string $textdomain = 'default', $mo = null ): bool {
 		if ( ! $this->is_loaded( $textdomain ) ) {
 			return false;
 		}
@@ -133,7 +122,7 @@ class Ginger_MO {
 	 * @param string $textdomain Text domain.
 	 * @return bool True if there are any loaded translations, false otherwise.
 	 */
-	public function is_loaded( $textdomain ) {
+	public function is_loaded( string $textdomain = 'default' ): bool {
 		return isset( $this->loaded_translations[ $textdomain ] ) && array() !== $this->loaded_translations[ $textdomain ];
 	}
 
@@ -145,7 +134,7 @@ class Ginger_MO {
 	 * @param string      $textdomain Text domain.
 	 * @return string|false Translation on success, false otherwise.
 	 */
-	public function translate( $text, $context = null, $textdomain = null ) {
+	public function translate( string $text, $context = null, string $textdomain = 'default' ) {
 		if ( null !== $context && '' !== $context ) {
 			$context .= "\4";
 		}
@@ -173,7 +162,7 @@ class Ginger_MO {
 	 * @param string                      $textdomain Text domain.
 	 * @return string|false Translation on success, false otherwise.
 	 */
-	public function translate_plural( $plurals, $number, $context = null, $textdomain = null ) {
+	public function translate_plural( $plurals, $number, $context = null, string $textdomain = 'default' ) {
 		if ( null !== $context && '' !== $context ) {
 			$context .= "\4";
 		}
@@ -203,13 +192,9 @@ class Ginger_MO {
 	 * @param string $textdomain Text domain.
 	 * @return array<string, string> Headers.
 	 */
-	public function get_headers( $textdomain = null ) {
+	public function get_headers( string $textdomain = 'default' ): array {
 		if ( array() === $this->loaded_translations ) {
 			return array();
-		}
-
-		if ( null === $textdomain ) {
-			$textdomain = $this->default_textdomain;
 		}
 
 		$headers = array();
@@ -229,7 +214,7 @@ class Ginger_MO {
 	 * @param string $header Header name.
 	 * @return string Normalized header name.
 	 */
-	protected function normalize_header( $header ) {
+	protected function normalize_header( string $header ): string {
 		$parts = explode( '-', $header );
 		$parts = array_map( 'ucfirst', $parts );
 		return implode( '-', $parts );
@@ -241,13 +226,9 @@ class Ginger_MO {
 	 * @param string $textdomain Text domain.
 	 * @return array<string, string> Entries.
 	 */
-	public function get_entries( $textdomain = null ) {
+	public function get_entries( string $textdomain = 'default' ): array {
 		if ( array() === $this->loaded_translations ) {
 			return array();
-		}
-
-		if ( null === $textdomain ) {
-			$textdomain = $this->default_textdomain;
 		}
 
 		$entries = array();
@@ -267,13 +248,9 @@ class Ginger_MO {
 	 * @param string $textdomain Text domain.
 	 * @return array{source: Ginger_MO_Translation_File, entries: string[]}|false Translations on success, false otherwise.
 	 */
-	protected function locate_translation( $singular, $textdomain = null ) {
+	protected function locate_translation( string $singular, string $textdomain = 'default' ) {
 		if ( array() === $this->loaded_translations ) {
 			return false;
-		}
-
-		if ( null === $textdomain ) {
-			$textdomain = $this->default_textdomain;
 		}
 
 		// Find the translation in all loaded files for this text domain.
@@ -301,7 +278,7 @@ class Ginger_MO {
 	 * @param string $textdomain Text domain.
 	 * @return Ginger_MO_Translation_File[] List of translation files.
 	 */
-	protected function get_files( $textdomain = null ) {
+	protected function get_files( string $textdomain = 'default' ): array {
 		if ( isset( $this->loaded_translations[ $textdomain ] ) ) {
 			return $this->loaded_translations[ $textdomain ];
 		}
