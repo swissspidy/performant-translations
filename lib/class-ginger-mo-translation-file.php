@@ -74,9 +74,9 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Creates a new Ginger_MO_Translation_File instance for a given file.
 	 *
-	 * @param string       $file     File name.
-	 * @param string       $context  Optional. Context. Either 'read' or 'write'. Default 'read'.
-	 * @param string|null  $filetype Optional. File type. Default inferred from file name.
+	 * @param string      $file     File name.
+	 * @param string      $context  Optional. Context. Either 'read' or 'write'. Default 'read'.
+	 * @param string|null $filetype Optional. File type. Default inferred from file name.
 	 * @return false|Ginger_MO_Translation_File
 	 */
 	public static function create( string $file, string $context = 'read', $filetype = null ) {
