@@ -54,10 +54,10 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Constructor.
 	 *
-	 * @param string         $file File to load.
-	 * @param 'read'|'write' $context Context.
+	 * @param string $file    File to load.
+	 * @param string $context Optional. Context. Either 'read' or 'write'. Default 'read'.
 	 */
-	protected function __construct( $file, $context = 'read' ) {
+	protected function __construct( string $file, string $context = 'read' ) {
 		$this->file = $file;
 
 		if ( 'write' === $context ) {
@@ -74,12 +74,12 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Creates a new Ginger_MO_Translation_File instance for a given file.
 	 *
-	 * @param string         $file File name.
-	 * @param 'read'|'write' $context Context.
-	 * @param string         $filetype File type.
+	 * @param string       $file     File name.
+	 * @param string       $context  Optional. Context. Either 'read' or 'write'. Default 'read'.
+	 * @param string|null  $filetype Optional. File type. Default inferred from file name.
 	 * @return false|Ginger_MO_Translation_File
 	 */
-	public static function create( $file, $context = 'read', $filetype = null ) {
+	public static function create( string $file, string $context = 'read', $filetype = null ) {
 		if ( null === $filetype ) {
 			$pos = strrpos( $file, '.' );
 			if ( false !== $pos ) {
@@ -146,7 +146,7 @@ class Ginger_MO_Translation_File {
 	 *
 	 * @return string File name.
 	 */
-	public function get_file() {
+	public function get_file(): string {
 		return $this->file;
 	}
 
@@ -170,7 +170,7 @@ class Ginger_MO_Translation_File {
 	 * @param int $number Count.
 	 * @return int Plural form.
 	 */
-	public function get_plural_form( $number ) {
+	public function get_plural_form( $number ): int {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
@@ -200,7 +200,7 @@ class Ginger_MO_Translation_File {
 	 * @param Ginger_MO_Translation_File $destination Destination file.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function export( Ginger_MO_Translation_File $destination ) {
+	public function export( Ginger_MO_Translation_File $destination ): bool {
 		if ( false !== $destination->error() ) {
 			return false;
 		}
@@ -222,7 +222,7 @@ class Ginger_MO_Translation_File {
 	 * @param string $expression Plural form expression.
 	 * @return callable(int $num): int Plural forms function.
 	 */
-	public function make_plural_form_function( $expression ) {
+	public function make_plural_form_function( string $expression ) {
 		try {
 			$handler = new Plural_Forms( rtrim( $expression, ';' ) );
 			return array( $handler, 'get' );
@@ -246,7 +246,7 @@ class Ginger_MO_Translation_File {
 	 * @param array<string, string> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function create_file( $headers, $entries ) {
+	protected function create_file( $headers, $entries ): bool {
 		// TODO: Move to interface or make abstract.
 		$this->error = 'Format not supported.';
 		return false;

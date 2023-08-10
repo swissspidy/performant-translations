@@ -30,8 +30,8 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	/**
 	 * Constructor.
 	 *
-	 * @param string         $file File to load.
-	 * @param 'read'|'write' $context Context.
+	 * @param string $file    File to load.
+	 * @param string $context Context.
 	 */
 	protected function __construct( $file, $context ) {
 		parent::__construct( $file, $context );
@@ -43,7 +43,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	 * @param string $header File contents.
 	 * @return false|'V'|'N' V for little endian, N for big endian, or false on failure.
 	 */
-	protected function detect_endian_and_validate_file( $header ) {
+	protected function detect_endian_and_validate_file( string $header ) {
 		$big = unpack( 'N', $header );
 
 		if ( false === $big ) {
@@ -85,7 +85,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	 *
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function parse_file() {
+	protected function parse_file(): bool {
 		$this->parsed = true;
 
 		$file_contents = file_get_contents( $this->file );
@@ -175,7 +175,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	 * @param array<string, string> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function create_file( $headers, $entries ) {
+	protected function create_file( $headers, $entries ): bool {
 		// Prefix the headers as the first key.
 		$headers_string = '';
 		foreach ( $headers as $header => $value ) {
