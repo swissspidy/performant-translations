@@ -43,10 +43,10 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	 * @param array<string, string> $entries Entries.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function create_file( $headers, $entries ) {
+	protected function create_file( $headers, $entries ): bool {
 		$data = array_merge( $headers, array( 'messages' => $entries ) );
 
-		$file_contents = '<?php' . PHP_EOL . 'return ' . $this->var_export( $data, true ) . ';' . PHP_EOL;
+		$file_contents = '<?php' . PHP_EOL . 'return ' . $this->var_export( $data ) . ';' . PHP_EOL;
 
 		return (bool) file_put_contents( $this->file, $file_contents );
 	}
@@ -65,7 +65,7 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	 * @param array<mixed> $arr The array being evaluated.
 	 * @return bool True if array is a list, false otherwise.
 	 */
-	private function array_is_list( $arr ) {
+	private function array_is_list( array $arr ): bool {
 		if ( function_exists( 'array_is_list' ) ) {
 			return array_is_list( $arr );
 		}
@@ -91,14 +91,12 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	 * Like {@see var_export()} but "minified", using short array syntax
 	 * and no newlines.
 	 *
-	 * @param mixed $value       The variable you want to export.
-	 * @param bool  $return_only Optional. Whether to return the variable representation instead of outputting it. Default false.
-	 * @return string|void The variable representation or void.
-	 * @phpstan-return ($return_only is true ? string : void|null)
+	 * @param mixed $value The variable you want to export.
+	 * @return string The variable representation.
 	 */
-	private function var_export( $value, $return_only = false ) {
+	private function var_export( $value ): string {
 		if ( ! is_array( $value ) ) {
-			return var_export( $value, $return_only );
+			return var_export( $value, true );
 		}
 
 		$entries = array();
@@ -106,14 +104,9 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 		$is_list = $this->array_is_list( $value );
 
 		foreach ( $value as $key => $val ) {
-			$entries[] = $is_list ? $this->var_export( $val, true ) : var_export( $key, true ) . '=>' . $this->var_export( $val, true );
+			$entries[] = $is_list ? $this->var_export( $val ) : var_export( $key, true ) . '=>' . $this->var_export( $val );
 		}
 
-		$code = '[' . implode( ',', $entries ) . ']';
-		if ( $return_only ) {
-			return $code;
-		}
-
-		echo $code;
+		return '[' . implode( ',', $entries ) . ']';
 	}
 }

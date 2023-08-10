@@ -24,7 +24,7 @@ class Ginger_MO_Translation_Compat_Provider {
 	 *
 	 * @param string $textdomain Text domain.
 	 */
-	public function __construct( $textdomain = 'default' ) {
+	public function __construct( string $textdomain = 'default' ) {
 		$this->textdomain = $textdomain;
 	}
 
@@ -34,7 +34,7 @@ class Ginger_MO_Translation_Compat_Provider {
 	 * @param string $name Property name.
 	 * @return mixed
 	 */
-	public function __get( $name ) {
+	public function __get( string $name ) {
 		if ( 'entries' === $name ) {
 			$entries = Ginger_MO::instance()->get_entries( $this->textdomain );
 
@@ -61,7 +61,7 @@ class Ginger_MO_Translation_Compat_Provider {
 	 * @param mixed  $value Property value.
 	 * @return void
 	 */
-	public function __set( $name, $value ) {}
+	public function __set( string $name, $value ) {}
 
 	/**
 	 * Build a Translation_Entry from original string and translation strings.
@@ -73,7 +73,7 @@ class Ginger_MO_Translation_Compat_Provider {
 	 * @param string $translations Translation strings from MO file.
 	 * @return Translation_Entry Entry instance.
 	 */
-	private function make_entry( $original, $translations ) {
+	private function make_entry( $original, $translations ): Translation_Entry {
 		$entry = new Translation_Entry();
 
 		// Look for context, separated by \4.
@@ -105,7 +105,7 @@ class Ginger_MO_Translation_Compat_Provider {
 	 * @return string Translation.
 	 */
 	public function translate_plural( $singular, $plural, $count = 1, $context = '' ) {
-		$translation = Ginger_MO::instance()->translate_plural( array( $singular, $plural ), $count, $context, $this->textdomain );
+		$translation = Ginger_MO::instance()->translate_plural( array( $singular, $plural ), (int) $count, $context, $this->textdomain );
 		if ( false !== $translation ) {
 			return $translation;
 		}

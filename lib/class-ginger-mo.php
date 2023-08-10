@@ -10,13 +10,6 @@
  */
 class Ginger_MO {
 	/**
-	 * Default text domain.
-	 *
-	 * @var string
-	 */
-	protected $default_textdomain = 'default';
-
-	/**
 	 * Current locale.
 	 *
 	 * @var string
@@ -46,7 +39,7 @@ class Ginger_MO {
 	 *
 	 * @return Ginger_MO
 	 */
-	public static function instance() {
+	public static function instance(): Ginger_MO {
 		static $instance;
 
 		if ( ! $instance ) {
@@ -61,7 +54,7 @@ class Ginger_MO {
 	 *
 	 * @return string Locale.
 	 */
-	public function get_locale() {
+	public function get_locale(): string {
 		return $this->current_locale;
 	}
 
@@ -71,7 +64,7 @@ class Ginger_MO {
 	 * @param string $locale Locale.
 	 * @return void
 	 */
-	public function set_locale( $locale ) {
+	public function set_locale( string $locale ) {
 		$this->current_locale = $locale;
 	}
 
@@ -83,15 +76,10 @@ class Ginger_MO {
 	 * @param string $locale           Optional. Locale. Default current locale.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function load( $translation_file, $textdomain = null, $locale = null ) {
-		if ( null === $textdomain ) {
-			$textdomain = $this->default_textdomain;
-		}
-
+	public function load( string $translation_file, string $textdomain = 'default', string $locale = null ): bool {
 		if ( null === $locale ) {
 			$locale = $this->current_locale;
 		}
-
 		$translation_file = realpath( $translation_file );
 
 		if ( false === $translation_file ) {
@@ -141,7 +129,7 @@ class Ginger_MO {
 	 * @param string                            $locale     Optional. Locale. Default current locale.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function unload( $textdomain, $mo = null, $locale = null ) {
+	public function unload( string $textdomain = 'default', $mo = null, string $locale = null ): bool {
 		if ( ! $this->is_loaded( $textdomain, $locale ) ) {
 			return false;
 		}
@@ -204,7 +192,7 @@ class Ginger_MO {
 	 * @param string $locale     Optional. Locale. Default current locale.
 	 * @return bool True if there are any loaded translations, false otherwise.
 	 */
-	public function is_loaded( $textdomain, $locale = null ) {
+	public function is_loaded( string $textdomain = 'default', string $locale = null ): bool {
 		if ( null === $locale ) {
 			$locale = $this->current_locale;
 		}
@@ -222,8 +210,8 @@ class Ginger_MO {
 	 * @param string      $locale     Optional. Locale. Default current locale.
 	 * @return string|false Translation on success, false otherwise.
 	 */
-	public function translate( $text, $context = null, $textdomain = null, $locale = null ) {
-		if ( null !== $context && '' !== $context ) {
+	public function translate( string $text, string $context = '', string $textdomain = 'default', string $locale = null ) {
+		if ( '' !== $context ) {
 			$context .= "\4";
 		}
 
@@ -251,8 +239,8 @@ class Ginger_MO {
 	 * @param string                      $locale     Optional. Locale. Default current locale.
 	 * @return string|false Translation on success, false otherwise.
 	 */
-	public function translate_plural( $plurals, $number, $context = null, $textdomain = null, $locale = null ) {
-		if ( null !== $context && '' !== $context ) {
+	public function translate_plural( array $plurals, int $number, string $context = '', string $textdomain = 'default', string $locale = null ) {
+		if ( '' !== $context ) {
 			$context .= "\4";
 		}
 
@@ -281,13 +269,9 @@ class Ginger_MO {
 	 * @param string $textdomain Text domain.
 	 * @return array<string, string> Headers.
 	 */
-	public function get_headers( $textdomain = null ) {
+	public function get_headers( string $textdomain = 'default' ): array {
 		if ( array() === $this->loaded_translations ) {
 			return array();
-		}
-
-		if ( null === $textdomain ) {
-			$textdomain = $this->default_textdomain;
 		}
 
 		$headers = array();
@@ -307,7 +291,7 @@ class Ginger_MO {
 	 * @param string $header Header name.
 	 * @return string Normalized header name.
 	 */
-	protected function normalize_header( $header ) {
+	protected function normalize_header( string $header ): string {
 		$parts = explode( '-', $header );
 		$parts = array_map( 'ucfirst', $parts );
 		return implode( '-', $parts );
@@ -319,13 +303,9 @@ class Ginger_MO {
 	 * @param string $textdomain Text domain.
 	 * @return array<string, string> Entries.
 	 */
-	public function get_entries( $textdomain = null ) {
+	public function get_entries( string $textdomain = 'default' ): array {
 		if ( array() === $this->loaded_translations ) {
 			return array();
-		}
-
-		if ( null === $textdomain ) {
-			$textdomain = $this->default_textdomain;
 		}
 
 		$entries = array();
@@ -346,13 +326,9 @@ class Ginger_MO {
 	 * @param string $locale     Optional. Locale. Default current locale.
 	 * @return array{source: Ginger_MO_Translation_File, entries: string[]}|false Translations on success, false otherwise.
 	 */
-	protected function locate_translation( $singular, $textdomain = null, $locale = null ) {
+	protected function locate_translation( string $singular, string $textdomain = 'default', string $locale = null ) {
 		if ( array() === $this->loaded_translations ) {
 			return false;
-		}
-
-		if ( null === $textdomain ) {
-			$textdomain = $this->default_textdomain;
 		}
 
 		// Find the translation in all loaded files for this text domain.
@@ -381,7 +357,7 @@ class Ginger_MO {
 	 * @param string $locale     Optional. Locale. Default current locale.
 	 * @return Ginger_MO_Translation_File[] List of translation files.
 	 */
-	protected function get_files( $textdomain = null, $locale = null ) {
+	protected function get_files( string $textdomain = 'default', string $locale = null ): array {
 		if ( null === $locale ) {
 			$locale = $this->current_locale;
 		}

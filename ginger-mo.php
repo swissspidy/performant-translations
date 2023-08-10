@@ -9,8 +9,8 @@
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: ginger-mo
- * Requires at least: 6.2
- * Requires PHP: 5.6
+ * Requires at least: 6.3
+ * Requires PHP: 7.0
  *
  * @package Ginger_MO
  */

@@ -10,12 +10,12 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	 * @param string $destination_format
 	 * @return void
 	 */
-	public function test_convert_format( $source_file, $destination_format ) {
+	public function test_convert_format( string $source_file, string $destination_format ) {
 		$destination_file = $this->temp_file();
 
 		$this->assertNotFalse( $destination_file );
 
-		$source      = Ginger_MO_Translation_File::create( $source_file, 'read' );
+		$source      = Ginger_MO_Translation_File::create( $source_file );
 		$destination = Ginger_MO_Translation_File::create( $destination_file, 'write', $destination_format );
 
 		$this->assertInstanceOf( Ginger_MO_Translation_File::class, $source );
@@ -60,7 +60,7 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	/**
 	 * @return array<array{0:string, 1: string}>
 	 */
-	public function data_export_matrix() {
+	public function data_export_matrix(): array {
 		$formats = array( 'mo', 'json', 'php' );
 
 		$matrix = array();
