@@ -176,14 +176,16 @@ jobs:
                 php: ['8.2', '7.0']
                 wp: ['latest']
                 opcache: [true, false]
+                experimental: [false]
                 include:
                     - php: '7.4'
                       wp: 'trunk'
                       experimental: true
-
-                    - php: '8.3'
+                      opcache: true
+                    - php: '7.4'
                       wp: 'trunk'
                       experimental: true
+                      opcache: false
 
         steps:
             - name: Checkout
