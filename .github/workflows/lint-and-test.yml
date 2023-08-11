@@ -170,22 +170,22 @@ jobs:
     phpbench:
         name: 'Benchmarks ${{ matrix.php }} - WP ${{ matrix.wp }} - OPCache ${{ matrix.opcache }}'
         runs-on: ubuntu-latest
-        continue-on-error: ${{ matrix.experimental }}
+        services:
+            mysql:
+                image: mariadb:latest
+                env:
+                    MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+                    MARIADB_DATABASE: wordpress_test
+                    MARIADB_MYSQL_LOCALHOST_USER: 1
+                    MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
+                ports:
+                    - 3306
+                options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
         strategy:
             matrix:
-                php: ['8.2', '7.0']
+                php: ['8.2']
                 wp: ['latest']
                 opcache: [true, false]
-                experimental: [false]
-                include:
-                    - php: '7.4'
-                      wp: 'trunk'
-                      experimental: true
-                      opcache: true
-                    - php: '7.4'
-                      wp: 'trunk'
-                      experimental: true
-                      opcache: false
 
         steps:
             - name: Checkout
@@ -203,6 +203,9 @@ jobs:
               uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
               with:
                   composer-options: '--prefer-dist --no-scripts'
+
+            - name: Shutdown default MySQL service
+              run: sudo service mysql stop
 
             - name: Set up tests
               run: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1:${{ job.services.mysql.ports['3306'] }} ${{ matrix.wp }} true
