@@ -76,7 +76,7 @@ jobs:
         continue-on-error: ${{ matrix.experimental }}
         strategy:
             matrix:
-                php: ['7.4', '7.3.', '7.2', '7.1', '7.0']
+                php: ['8.2', '8.1', '8.0', '7.4', '7.3', '7.2', '7.1', '7.0']
                 wp: ['latest']
                 coverage: [false]
                 experimental: [false]
@@ -87,14 +87,6 @@ jobs:
                       experimental: false
 
                     - php: '7.4'
-                      wp: 'trunk'
-                      experimental: true
-
-                    - php: '8.1'
-                      wp: 'trunk'
-                      experimental: true
-
-                    - php: '8.2'
                       wp: 'trunk'
                       experimental: true
 
@@ -111,7 +103,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   extensions: mysql
-                  coverage: xdebug
+                  coverage: ${{ matrix.coverage == true && 'xdebug' || 'none' }}
                   tools: composer, cs2pr
 
             - name: Install PHP dependencies
