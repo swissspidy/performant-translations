@@ -1,0 +1,35 @@
+name: Deploy to WordPress.org
+
+on:
+    release:
+        types:
+            - published
+
+jobs:
+    release:
+        name: Publish release.
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: WordPress plugin deploy
+              uses: 10up/action-wordpress-plugin-deploy@v2
+              id: deploy
+              with:
+                  generate-zip: true
+                  dry-run: true
+              env:
+                  SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+                  SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+                  SLUG: ginger-mo
+
+            - name: Upload release asset
+              uses: actions/upload-release-asset@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  upload_url: ${{ github.event.release.upload_url }}
+                  asset_path: ${{ steps.deploy.outputs.zip-path }}
+                  asset_name: ${{ github.event.repository.name }}.zip
+                  asset_content_type: application/zip
