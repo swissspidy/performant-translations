@@ -18,12 +18,15 @@ require_once $_tests_dir . '/includes/functions.php';
 
 /**
  * Manually load the plugin being tested.
+ *
+ * Hooked into "init" so that the load_default_textdomain() call
+ * in wp-settings.php isn't filtered yet by the plugin.
  */
 function _manually_load_plugin() {
 	require dirname( dirname( dirname( __DIR__ ) ) ) . '/ginger-mo.php';
 }
 
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+tests_add_filter( 'init', '_manually_load_plugin' );
 
 define( 'DIR_PLUGIN_TESTDATA', realpath( __DIR__ . '/data' ) );
 define( 'WP_PLUGIN_DIR', realpath( __DIR__ . '/data/plugins' ) );
