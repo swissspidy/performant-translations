@@ -167,6 +167,47 @@ jobs:
                   flags: multisite
               if: ${{ matrix.coverage }}
 
+    phpbench:
+        name: 'Benchmarks ${{ matrix.php }} - WP ${{ matrix.wp }} - OPCache ${{ matrix.opcache }}'
+        runs-on: ubuntu-latest
+        continue-on-error: ${{ matrix.experimental }}
+        strategy:
+            matrix:
+                php: ['8.2', '7.0']
+                wp: ['latest']
+                opcache: [true, false]
+                include:
+                    - php: '7.4'
+                      wp: 'trunk'
+                      experimental: true
+
+                    - php: '8.3'
+                      wp: 'trunk'
+                      experimental: true
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: ${{ matrix.opcache == false && ':opcache' || '' }}
+                  coverage: none
+                  tools: composer
+
+            - name: Install PHP dependencies
+              uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
+              with:
+                  composer-options: '--prefer-dist --no-scripts'
+
+            - name: Set up tests
+              run: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1:${{ job.services.mysql.ports['3306'] }} ${{ matrix.wp }} true
+
+            - name: Run benchmarks
+              run: composer phpbench
+
     e2e-tests:
         name: 'E2E Tests (${{ matrix.wp }})'
         runs-on: ubuntu-latest
@@ -237,9 +278,9 @@ jobs:
         name: 'WP core tests (${{ matrix.wp }})'
         runs-on: ubuntu-latest
         strategy:
-          fail-fast: false
-          matrix:
-            wp: ['trunk', '6.3']
+            fail-fast: false
+            matrix:
+                wp: ['trunk', '6.3']
         services:
             mysql:
                 image: mariadb:latest
