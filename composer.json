@@ -40,6 +40,18 @@
 			"composer --working-dir=build-cs install",
 			"build-cs/vendor/bin/phpstan analyse --memory-limit=2048M"
 		],
+		"phpbench": [
+			"composer --working-dir=build-cs install",
+			"build-cs/vendor/bin/phpbench run tests/benchmark/tests"
+		],
+		"phpbench:baseline": [
+			"composer --working-dir=build-cs install",
+			"build-cs/vendor/bin/phpbench run tests/benchmark/tests --tag=baseline"
+		],
+		"phpbench:compare": [
+			"composer --working-dir=build-cs install",
+			"build-cs/vendor/bin/phpbench run tests/benchmark/tests --ref=baseline"
+		],
 		"test": [
 			"@test:unit",
 			"@test:integration",

@@ -1,0 +1,4 @@
+{
+	"$schema": "./build-cs/vendor/phpbench/phpbench/phpbench.schema.json",
+	"runner.bootstrap": "tests/benchmark/bootstrap.php"
+}

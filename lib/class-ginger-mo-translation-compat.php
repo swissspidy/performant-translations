@@ -12,13 +12,14 @@ class Ginger_MO_Translation_Compat {
 	/**
 	 * Loads a text domain.
 	 *
-	 * @param bool   $override Whether to override. Unused.
-	 * @param string $domain Text domain.
-	 * @param string $mofile File name.
+	 * @param bool        $override Whether to override. Unused.
+	 * @param string      $domain   Text domain.
+	 * @param string      $mofile   File name.
+	 * @param string|null $locale   Locale.
 	 * @return bool True on success, false otherwise.
 	 */
-	public static function load_textdomain( $override, $domain, $mofile ) {
-		global $l10n;
+	public static function load_textdomain( $override, $domain, $mofile, $locale ) {
+		global $l10n, $wp_textdomain_registry;
 
 		// Another override is already in progress, prevent conflicts.
 		if ( $override ) {
@@ -53,6 +54,8 @@ class Ginger_MO_Translation_Compat {
 				unset( $l10n[ $domain ] );
 				$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
 
+				$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
+
 				return $success;
 			}
 		}
@@ -63,6 +66,8 @@ class Ginger_MO_Translation_Compat {
 			// Unset Noop_Translations reference in get_translations_for_domain.
 			unset( $l10n[ $domain ] );
 			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
+
+			$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
 
 			/**
 			 * Filters whether existing MO files should be automatically converted to the preferred format.
@@ -119,7 +124,7 @@ class Ginger_MO_Translation_Compat {
 	 * @return void
 	 */
 	public static function overwrite_wordpress() {
+		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
 		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 2 );
-		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 3 );
 	}
 }
