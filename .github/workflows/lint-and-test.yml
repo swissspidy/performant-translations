@@ -200,6 +200,9 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
+
             - name: Configure WordPress version
               run: |
                   if [[ $WP_VERSION == 'trunk' ]]; then
@@ -339,6 +342,9 @@ jobs:
 
             - name: Install dependencies
               run: npm ci
+
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
 
             - name: Configure WordPress version
               run: |
