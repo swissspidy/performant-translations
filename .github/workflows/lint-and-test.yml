@@ -198,6 +198,7 @@ jobs:
                   extensions: ${{ matrix.opcache == false && ':opcache' || 'opcache' }}
                   coverage: none
                   tools: composer
+                  ini-values: opcache.enable_cli=1
 
             - name: Install PHP dependencies
               uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
