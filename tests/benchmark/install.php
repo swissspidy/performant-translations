@@ -40,6 +40,11 @@ require_once ABSPATH . 'wp-settings.php';
 require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 require_once ABSPATH . 'wp-includes/class-wpdb.php';
 
+// Override the PHPMailer.
+global $phpmailer;
+require_once $tests_dir_path . '/mock-mailer.php';
+$phpmailer = new MockPHPMailer();
+
 register_theme_directory( $tests_dir_path . '/../data/themedir1' );
 
 /*

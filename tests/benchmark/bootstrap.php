@@ -62,6 +62,10 @@ $PHP_SELF            = '/index.php';
 $GLOBALS['PHP_SELF'] = '/index.php';
 $_SERVER['PHP_SELF'] = '/index.php';
 
+// Override the PHPMailer.
+require_once $_tests_dir . '/includes/mock-mailer.php';
+$phpmailer = new MockPHPMailer( true );
+
 system( WP_PHP_BINARY . ' ' . escapeshellarg( __DIR__ . '/install.php' ) . ' ' . escapeshellarg( $config_file_path ) . ' ' . escapeshellarg( $_tests_dir . '/includes' ), $retval );
 
 // Load WordPress.
