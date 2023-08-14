@@ -2,7 +2,7 @@ import {
 	RequestUtils,
 	test as base,
 } from '@wordpress/e2e-test-utils-playwright';
-import { type Browser, chromium } from 'playwright';
+import { type Browser, chromium } from '@playwright/test';
 import getPort from 'get-port';
 
 import Metrics from './metrics';
@@ -66,8 +66,8 @@ export const test = base.extend<
 		},
 		{ scope: 'worker', auto: true },
 	],
-	testPage: async ( { baseURL, page, admin, requestUtils }, use ) => {
-		await use( new TestPage( { page, baseURL, admin, requestUtils } ) );
+	testPage: async ( { page, admin, requestUtils }, use ) => {
+		await use( new TestPage( { page, admin, requestUtils } ) );
 	},
 } );
 
