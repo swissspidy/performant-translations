@@ -36,7 +36,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '7.4'
+                  php-version: '8.2'
                   coverage: none
                   tools: composer, cs2pr
 
@@ -76,7 +76,7 @@ jobs:
         continue-on-error: ${{ matrix.experimental }}
         strategy:
             matrix:
-                php: ['7.4', '7.3.', '7.2', '7.1', '7.0']
+                php: ['8.2', '8.1', '8.0', '7.4', '7.3', '7.2', '7.1', '7.0']
                 wp: ['latest']
                 coverage: [false]
                 experimental: [false]
@@ -87,14 +87,6 @@ jobs:
                       experimental: false
 
                     - php: '7.4'
-                      wp: 'trunk'
-                      experimental: true
-
-                    - php: '8.1'
-                      wp: 'trunk'
-                      experimental: true
-
-                    - php: '8.2'
                       wp: 'trunk'
                       experimental: true
 
@@ -111,7 +103,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   extensions: mysql
-                  coverage: xdebug
+                  coverage: ${{ matrix.coverage == true && 'xdebug' || 'none' }}
                   tools: composer, cs2pr
 
             - name: Install PHP dependencies
@@ -175,6 +167,53 @@ jobs:
                   flags: multisite
               if: ${{ matrix.coverage }}
 
+    phpbench:
+        name: 'Benchmarks ${{ matrix.php }} - WP ${{ matrix.wp }} - OPCache ${{ matrix.opcache }}'
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mariadb:latest
+                env:
+                    MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+                    MARIADB_DATABASE: wordpress_test
+                    MARIADB_MYSQL_LOCALHOST_USER: 1
+                    MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
+                ports:
+                    - 3306
+                options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
+        strategy:
+            matrix:
+                php: ['8.2']
+                wp: ['latest']
+                opcache: [true, false]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: ${{ matrix.opcache == false && ':opcache' || 'opcache' }}
+                  coverage: none
+                  tools: composer
+                  ini-values: opcache.enable_cli=1
+
+            - name: Install PHP dependencies
+              uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
+              with:
+                  composer-options: '--prefer-dist --no-scripts'
+
+            - name: Shutdown default MySQL service
+              run: sudo service mysql stop
+
+            - name: Set up tests
+              run: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1:${{ job.services.mysql.ports['3306'] }} ${{ matrix.wp }} true
+
+            - name: Run benchmarks
+              run: composer phpbench
+
     e2e-tests:
         name: 'E2E Tests (${{ matrix.wp }})'
         runs-on: ubuntu-latest
@@ -199,6 +238,9 @@ jobs:
 
             - name: Install dependencies
               run: npm ci
+
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
 
             - name: Configure WordPress version
               run: |
@@ -245,9 +287,9 @@ jobs:
         name: 'WP core tests (${{ matrix.wp }})'
         runs-on: ubuntu-latest
         strategy:
-          fail-fast: false
-          matrix:
-            wp: ['trunk', '6.3']
+            fail-fast: false
+            matrix:
+                wp: ['trunk', '6.3']
         services:
             mysql:
                 image: mariadb:latest
@@ -270,7 +312,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.0'
+                  php-version: '8.2'
                   extensions: mysql
                   coverage: none
                   tools: composer
@@ -339,6 +381,9 @@ jobs:
 
             - name: Install dependencies
               run: npm ci
+
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
 
             - name: Configure WordPress version
               run: |

@@ -22,7 +22,7 @@
 	</rule>
 
 	<!-- We only support the latest major WordPress release. -->
-	<config name="minimum_wp_version" value="6.2" />
+	<config name="minimum_wp_version" value="6.3" />
 
 	<!-- Check all PHP files in directory tree by default. -->
 	<arg name="extensions" value="php"/>
@@ -47,8 +47,14 @@
 	</rule>
 
 	<!-- Ignore prefix requirement for test class -->
-	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound">
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<exclude-pattern>tests/phpunit/unit/includes/Testable_Ginger_MO_Translation_File.php</exclude-pattern>
+		<exclude-pattern>tests/benchmark/tests</exclude-pattern>
+	</rule>
+
+	<!-- Ignore snake_case requirement for test class -->
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+		<exclude-pattern>tests/benchmark/tests</exclude-pattern>
 	</rule>
 
 	<!-- Ignore comments requirements for main plugin file -->
@@ -69,6 +75,7 @@
 	<exclude-pattern>*/tools/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/*/bootstrap.php</exclude-pattern>
+	<exclude-pattern>*/tests/benchmark/install.php</exclude-pattern>
 	<exclude-pattern>*/tests/phpunit/unit/data/*</exclude-pattern>
 	<exclude-pattern>*/lib/class-plural-forms.php</exclude-pattern>
 </ruleset>

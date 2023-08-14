@@ -19,7 +19,7 @@ class Ginger_MO_Translation_Compat {
 	 * @return bool True on success, false otherwise.
 	 */
 	public static function load_textdomain( $override, $domain, $mofile, $locale ) {
-		global $l10n;
+		global $l10n, $wp_textdomain_registry;
 
 		// Another override is already in progress, prevent conflicts.
 		if ( $override ) {
@@ -63,6 +63,8 @@ class Ginger_MO_Translation_Compat {
 				unset( $l10n[ $domain ] );
 				$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
 
+				$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
+
 				return $success;
 			}
 		}
@@ -74,6 +76,8 @@ class Ginger_MO_Translation_Compat {
 			unset( $l10n[ $domain ] );
 
 			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
+
+			$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
 
 			/**
 			 * Filters whether existing MO files should be automatically converted to the preferred format.

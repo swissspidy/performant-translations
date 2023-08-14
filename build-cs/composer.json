@@ -10,7 +10,8 @@
 		"slevomat/coding-standard": "^8.9",
 		"swissspidy/phpstan-no-private": "^0.2",
 		"szepeviktor/phpstan-wordpress": "^1.1",
-		"wp-coding-standards/wpcs": "dev-develop#fca9d9e"
+		"wp-coding-standards/wpcs": "dev-develop#fca9d9e",
+		"phpbench/phpbench": "^1.2"
 	},
 	"config": {
 		"allow-plugins": {
