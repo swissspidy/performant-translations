@@ -195,7 +195,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
-                  extensions: ${{ matrix.opcache == false && ':opcache' || '' }}
+                  extensions: ${{ matrix.opcache == false && ':opcache' || 'opcache' }}
                   coverage: none
                   tools: composer
 
