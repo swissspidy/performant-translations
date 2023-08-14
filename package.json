@@ -23,7 +23,6 @@
 		"glob": "^10.3.0",
 		"lighthouse": "^11.0.0",
 		"patch-package": "^8.0.0",
-		"playwright": "^1.36.2",
 		"tablemark": "^3.0.0"
 	},
 	"scripts": {

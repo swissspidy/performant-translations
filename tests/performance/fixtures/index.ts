@@ -2,7 +2,7 @@ import {
 	RequestUtils,
 	test as base,
 } from '@wordpress/e2e-test-utils-playwright';
-import { type Browser, chromium } from 'playwright';
+import { type Browser, chromium } from '@playwright/test';
 import getPort from 'get-port';
 
 import Metrics from './metrics';
