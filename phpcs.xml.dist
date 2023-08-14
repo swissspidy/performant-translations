@@ -75,6 +75,7 @@
 	<exclude-pattern>*/tools/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/*/bootstrap.php</exclude-pattern>
+	<exclude-pattern>*/tests/benchmark/install.php</exclude-pattern>
 	<exclude-pattern>*/tests/phpunit/unit/data/*</exclude-pattern>
 	<exclude-pattern>*/lib/class-plural-forms.php</exclude-pattern>
 </ruleset>
