@@ -25,10 +25,10 @@ class SwitchToLocaleBench {
 		remove_filter( 'override_unload_textdomain', array( 'Ginger_MO_Translation_Compat', 'unload_textdomain' ), 100 );
 
 		custom_i18n_plugin_test();
-
 		switch_to_locale( 'es_ES' );
+		custom_i18n_plugin_test();
 		switch_to_locale( 'de_DE' );
-		restore_current_locale();
+		custom_i18n_plugin_test();
 	}
 
 	public function bench_mo_files() {
@@ -41,9 +41,11 @@ class SwitchToLocaleBench {
 
 		custom_i18n_plugin_test();
 
+		custom_i18n_plugin_test();
 		switch_to_locale( 'es_ES' );
+		custom_i18n_plugin_test();
 		switch_to_locale( 'de_DE' );
-		restore_current_locale();
+		custom_i18n_plugin_test();
 	}
 
 	public function bench_json_files() {
@@ -56,9 +58,11 @@ class SwitchToLocaleBench {
 
 		custom_i18n_plugin_test();
 
+		custom_i18n_plugin_test();
 		switch_to_locale( 'es_ES' );
+		custom_i18n_plugin_test();
 		switch_to_locale( 'de_DE' );
-		restore_current_locale();
+		custom_i18n_plugin_test();
 	}
 
 	public function bench_php_files() {
@@ -70,9 +74,9 @@ class SwitchToLocaleBench {
 		);
 
 		custom_i18n_plugin_test();
-
 		switch_to_locale( 'es_ES' );
+		custom_i18n_plugin_test();
 		switch_to_locale( 'de_DE' );
-		restore_current_locale();
+		custom_i18n_plugin_test();
 	}
 }
