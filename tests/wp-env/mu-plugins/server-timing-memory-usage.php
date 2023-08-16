@@ -11,7 +11,7 @@
 
 add_action(
 	'plugins_loaded',
-	static function() {
+	static function () {
 		if ( ! function_exists( 'perflab_server_timing_register_metric' ) ) {
 			return;
 		}
@@ -19,10 +19,10 @@ add_action(
 		perflab_server_timing_register_metric(
 			'memory-usage',
 			array(
-				'measure_callback' => function( Perflab_Server_Timing_Metric $metric ) {
+				'measure_callback' => function ( Perflab_Server_Timing_Metric $metric ) {
 					add_action(
 						'perflab_server_timing_send_header',
-						static function() use ( $metric ) {
+						static function () use ( $metric ) {
 							$metric->set_value( memory_get_usage() );
 						}
 					);
