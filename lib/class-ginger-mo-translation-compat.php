@@ -12,9 +12,9 @@ class Ginger_MO_Translation_Compat {
 	/**
 	 * Loads a text domain.
 	 *
-	 * @param bool        $override Whether to override. Unused.
-	 * @param string      $domain   Text domain.
-	 * @param string      $mofile   File name.
+	 * @param bool        $override Whether to override the .mo file loading.
+	 * @param string      $domain   Text domain. Unique identifier for retrieving translated strings.
+	 * @param string      $mofile   Path to the MO file.
 	 * @param string|null $locale   Locale.
 	 * @return bool True on success, false otherwise.
 	 */
@@ -25,6 +25,15 @@ class Ginger_MO_Translation_Compat {
 		if ( $override ) {
 			return $override;
 		}
+
+		if ( null === $locale ) {
+			$locale = determine_locale();
+		}
+
+		// Ensures the correct locale is set as the current one,
+		// even if the "locale" filter is used in WordPress to change
+		// the locale.
+		Ginger_MO::instance()->set_locale( $locale );
 
 		/** This action is documented in wp-includes/l10n.php */
 		do_action( 'load_textdomain', $domain, $mofile );
@@ -47,7 +56,7 @@ class Ginger_MO_Translation_Compat {
 		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $mofile );
 
 		if ( 'mo' !== $preferred_format ) {
-			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain );
+			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
 			if ( $success ) {
 				// Unset Noop_Translations reference in get_translations_for_domain.
@@ -60,11 +69,12 @@ class Ginger_MO_Translation_Compat {
 			}
 		}
 
-		$success = Ginger_MO::instance()->load( $mofile, $domain );
+		$success = Ginger_MO::instance()->load( $mofile, $domain, $locale );
 
 		if ( $success ) {
 			// Unset Noop_Translations reference in get_translations_for_domain.
 			unset( $l10n[ $domain ] );
+
 			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
 
 			$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
@@ -99,9 +109,10 @@ class Ginger_MO_Translation_Compat {
 	 *
 	 * @param bool   $override Whether to override. Unused.
 	 * @param string $domain Text domain.
+	 * @param bool   $reloadable Whether the text domain can be loaded just-in-time again.
 	 * @return bool True on success, false otherwise.
 	 */
-	public static function unload_textdomain( $override, $domain ) {
+	public static function unload_textdomain( $override, $domain, $reloadable ) {
 		global $l10n;
 
 		// Another override is already in progress, prevent conflicts.
@@ -113,7 +124,35 @@ class Ginger_MO_Translation_Compat {
 		do_action( 'unload_textdomain', $domain );
 
 		unset( $l10n[ $domain ] );
-		return Ginger_MO::instance()->unload( $domain );
+
+		// Since we support multiple locales, we don't actually need to unload
+		// reloadable text domains.
+		if ( ! $reloadable && 'default' !== $domain ) {
+			return Ginger_MO::instance()->unload( $domain );
+		}
+
+		return true;
+	}
+
+	/**
+	 * Sets the current locale on init.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return void
+	 */
+	public static function init() {
+		Ginger_MO::instance()->set_locale( determine_locale() );
+	}
+
+	/**
+	 * Updates the locale whenever it is changed in WordPress.
+	 *
+	 * @param string $locale The new locale.
+	 * @return void
+	 */
+	public static function change_locale( $locale ) {
+		Ginger_MO::instance()->set_locale( $locale );
 	}
 
 	/**
@@ -125,6 +164,9 @@ class Ginger_MO_Translation_Compat {
 	 */
 	public static function overwrite_wordpress() {
 		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
-		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 2 );
+		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
+
+		add_action( 'init', array( __CLASS__, 'init' ) );
+		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
 	}
 }

@@ -98,14 +98,14 @@ class Ginger_MO_Translation_Compat_Provider {
 	/**
 	 * Translates a plural string.
 	 *
-	 * @param string $singular Singular translation.
-	 * @param string $plural Plural translation.
-	 * @param int    $count Count.
-	 * @param string $context Context.
+	 * @param string    $singular Singular translation.
+	 * @param string    $plural Plural translation.
+	 * @param int|float $count Count. Should be an integer, but some plugins pass floats.
+	 * @param string    $context Context.
 	 * @return string Translation.
 	 */
 	public function translate_plural( $singular, $plural, $count = 1, $context = '' ) {
-		$translation = Ginger_MO::instance()->translate_plural( array( $singular, $plural ), $count, $context, $this->textdomain );
+		$translation = Ginger_MO::instance()->translate_plural( array( $singular, $plural ), (int) $count, $context, $this->textdomain );
 		if ( false !== $translation ) {
 			return $translation;
 		}

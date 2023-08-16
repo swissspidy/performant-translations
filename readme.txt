@@ -7,7 +7,7 @@ License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
 
-A minimal `.mo` reader (with support for PHP & JSON representations), multiple text domains, and multiple loaded locales in the future.
+A minimal `.mo` reader (with support for PHP & JSON representations), multiple text domains, and multiple loaded locales.
 
 == Description ==
 

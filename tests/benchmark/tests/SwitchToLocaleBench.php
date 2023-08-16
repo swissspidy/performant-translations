@@ -34,7 +34,7 @@ class SwitchToLocaleBench {
 	public function bench_mo_files() {
 		add_filter(
 			'ginger_mo_preferred_format',
-			static function() {
+			static function () {
 				return 'mo';
 			}
 		);
@@ -51,7 +51,7 @@ class SwitchToLocaleBench {
 	public function bench_json_files() {
 		add_filter(
 			'ginger_mo_preferred_format',
-			static function() {
+			static function () {
 				return 'json';
 			}
 		);
@@ -68,7 +68,7 @@ class SwitchToLocaleBench {
 	public function bench_php_files() {
 		add_filter(
 			'ginger_mo_preferred_format',
-			static function() {
+			static function () {
 				return 'php';
 			}
 		);

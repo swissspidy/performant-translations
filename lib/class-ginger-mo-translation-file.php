@@ -79,7 +79,7 @@ class Ginger_MO_Translation_File {
 	 * @param string|null $filetype Optional. File type. Default inferred from file name.
 	 * @return false|Ginger_MO_Translation_File
 	 */
-	public static function create( string $file, string $context = 'read', $filetype = null ) {
+	public static function create( string $file, string $context = 'read', string $filetype = null ) {
 		if ( null === $filetype ) {
 			$pos = strrpos( $file, '.' );
 			if ( false !== $pos ) {

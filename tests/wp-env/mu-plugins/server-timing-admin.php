@@ -11,7 +11,7 @@
 
 add_action(
 	'wp_loaded',
-	static function() {
+	static function () {
 		if ( ! function_exists( 'perflab_server_timing' ) ) {
 			return;
 		}
