@@ -137,6 +137,8 @@ class Ginger_MO_Translation_Compat {
 	/**
 	 * Sets the current locale on init.
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @return void
 	 */
 	public static function init() {

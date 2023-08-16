@@ -60,6 +60,51 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
+	 * @covers ::unload
+	 * @covers Ginger_MO_Translation_File::get_file
+	 *
+	 * @return void
+	 */
+	public function test_unload_file_is_not_actually_loaded() {
+		$ginger_mo = new Ginger_MO();
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
+		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'simple.mo' ) );
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
+		$this->assertSame( 'translation', $ginger_mo->translate( 'original', '', 'unittest' ) );
+	}
+
+	/**
+	 * @covers ::unload
+	 * @covers ::is_loaded
+	 *
+	 * @return void
+	 */
+	public function test_unload_specific_locale() {
+		$instance = new Ginger_MO();
+		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
+		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest' ) );
+		$this->assertTrue( $instance->is_loaded( 'unittest' ) );
+
+		$this->assertFalse( $instance->is_loaded( 'unittest', 'es_ES' ) );
+		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest', 'es_ES' ) );
+		$this->assertTrue( $instance->is_loaded( 'unittest', 'es_ES' ) );
+
+		$this->assertSame( 'translation', $instance->translate( 'original', '', 'unittest' ) );
+		$this->assertSame( 'translation', $instance->translate( 'original', '', 'unittest', 'es_ES' ) );
+
+		$this->assertTrue( $instance->unload( 'unittest', null, $instance->get_locale() ) );
+		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
+		$this->assertFalse( $instance->translate( 'original', '', 'unittest' ) );
+
+		$this->assertTrue( $instance->is_loaded( 'unittest', 'es_ES' ) );
+		$this->assertTrue( $instance->unload( 'unittest', null, 'es_ES' ) );
+		$this->assertFalse( $instance->is_loaded( 'unittest', 'es_ES' ) );
+		$this->assertFalse( $instance->translate( 'original', '', 'unittest', 'es_ES' ) );
+	}
+
+
+	/**
 	 * @dataProvider data_invalid_files
 	 *
 	 * @param string $type
@@ -303,21 +348,6 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 
 		$this->assertTrue( $ginger_mo->is_loaded( 'foo' ) );
 		$this->assertTrue( $ginger_mo->is_loaded( 'bar' ) );
-	}
-
-	/**
-	 * @covers ::unload
-	 * @covers Ginger_MO_Translation_File::get_file
-	 *
-	 * @return void
-	 */
-	public function test_unload_file_is_not_actually_loaded() {
-		$ginger_mo = new Ginger_MO();
-		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
-		$this->assertTrue( $ginger_mo->unload( 'unittest', GINGER_MO_TEST_DATA . 'simple.mo' ) );
-
-		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
-		$this->assertSame( 'translation', $ginger_mo->translate( 'original', '', 'unittest' ) );
 	}
 
 	/**

@@ -11,6 +11,13 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 		if ( file_exists( DIR_TESTDATA . '/pomo/simple.php' ) ) {
 			$this->unlink( DIR_TESTDATA . '/pomo/simple.php' );
 		}
+
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.json' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.json' );
+		}
+
+		remove_all_filters( 'ginger_mo_convert_files' );
+		remove_all_filters( 'ginger_mo_preferred_format' );
 	}
 
 	/**
@@ -99,6 +106,85 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_creates_and_reads_php_files_if_filtered_format_is_unsupported() {
+		add_filter(
+			'ginger_mo_preferred_format',
+			static function () {
+				return 'unknown-format';
+			}
+		);
+
+		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.php' );
+
+		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
+		$this->assertTrue( $unload_mo_successful );
+		$this->assertTrue( $file_exists );
+		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
+		$this->assertTrue( $unload_php_successful );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_does_not_create_php_files_if_disabled() {
+		add_filter( 'ginger_mo_convert_files', '__return_false' );
+
+		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+
+		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
+		$this->assertTrue( $unload_mo_successful );
+		$this->assertFalse( $file_exists );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_creates_and_reads_json_files() {
+		add_filter(
+			'ginger_mo_preferred_format',
+			static function () {
+				return 'json';
+			}
+		);
+
+		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.json' );
+
+		$load_json_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.json' );
+
+		$unload_json_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
+		$this->assertTrue( $unload_mo_successful );
+		$this->assertTrue( $file_exists );
+		$this->assertTrue( $load_json_successful, 'JSON file not successfully loaded' );
+		$this->assertTrue( $unload_json_successful );
+	}
+
+	/**
 	 * @covers ::unload_textdomain
 	 * @covers Ginger_MO::get_entries
 	 * @covers Ginger_MO::get_headers
@@ -158,10 +244,13 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	/**
 	 * @covers ::load_textdomain
 	 * @covers ::unload_textdomain
+	 * @covers ::change_locale
 	 *
 	 * @return void
 	 */
 	public function test_switch_to_locale_translations_stay_loaded_custom_textdomain() {
+		$this->assertSame( 'en_US', Ginger_MO::instance()->get_locale() );
+
 		require_once DIR_TESTDATA . '/plugins/internationalized-plugin.php';
 
 		$before = i18n_plugin_test();
@@ -170,7 +259,7 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 
 		$actual = i18n_plugin_test();
 
-		// Note: In 6.3+ this will be true already before the second i18n_plugin_test() call above.
+		$this->assertSame( 'es_ES', Ginger_MO::instance()->get_locale() );
 		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'internationalized-plugin', 'es_ES' ) );
 		$this->assertTrue( Ginger_MO::instance()->is_loaded( 'default', 'es_ES' ) );
 		$this->assertFalse( Ginger_MO::instance()->is_loaded( 'foo-bar', 'es_ES' ) );
