@@ -126,7 +126,7 @@ class Ginger_MO {
 	 *
 	 * @param string                            $textdomain Text domain.
 	 * @param Ginger_MO_Translation_File|string $mo         Translation file instance or file name.
-	 * @param string                            $locale     Optional. Locale. Default current locale.
+	 * @param string                            $locale     Optional. Locale. Default all locales.
 	 * @return bool True on success, false otherwise.
 	 */
 	public function unload( string $textdomain = 'default', $mo = null, string $locale = null ): bool {
