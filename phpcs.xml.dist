@@ -50,6 +50,7 @@
 	<!-- Ignore prefix requirement for test class -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<exclude-pattern>tests/phpunit/unit/includes/Testable_Ginger_MO_Translation_File.php</exclude-pattern>
+		<exclude-pattern>tests/phpunit/integration/data</exclude-pattern>
 		<exclude-pattern>tests/benchmark/tests</exclude-pattern>
 	</rule>
 
@@ -71,6 +72,10 @@
 
 	<!-- Test for PHP 7.0+ compatibility. -->
 	<config name="testVersion" value="7.0-"/>
+
+	<rule ref="PSR1.Files.SideEffects">
+		<exclude-pattern>tests/phpunit/integration/data/plugins</exclude-pattern>
+	</rule>
 
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/tools/*</exclude-pattern>
