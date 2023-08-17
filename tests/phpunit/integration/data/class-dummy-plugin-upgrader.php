@@ -33,6 +33,9 @@ class Dummy_Plugin_Upgrader extends Plugin_Upgrader {
 	 * }
 	 * @return array|false|WP_Error The result from self::install_package() on success, otherwise a WP_Error,
 	 *                              or false if unable to connect to the filesystem.
+	 *
+	 * @phpstan-param array{package?: string, destination?: string, clear_destination?: bool, clear_working?: bool, abort_if_destination_exists?: bool, is_multi?: bool, hook_extra?: array<mixed>} $options
+	 * @phpstan-return array{source: string, source_files: string[], destination: string, destination_name: string, local_destination: string, remote_destination: string, clear_destination: mixed}|false|WP_Error
 	 */
 	public function run( $options ) {
 		$defaults = array(

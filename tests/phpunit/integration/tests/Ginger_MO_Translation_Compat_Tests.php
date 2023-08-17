@@ -277,6 +277,8 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers Ginger_MO_Translation_Compat::upgrader_process_complete
+	 *
+	 * @return void
 	 */
 	public function test_create_translation_files_after_translations_update() {
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
@@ -337,6 +339,8 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers Ginger_MO_Translation_Compat::upgrader_process_complete
+	 *
+	 * @return void
 	 */
 	public function test_do_not_create_translations_after_plugin_update() {
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';

@@ -19,6 +19,8 @@ class Dummy_Upgrader_Skin extends WP_Upgrader_Skin {
 	/**
 	 * @param string $feedback Message data.
 	 * @param mixed  ...$args  Optional text replacements.
+	 *
+	 * @return void
 	 */
 	public function feedback( $feedback, ...$args ) {}
 }

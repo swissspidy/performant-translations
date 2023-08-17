@@ -180,9 +180,12 @@ class Ginger_MO_Translation_Compat {
 	 *         @type string $version  The version of a theme, plugin, or core.
 	 *     }
 	 * }
+	 * @return void
+	 *
+	 * @phpstan-param array{action: string, type: string, bulk: bool, plugins: string[], themes: string[], translations: array<int, array{language: string, type: string, slug: string, version: string}>} $hook_extra
 	 */
 	public static function upgrader_process_complete( $upgrader, $hook_extra ) {
-		if ( 'translation' !== $hook_extra['type'] || empty( $hook_extra['translations'] ) ) {
+		if ( 'translation' !== $hook_extra['type'] || array() === $hook_extra['translations'] ) {
 			return;
 		}
 
