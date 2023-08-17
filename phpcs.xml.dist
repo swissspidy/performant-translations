@@ -19,6 +19,7 @@
 		<properties>
 			<property name="prefixes" type="array" value="Ginger_MO" />
 		</properties>
+		<exclude-pattern>uninstall.php</exclude-pattern>
 	</rule>
 
 	<!-- We only support the latest major WordPress release. -->
