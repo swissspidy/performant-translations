@@ -8,6 +8,7 @@ parameters:
 		- tests/phpunit/unit/includes
 		- tests/phpunit/unit/tests
 		- tests/phpunit/integration/tests
+		- tests/phpunit/integration/data
 	excludePaths:
 		- lib/class-plural-forms.php
 	scanFiles:

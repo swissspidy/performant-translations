@@ -156,6 +156,76 @@ class Ginger_MO_Translation_Compat {
 	}
 
 	/**
+	 * Creates PHP translation files after the translation updates process.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param WP_Upgrader $upgrader   WP_Upgrader instance. In other contexts this might be a
+	 *                                Theme_Upgrader, Plugin_Upgrader, Core_Upgrade, or Language_Pack_Upgrader instance.
+	 * @param array       $hook_extra {
+	 *     Array of bulk item update data.
+	 *
+	 *     @type string $action       Type of action. Default 'update'.
+	 *     @type string $type         Type of update process. Accepts 'plugin', 'theme', 'translation', or 'core'.
+	 *     @type bool   $bulk         Whether the update process is a bulk update. Default true.
+	 *     @type array  $plugins      Array of the basename paths of the plugins' main files.
+	 *     @type array  $themes       The theme slugs.
+	 *     @type array  $translations {
+	 *         Array of translations update data.
+	 *
+	 *         @type string $language The locale the translation is for.
+	 *         @type string $type     Type of translation. Accepts 'plugin', 'theme', or 'core'.
+	 *         @type string $slug     Text domain the translation is for. The slug of a theme/plugin or
+	 *                                'default' for core translations.
+	 *         @type string $version  The version of a theme, plugin, or core.
+	 *     }
+	 * }
+	 * @return void
+	 *
+	 * @phpstan-param array{action: string, type: string, bulk: bool, plugins: string[], themes: string[], translations: array<int, array{language: string, type: string, slug: string, version: string}>} $hook_extra
+	 */
+	public static function upgrader_process_complete( $upgrader, $hook_extra ) {
+		if ( 'translation' !== $hook_extra['type'] || array() === $hook_extra['translations'] ) {
+			return;
+		}
+
+		foreach ( $hook_extra['translations'] as $translation ) {
+			switch ( $translation['type'] ) {
+				case 'plugin':
+					$file = WP_LANG_DIR . '/plugins/' . $translation['slug'] . '-' . $translation['language'] . '.mo';
+					break;
+				case 'theme':
+					$file = WP_LANG_DIR . '/themes/' . $translation['slug'] . '-' . $translation['language'] . '.mo';
+					break;
+				default:
+					$file = WP_LANG_DIR . '/' . $translation['language'] . '.mo';
+					break;
+			}
+
+			if ( file_exists( $file ) ) {
+				/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+				$preferred_format = apply_filters( 'ginger_mo_preferred_format', 'php' );
+				if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
+					$preferred_format = 'php';
+				}
+
+				$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
+
+				/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+				$convert = apply_filters( 'ginger_mo_convert_files', true );
+
+				if ( 'mo' !== $preferred_format && $convert ) {
+					$source      = Ginger_MO_Translation_File::create( $file );
+					$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
+					if ( false !== $source && false !== $destination ) {
+						$source->export( $destination );
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * Hook into WordPress.
 	 *
 	 * @codeCoverageIgnore
@@ -168,5 +238,7 @@ class Ginger_MO_Translation_Compat {
 
 		add_action( 'init', array( __CLASS__, 'init' ) );
 		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
+
+		add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
 	}
 }
