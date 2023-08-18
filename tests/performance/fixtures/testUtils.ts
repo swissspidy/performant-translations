@@ -18,7 +18,7 @@ class TestUtils {
 			scenario === Scenario.GingerMoPhp ||
 			scenario === Scenario.GingerMoJson
 		) {
-			await this.requestUtils.activatePlugin( 'ginger-mo' );
+			await this.requestUtils.activatePlugin( 'performant-translations' );
 		}
 
 		if ( scenario === Scenario.GingerMo ) {
@@ -38,7 +38,7 @@ class TestUtils {
 			language: '',
 		} );
 
-		await this.requestUtils.deactivatePlugin( 'ginger-mo' );
+		await this.requestUtils.deactivatePlugin( 'performant-translations' );
 		await this.requestUtils.deactivatePlugin( 'ginger-mo-prefer-json' );
 		await this.requestUtils.deactivatePlugin( 'ginger-mo-prefer-mo' );
 
