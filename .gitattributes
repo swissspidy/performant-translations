@@ -7,6 +7,7 @@ tests export-ignore
 tools export-ignore
 .* export-ignore
 *.neon.dist export-ignore
+*.xml export-ignore
 *.xml.dist export-ignore
 codecov.yml export-ignore
 composer.json export-ignore
