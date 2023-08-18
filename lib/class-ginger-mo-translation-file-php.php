@@ -60,6 +60,8 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	 *
 	 * @see https://github.com/symfony/polyfill-php81/tree/main
 	 *
+	 * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+	 *
 	 * @codeCoverageIgnore
 	 *
 	 * @param array<mixed> $arr The array being evaluated.

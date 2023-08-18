@@ -83,5 +83,5 @@
 	<exclude-pattern>*/tests/*/bootstrap.php</exclude-pattern>
 	<exclude-pattern>*/tests/benchmark/install.php</exclude-pattern>
 	<exclude-pattern>*/tests/phpunit/unit/data/*</exclude-pattern>
-	<exclude-pattern>*/lib/class-plural-forms.php</exclude-pattern>
+	<exclude-pattern>*/tests/phpunit/unit/includes/Plural_Forms.php</exclude-pattern>
 </ruleset>

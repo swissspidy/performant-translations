@@ -12,6 +12,8 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	/**
 	 * Parses the file.
 	 *
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 *
 	 * @return void
 	 */
 	protected function parse_file() {

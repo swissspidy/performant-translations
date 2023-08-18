@@ -83,6 +83,8 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	/**
 	 * Parses the file.
 	 *
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 *
 	 * @return bool True on success, false otherwise.
 	 */
 	protected function parse_file(): bool {

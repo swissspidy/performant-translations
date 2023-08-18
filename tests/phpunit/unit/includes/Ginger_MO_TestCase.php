@@ -13,7 +13,7 @@ class Ginger_MO_TestCase extends \PHPUnit\Framework\TestCase {
 	 * @param string $contents
 	 * @return false|string
 	 */
-	protected function temp_file( $contents = null ) {
+	protected function temp_file( string $contents = null ) {
 		$file = tempnam( sys_get_temp_dir(), 'gingermo' );
 
 		if ( false === $file ) {
