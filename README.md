@@ -1,18 +1,21 @@
-# Ginger MO
+# Performant Translations (Ginger MO)
 
-[![Commit activity](https://img.shields.io/github/commit-activity/m/swissspidy/ginger-mo)](https://github.com/swissspidy/ginger-mo/pulse/monthly)
-[![Code Coverage](https://codecov.io/gh/swissspidy/ginger-mo/branch/main/graph/badge.svg)](https://codecov.io/gh/swissspidy/ginger-mo)
-[![License](https://img.shields.io/github/license/swissspidy/ginger-mo)](https://github.com/swissspidy/ginger-mo/blob/main/LICENSE)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/swissspidy/performant-translations)](https://github.com/swissspidy/performant-translations/pulse/monthly)
+[![Code Coverage](https://codecov.io/gh/swissspidy/performant-translations/branch/main/graph/badge.svg)](https://codecov.io/gh/swissspidy/performant-translations)
+[![License](https://img.shields.io/github/license/swissspidy/performant-translations)](https://github.com/swissspidy/performant-translations/blob/main/LICENSE)
 
-A minimal `.mo` reader (with support for PHP & JSON representations), multiple text domains, and multiple loaded locales.
+A feature project to make the internationalization (i18n) system in WordPress faster than ever before.
 
 ## Description
 
-Ginger MO is a lightweight PHP library to read `.mo`, `.php`, and `.json` translation files.
+This project uses Ginger MO, a lightweight PHP library to read `.mo`, `.php`, and `.json` translation files in WordPress.
+It supports multiple text domains and multiple loaded locales.
 
-While the library itself is platform-agnostic, it has been developed with WordPress in mind. Thus, it can be easily installed as a WordPress plugin.
+Real world tests show that this plugin is much faster at loading translations than the built-in localization system in WordPress core.
 
-Real world tests show that Ginger MO is much faster at loading translations than the built-in localization system in WordPress core.
+The primary purpose of this plugin is to allow broader testing of these enhancements, for which the goal is to eventually land in WordPress core.
+
+### Benchmarks
 
 The following numbers are for a site running 6.3 Beta with multiple active plugins.
 
@@ -84,4 +87,4 @@ The following numbers are for a site running 6.3 Beta with multiple active plugi
 
 ## Credits
 
-Originally developed by [Dion Hulse](https://github.com/dd32/ginger-mo).
+Ginger MO was originally developed by [Dion Hulse](https://github.com/dd32/ginger-mo).

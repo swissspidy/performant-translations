@@ -1,9 +1,10 @@
 <?php
 
 /**
- * @coversDefaultClass Ginger_MO_Translation_Compat
+ * @coversDefaultClass Performant_Translations
  */
-class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
+class Performant_Translations_Tests extends WP_UnitTestCase {
+
 	/**
 	 * @return void
 	 */
@@ -16,18 +17,18 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 			$this->unlink( DIR_TESTDATA . '/pomo/simple.json' );
 		}
 
-		remove_all_filters( 'ginger_mo_convert_files' );
-		remove_all_filters( 'ginger_mo_preferred_format' );
+		remove_all_filters( 'performant_translations_convert_files' );
+		remove_all_filters( 'performant_translations_preferred_format' );
 	}
 
 	/**
-	 * @covers ::overwrite_wordpress
+	 * @covers ::init
 	 *
 	 * @return void
 	 */
-	public function test_overwrite_wordpress() {
-		$this->assertSame( 100, has_filter( 'override_load_textdomain', array( Ginger_MO_Translation_Compat::class, 'load_textdomain' ) ) );
-		$this->assertSame( 100, has_filter( 'override_unload_textdomain', array( Ginger_MO_Translation_Compat::class, 'unload_textdomain' ) ) );
+	public function test_init() {
+		$this->assertSame( 100, has_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ) ) );
+		$this->assertSame( 100, has_filter( 'override_unload_textdomain', array( Performant_Translations::class, 'unload_textdomain' ) ) );
 	}
 
 	/**
@@ -60,7 +61,7 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 		$this->assertFalse( $loaded_before_load, 'Text domain was already loaded at beginning of the test' );
 		$this->assertTrue( $load_successful, 'Text domain not successfully loaded' );
 		$this->assertTrue( $loaded_after_load, 'Text domain is not considered loaded' );
-		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertFalse( $loaded_after_unload, 'Text domain still considered loaded after unload' );
 		$this->assertTrue( $is_loaded, 'Text domain not considered loaded in Ginger-MO' );
@@ -112,7 +113,7 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	 */
 	public function test_load_textdomain_creates_and_reads_php_files_if_filtered_format_is_unsupported() {
 		add_filter(
-			'ginger_mo_preferred_format',
+			'performant_translations_preferred_format',
 			static function () {
 				return 'unknown-format';
 			}
@@ -141,7 +142,7 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function test_load_textdomain_does_not_create_php_files_if_disabled() {
-		add_filter( 'ginger_mo_convert_files', '__return_false' );
+		add_filter( 'performant_translations_convert_files', '__return_false' );
 
 		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 
@@ -161,7 +162,7 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	 */
 	public function test_load_textdomain_creates_and_reads_json_files() {
 		add_filter(
-			'ginger_mo_preferred_format',
+			'performant_translations_preferred_format',
 			static function () {
 				return 'json';
 			}
@@ -276,7 +277,7 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers Ginger_MO_Translation_Compat::upgrader_process_complete
+	 * @covers Performant_Translations::upgrader_process_complete
 	 *
 	 * @return void
 	 */
@@ -338,7 +339,7 @@ class Ginger_MO_Translation_Compat_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers Ginger_MO_Translation_Compat::upgrader_process_complete
+	 * @covers Performant_Translations::upgrader_process_complete
 	 *
 	 * @return void
 	 */

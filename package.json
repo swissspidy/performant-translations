@@ -1,17 +1,17 @@
 {
-	"name": "@swissspidy/ginger-mo",
+	"name": "@swissspidy/performant-translations",
 	"private": true,
 	"description": "A minimal .mo reader (with support for PHP & JSON representations)",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/swissspidy/ginger-mo.git"
+		"url": "git+https://github.com/swissspidy/performant-translations.git"
 	},
 	"author": "swissspidy",
 	"license": "GPL-2.0-or-later",
 	"bugs": {
-		"url": "https://github.com/swissspidy/ginger-mo/issues"
+		"url": "https://github.com/swissspidy/performant-translations/issues"
 	},
-	"homepage": "https://github.com/swissspidy/ginger-mo#readme",
+	"homepage": "https://github.com/swissspidy/performant-translations#readme",
 	"type": "module",
 	"devDependencies": {
 		"@playwright/test": "^1.37.0",

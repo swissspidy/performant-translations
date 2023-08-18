@@ -3,7 +3,7 @@ parameters:
 	strictRules:
 		strictCalls: false
 	paths:
-		- ginger-mo.php
+		- performant-translations.php
 		- lib/
 		- tests/phpunit/unit/includes
 		- tests/phpunit/unit/tests

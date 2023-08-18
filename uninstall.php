@@ -2,7 +2,7 @@
 /**
  * Uninstall handler.
  *
- * @package Ginger_MO
+ * @package Performant_Translations
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {

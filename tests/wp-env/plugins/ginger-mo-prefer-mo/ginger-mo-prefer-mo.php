@@ -10,7 +10,7 @@
  */
 
 add_filter(
-	'ginger_mo_preferred_format',
+	'performant_translations_preferred_format',
 	static function () {
 		return 'mo';
 	}
