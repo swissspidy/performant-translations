@@ -19,6 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+define( 'PERFORMANT_TRANSLATIONS_VERSION', '0.1.0' );
+
 require __DIR__ . '/lib/class-ginger-mo.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-file.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-file-json.php';

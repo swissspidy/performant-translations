@@ -90,7 +90,7 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	protected function parse_file(): bool {
 		$this->parsed = true;
 
-		$file_contents = file_get_contents( $this->file );
+		$file_contents = file_get_contents( $this->file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
 		if ( false === $file_contents ) {
 			return false;
@@ -216,6 +216,6 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			$t_entries     .= $translations . pack( 'x' );
 		}
 
-		return (bool) file_put_contents( $this->file, $file_header . $o_addr . $t_addr . $o_entries . $t_entries );
+		return (bool) file_put_contents( $this->file, $file_header . $o_addr . $t_addr . $o_entries . $t_entries ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 	}
 }

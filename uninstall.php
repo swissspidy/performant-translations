@@ -20,7 +20,7 @@ foreach ( $locations as $location ) {
 	$lang_files = glob( $location . '/*.php' );
 	if ( $lang_files ) {
 		foreach ( $lang_files as $lang_file ) {
-			unlink( $lang_file );
+			wp_delete_file( $lang_file );
 		}
 	}
 }

@@ -17,7 +17,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	 * @return void
 	 */
 	protected function parse_file() {
-		$data = file_get_contents( $this->file );
+		$data = file_get_contents( $this->file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
 		if ( false === $data ) {
 			$this->error = true;
@@ -114,6 +114,6 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 			return false;
 		}
 
-		return (bool) file_put_contents( $this->file, $json );
+		return (bool) file_put_contents( $this->file, $json ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 	}
 }

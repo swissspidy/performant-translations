@@ -28,6 +28,7 @@ package.json
 package-lock.json
 phpbench.json
 phpcs.xml.dist
+phpmd.xml
 phpstan.neon.dist
 phpunit.xml.dist
 phpunit-integration.xml.dist

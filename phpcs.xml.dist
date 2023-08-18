@@ -30,7 +30,10 @@
 	<file>.</file>
 
 	<!-- File Layout: Declare symbols or run code, but not both. -->
-	<rule ref="PSR1.Files.SideEffects" />
+	<rule ref="PSR1.Files.SideEffects">
+		<exclude-pattern>performant-translations.php</exclude-pattern>
+		<exclude-pattern>tests/phpunit/integration/data/plugins</exclude-pattern>
+	</rule>
 
 	<!-- Prevent false positives for IDE annotations. -->
 	<rule ref="Squiz.PHP.CommentedOutCode">
@@ -72,10 +75,6 @@
 
 	<!-- Test for PHP 7.0+ compatibility. -->
 	<config name="testVersion" value="7.0-"/>
-
-	<rule ref="PSR1.Files.SideEffects">
-		<exclude-pattern>tests/phpunit/integration/data/plugins</exclude-pattern>
-	</rule>
 
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/tools/*</exclude-pattern>
