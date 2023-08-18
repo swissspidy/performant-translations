@@ -10,7 +10,7 @@ parameters:
 		- tests/phpunit/integration/tests
 		- tests/phpunit/integration/data
 	excludePaths:
-		- lib/class-plural-forms.php
+		- tests/phpunit/unit/includes/Plural_Forms.php
 	scanFiles:
 		- build-cs/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
 	bootstrapFiles:
