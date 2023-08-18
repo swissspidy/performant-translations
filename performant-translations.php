@@ -15,6 +15,10 @@
  * @package Performant_Translations
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 require __DIR__ . '/lib/class-ginger-mo.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-file.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-file-json.php';
