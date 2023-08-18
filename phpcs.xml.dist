@@ -10,14 +10,14 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" value="ginger-mo" />
+			<property name="text_domain" value="performant-translations" />
 		</properties>
 	</rule>
 
 	<!-- Make sure we prefix everything in the global namespace. -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
-			<property name="prefixes" type="array" value="Ginger_MO" />
+			<property name="prefixes" type="array" value="Performant_Translations,Ginger_MO" />
 		</properties>
 		<exclude-pattern>uninstall.php</exclude-pattern>
 	</rule>
@@ -62,12 +62,12 @@
 	<!-- Ignore comments requirements for main plugin file -->
 	<rule ref="Squiz.Commenting">
 		<exclude name="Squiz.Commenting.LongConditionClosingComment" />
-		<exclude-pattern>ginger-mo.php</exclude-pattern>
+		<exclude-pattern>performant-translations.php</exclude-pattern>
 	</rule>
 
 	<!-- Do not apply hook name rules to compat file -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound">
-		<exclude-pattern>lib/class-ginger-mo-translation-compat.php</exclude-pattern>
+		<exclude-pattern>lib/class-performant-translations.php</exclude-pattern>
 	</rule>
 
 	<!-- Test for PHP 7.0+ compatibility. -->
@@ -83,5 +83,5 @@
 	<exclude-pattern>*/tests/*/bootstrap.php</exclude-pattern>
 	<exclude-pattern>*/tests/benchmark/install.php</exclude-pattern>
 	<exclude-pattern>*/tests/phpunit/unit/data/*</exclude-pattern>
-	<exclude-pattern>*/lib/class-plural-forms.php</exclude-pattern>
+	<exclude-pattern>*/tests/phpunit/unit/includes/Plural_Forms.php</exclude-pattern>
 </ruleset>

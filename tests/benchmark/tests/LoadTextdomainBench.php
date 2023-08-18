@@ -15,19 +15,19 @@ class LoadTextdomainBench {
 	}
 
 	public function tearDown() {
-		add_filter( 'override_load_textdomain', array( 'Ginger_MO_Translation_Compat', 'load_textdomain' ), 100, 4 );
-		add_filter( 'override_unload_textdomain', array( 'Ginger_MO_Translation_Compat', 'unload_textdomain' ), 100, 2 );
+		add_filter( 'override_load_textdomain', array( 'Performant_Translations', 'load_textdomain' ), 100, 4 );
+		add_filter( 'override_unload_textdomain', array( 'Performant_Translations', 'unload_textdomain' ), 100, 2 );
 	}
 
 	public function bench_default_pomo() {
-		remove_filter( 'override_load_textdomain', array( 'Ginger_MO_Translation_Compat', 'load_textdomain' ), 100 );
-		remove_filter( 'override_unload_textdomain', array( 'Ginger_MO_Translation_Compat', 'unload_textdomain' ), 100 );
+		remove_filter( 'override_load_textdomain', array( 'Performant_Translations', 'load_textdomain' ), 100 );
+		remove_filter( 'override_unload_textdomain', array( 'Performant_Translations', 'unload_textdomain' ), 100 );
 		load_default_textdomain( 'de_DE' );
 	}
 
 	public function bench_mo_files() {
 		add_filter(
-			'ginger_mo_preferred_format',
+			'performant_translations_preferred_format',
 			static function () {
 				return 'mo';
 			}
@@ -37,7 +37,7 @@ class LoadTextdomainBench {
 
 	public function bench_json_files() {
 		add_filter(
-			'ginger_mo_preferred_format',
+			'performant_translations_preferred_format',
 			static function () {
 				return 'json';
 			}
@@ -47,7 +47,7 @@ class LoadTextdomainBench {
 
 	public function bench_php_files() {
 		add_filter(
-			'ginger_mo_preferred_format',
+			'performant_translations_preferred_format',
 			static function () {
 				return 'php';
 			}

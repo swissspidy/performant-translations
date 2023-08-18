@@ -7,6 +7,8 @@
 
 /**
  * Class Ginger_MO.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Ginger_MO {
 	/**
@@ -71,6 +73,8 @@ class Ginger_MO {
 	/**
 	 * Loads a translation file.
 	 *
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 *
 	 * @param string $translation_file Translation file.
 	 * @param string $textdomain       Text domain.
 	 * @param string $locale           Optional. Locale. Default current locale.
@@ -123,6 +127,8 @@ class Ginger_MO {
 
 	/**
 	 * Unload all translation files or a specific one for a given text domain.
+	 *
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 *
 	 * @param string                            $textdomain Text domain.
 	 * @param Ginger_MO_Translation_File|string $mo         Translation file instance or file name.

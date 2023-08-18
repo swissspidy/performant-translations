@@ -2,13 +2,13 @@
 /**
  * Compatibility & Implementation for WordPress.
  *
- * @package Ginger_MO
+ * @package Performant_Translations
  */
 
 /**
- * Class Ginger_MO_Translation_Compat.
+ * Class Performant_Translations.
  */
-class Ginger_MO_Translation_Compat {
+class Performant_Translations {
 	/**
 	 * Loads a text domain.
 	 *
@@ -48,7 +48,7 @@ class Ginger_MO_Translation_Compat {
 		 *
 		 * @param string $convert Preferred file format. Possible values: 'php', 'mo', 'json'. Default: 'php'.
 		 */
-		$preferred_format = apply_filters( 'ginger_mo_preferred_format', 'php' );
+		$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
 		if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
 			$preferred_format = 'php';
 		}
@@ -61,7 +61,7 @@ class Ginger_MO_Translation_Compat {
 			if ( $success ) {
 				// Unset Noop_Translations reference in get_translations_for_domain.
 				unset( $l10n[ $domain ] );
-				$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
+				$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );
 
 				$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
 
@@ -75,7 +75,7 @@ class Ginger_MO_Translation_Compat {
 			// Unset Noop_Translations reference in get_translations_for_domain.
 			unset( $l10n[ $domain ] );
 
-			$l10n[ $domain ] = new Ginger_MO_Translation_Compat_Provider( $domain );
+			$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );
 
 			$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
 
@@ -84,13 +84,13 @@ class Ginger_MO_Translation_Compat {
 			 *
 			 * Only runs when no corresponding PHP or JSON translation file exists yet.
 			 *
-			 * The preferred format is determined by the {@see 'ginger_mo_prefer_php_files'} filter
+			 * The preferred format is determined by the {@see 'performant_translations_prefer_php_files'} filter
 			 *
 			 * Useful for testing/debugging.
 			 *
 			 * @param bool $convert Whether to convert MO files to PHP files. Default true.
 			 */
-			$convert = apply_filters( 'ginger_mo_convert_files', true );
+			$convert = apply_filters( 'performant_translations_convert_files', true );
 
 			if ( 'mo' !== $preferred_format && $convert ) {
 				$source      = Ginger_MO_Translation_File::create( $mofile );
@@ -141,7 +141,7 @@ class Ginger_MO_Translation_Compat {
 	 *
 	 * @return void
 	 */
-	public static function init() {
+	public static function set_locale() {
 		Ginger_MO::instance()->set_locale( determine_locale() );
 	}
 
@@ -204,7 +204,7 @@ class Ginger_MO_Translation_Compat {
 
 			if ( file_exists( $file ) ) {
 				/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
-				$preferred_format = apply_filters( 'ginger_mo_preferred_format', 'php' );
+				$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
 				if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
 					$preferred_format = 'php';
 				}
@@ -212,7 +212,7 @@ class Ginger_MO_Translation_Compat {
 				$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
 
 				/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
-				$convert = apply_filters( 'ginger_mo_convert_files', true );
+				$convert = apply_filters( 'performant_translations_convert_files', true );
 
 				if ( 'mo' !== $preferred_format && $convert ) {
 					$source      = Ginger_MO_Translation_File::create( $file );
@@ -232,11 +232,11 @@ class Ginger_MO_Translation_Compat {
 	 *
 	 * @return void
 	 */
-	public static function overwrite_wordpress() {
+	public static function init() {
 		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
 		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
 
-		add_action( 'init', array( __CLASS__, 'init' ) );
+		add_action( 'init', array( __CLASS__, 'set_locale' ) );
 		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
 
 		add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );

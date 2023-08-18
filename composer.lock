@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ac2981a5ca483c844e0605db77f2bd1",
+    "content-hash": "72b1e7d8e668da89a565e07faf919ceb",
     "packages": [],
     "packages-dev": [
         {
@@ -496,12 +496,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHPCSExtra.git",
-                "reference": "8a41c8b5a478468b99424155bc2a12cd388d50eb"
+                "reference": "ad2b11964680e23af8a13b3b200da35d98ad7395"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSExtra/zipball/8a41c8b5a478468b99424155bc2a12cd388d50eb",
-                "reference": "8a41c8b5a478468b99424155bc2a12cd388d50eb",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSExtra/zipball/ad2b11964680e23af8a13b3b200da35d98ad7395",
+                "reference": "ad2b11964680e23af8a13b3b200da35d98ad7395",
                 "shasum": ""
             },
             "require": {
@@ -552,7 +552,7 @@
                 "issues": "https://github.com/PHPCSStandards/PHPCSExtra/issues",
                 "source": "https://github.com/PHPCSStandards/PHPCSExtra"
             },
-            "time": "2023-08-09T01:48:31+00:00"
+            "time": "2023-08-16T21:39:53+00:00"
         },
         {
             "name": "phpcsstandards/phpcsutils",
@@ -1287,12 +1287,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "ae0e6ea6df489cfc6dc2c1b5dc2a107ed056ed2d"
+                "reference": "7a0792500b5d9f0b4d81fba229b191e747bd2ef2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/ae0e6ea6df489cfc6dc2c1b5dc2a107ed056ed2d",
-                "reference": "ae0e6ea6df489cfc6dc2c1b5dc2a107ed056ed2d",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7a0792500b5d9f0b4d81fba229b191e747bd2ef2",
+                "reference": "7a0792500b5d9f0b4d81fba229b191e747bd2ef2",
                 "shasum": ""
             },
             "conflict": {
@@ -1361,7 +1361,7 @@
                 "centreon/centreon": "<22.10.0.0-beta1",
                 "cesnet/simplesamlphp-module-proxystatistics": "<3.1",
                 "chriskacerguis/codeigniter-restserver": "<=2.7.1",
-                "cockpit-hq/cockpit": "<2.6.3",
+                "cockpit-hq/cockpit": "<=2.6.3",
                 "codeception/codeception": "<3.1.3|>=4,<4.1.22",
                 "codeigniter/framework": "<3.1.9",
                 "codeigniter4/framework": "<4.3.5",
@@ -1441,8 +1441,8 @@
                 "firebase/php-jwt": "<6",
                 "fixpunkt/fp-masterquiz": "<2.2.1|>=3,<3.5.2",
                 "fixpunkt/fp-newsletter": "<1.1.1|>=2,<2.1.2|>=2.2,<3.2.6",
-                "flarum/core": "<1.7",
-                "flarum/framework": "<=0.1.0.0-beta7.1",
+                "flarum/core": "<1.8",
+                "flarum/framework": "<1.8",
                 "flarum/mentions": "<1.6.3",
                 "flarum/sticky": ">=0.1.0.0-beta14,<=0.1.0.0-beta15",
                 "flarum/tags": "<=0.1.0.0-beta13",
@@ -1532,6 +1532,7 @@
                 "kitodo/presentation": "<3.2.3|>=3.3,<3.3.4",
                 "klaviyo/magento2-extension": ">=1,<3",
                 "knplabs/knp-snappy": "<1.4.2",
+                "kohana/core": "<3.3.3",
                 "krayin/laravel-crm": "<1.2.2",
                 "kreait/firebase-php": ">=3.2,<3.8.1",
                 "la-haute-societe/tcpdf": "<6.2.22",
@@ -1937,7 +1938,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-15T23:04:14+00:00"
+            "time": "2023-08-17T20:04:28+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -2812,12 +2813,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress-Coding-Standards.git",
-                "reference": "3bca142c1524f6e5a3aa7953f446785beff3351c"
+                "reference": "25d2e7ebd8d0cf05925e1e6a72d2da2f02930419"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/3bca142c1524f6e5a3aa7953f446785beff3351c",
-                "reference": "3bca142c1524f6e5a3aa7953f446785beff3351c",
+                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/25d2e7ebd8d0cf05925e1e6a72d2da2f02930419",
+                "reference": "25d2e7ebd8d0cf05925e1e6a72d2da2f02930419",
                 "shasum": ""
             },
             "require": {
@@ -2865,7 +2866,7 @@
                 "source": "https://github.com/WordPress/WordPress-Coding-Standards",
                 "wiki": "https://github.com/WordPress/WordPress-Coding-Standards/wiki"
             },
-            "time": "2023-08-16T07:34:49+00:00"
+            "time": "2023-08-18T08:37:21+00:00"
         },
         {
             "name": "yoast/phpunit-polyfills",

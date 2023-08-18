@@ -1,17 +1,17 @@
 <?php
 /**
- * Class Ginger_MO_Translation_Compat_Provider.
+ * Class Performant_Translations_Compat_Provider.
  *
- * @package Ginger_MO
+ * @package Performant_Translations
  */
 
 /**
- * Class Ginger_MO_Translation_Compat_Provider.
+ * Class Performant_Translations_Compat_Provider.
  *
  * @property-read array<string, string> $headers
  * @property-read array<string, string[]> $entries
  */
-class Ginger_MO_Translation_Compat_Provider {
+class Performant_Translations_Compat_Provider {
 	/**
 	 * Text domain.
 	 *

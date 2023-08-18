@@ -31,7 +31,7 @@
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="false">
 			<directory suffix=".php">./lib/</directory>
-			<file>ginger-mo.php</file>
+			<file>performant-translations.php</file>
 		</whitelist>
 	</filter>
 </phpunit>

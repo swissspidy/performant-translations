@@ -3,6 +3,6 @@
 
 # See https://docs.codecov.com/docs/ignoring-paths
 ignore:
-    - ginger-mo.php
+    - performant-translations.php
     - uninstall.php
     - lib/class-plural-forms.php

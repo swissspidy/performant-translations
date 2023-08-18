@@ -21,7 +21,7 @@ require_once $_tests_dir . '/includes/functions.php';
  * in wp-settings.php isn't filtered yet by the plugin.
  */
 function _manually_load_plugin() {
-	require dirname( __DIR__, 2 ) . '/ginger-mo.php';
+	require dirname( __DIR__, 2 ) . '/performant-translations.php';
 }
 
 tests_add_filter( 'init', '_manually_load_plugin' );

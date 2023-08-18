@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @coversDefaultClass Ginger_MO_Translation_Compat_Provider
+ * @coversDefaultClass Performant_Translations_Compat_Provider
  */
-class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
+class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 	/**
 	 * @return void
 	 */
@@ -34,7 +34,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSets(
 			array(
@@ -73,7 +73,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSets(
 			array(
@@ -114,7 +114,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSets(
 			array(
@@ -162,7 +162,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
 		$this->assertTrue( $load_successful, 'Text domain not successfully loaded' );
-		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSetsWithIndex(
 			array(
@@ -191,7 +191,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertSame( 'dyado', $translation, 'Actual translation does not match expected one' );
 		$this->assertSame( 'does not exist', $translation_missing, 'Actual translation fallback does not match expected one' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
@@ -215,7 +215,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertSame( 'oney dragoney', $translation_1, 'Actual translation does not match expected one' );
 		$this->assertSame( 'twoey dragoney', $translation_2, 'Actual translation does not match expected one' );
 		$this->assertSame( 'twoey dragoney', $translation_minus_8, 'Actual translation does not match expected one' );
@@ -239,7 +239,7 @@ class Ginger_MO_Translation_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Ginger_MO_Translation_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
 		$this->assertSame( '%d house', $translation_1, 'Actual translation fallback does not match expected one' );
 		$this->assertSame( '%d cars', $translation_2, 'Actual plural translation fallback does not match expected one' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
