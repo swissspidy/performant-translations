@@ -62,8 +62,8 @@ class Ginger_MO_Translation_File {
 
 		if ( 'write' === $context ) {
 			if ( file_exists( $file ) ) {
-				$this->error = is_writable( $file ) ? false : 'File is not writable';
-			} elseif ( ! is_writable( dirname( $file ) ) ) {
+				$this->error = is_writable( $file ) ? false : 'File is not writable'; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
+			} elseif ( ! is_writable( dirname( $file ) ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 				$this->error = 'Directory not writable';
 			}
 		} elseif ( ! is_readable( $file ) ) {

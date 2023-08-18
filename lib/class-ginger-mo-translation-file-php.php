@@ -48,7 +48,7 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 
 		$file_contents = '<?php' . PHP_EOL . 'return ' . $this->var_export( $data ) . ';' . PHP_EOL;
 
-		return (bool) file_put_contents( $this->file, $file_contents );
+		return (bool) file_put_contents( $this->file, $file_contents ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 	}
 
 	/**
