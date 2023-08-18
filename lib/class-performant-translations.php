@@ -226,6 +226,17 @@ class Performant_Translations {
 	}
 
 	/**
+	 * Adds a <meta> generator tag for the plugin.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return void
+	 */
+	public static function add_generator_tag() {
+		echo '<meta name="generator" content="Performant Translations ' . esc_attr( PERFORMANT_TRANSLATIONS_VERSION ) . '">' . "\n";
+	}
+
+	/**
 	 * Hook into WordPress.
 	 *
 	 * @codeCoverageIgnore
@@ -240,5 +251,7 @@ class Performant_Translations {
 		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
 
 		add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
+
+		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
 	}
 }
