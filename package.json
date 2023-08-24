@@ -14,7 +14,7 @@
 	"homepage": "https://github.com/swissspidy/performant-translations#readme",
 	"type": "module",
 	"devDependencies": {
-		"@playwright/test": "^1.37.0",
+		"@playwright/test": "^1.37.1",
 		"@wordpress/e2e-test-utils-playwright": "^0.8.0",
 		"@wordpress/env": "^8.6.0",
 		"@wordpress/scripts": "^26.11.0",
