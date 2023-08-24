@@ -15,6 +15,7 @@ composer.lock export-ignore
 jest-e2e.config.js export-ignore
 package.json export-ignore
 package-lock.json export-ignore
+phpbench.json export-ignore
 tsconfig.json export-ignore
 
 tsconfig.json linguist-language=jsonc
