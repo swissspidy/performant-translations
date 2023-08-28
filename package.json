@@ -18,7 +18,7 @@
 		"@wordpress/e2e-test-utils-playwright": "^0.8.0",
 		"@wordpress/env": "^8.6.0",
 		"@wordpress/scripts": "^26.11.0",
-		"eslint-plugin-playwright": "^0.15.2",
+		"eslint-plugin-playwright": "^0.16.0",
 		"get-port": "^7.0.0",
 		"glob": "^10.3.0",
 		"lighthouse": "^11.0.0",
