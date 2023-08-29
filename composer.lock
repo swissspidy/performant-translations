@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72b1e7d8e668da89a565e07faf919ceb",
+    "content-hash": "e48c1197423bb5f8f3b55d6194e7ef8c",
     "packages": [],
     "packages-dev": [
         {
@@ -496,12 +496,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHPCSExtra.git",
-                "reference": "ad2b11964680e23af8a13b3b200da35d98ad7395"
+                "reference": "98bcdbacbda14b1db85f710b1853125726795bbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSExtra/zipball/ad2b11964680e23af8a13b3b200da35d98ad7395",
-                "reference": "ad2b11964680e23af8a13b3b200da35d98ad7395",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSExtra/zipball/98bcdbacbda14b1db85f710b1853125726795bbc",
+                "reference": "98bcdbacbda14b1db85f710b1853125726795bbc",
                 "shasum": ""
             },
             "require": {
@@ -552,7 +552,7 @@
                 "issues": "https://github.com/PHPCSStandards/PHPCSExtra/issues",
                 "source": "https://github.com/PHPCSStandards/PHPCSExtra"
             },
-            "time": "2023-08-16T21:39:53+00:00"
+            "time": "2023-08-26T04:46:45+00:00"
         },
         {
             "name": "phpcsstandards/phpcsutils",
@@ -560,12 +560,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHPCSUtils.git",
-                "reference": "69465cab9d12454e5e7767b9041af0cd8cd13be7"
+                "reference": "a731124fa118dcc2e736308e1bc5141b227113e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSUtils/zipball/69465cab9d12454e5e7767b9041af0cd8cd13be7",
-                "reference": "69465cab9d12454e5e7767b9041af0cd8cd13be7",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSUtils/zipball/a731124fa118dcc2e736308e1bc5141b227113e8",
+                "reference": "a731124fa118dcc2e736308e1bc5141b227113e8",
                 "shasum": ""
             },
             "require": {
@@ -578,7 +578,7 @@
                 "php-parallel-lint/php-console-highlighter": "^1.0",
                 "php-parallel-lint/php-parallel-lint": "^1.3.2",
                 "phpcsstandards/phpcsdevcs": "^1.1.6",
-                "yoast/phpunit-polyfills": "^1.0.5 || ^2.0.0"
+                "yoast/phpunit-polyfills": "^1.1.0 || ^2.0.0"
             },
             "default-branch": true,
             "type": "phpcodesniffer-standard",
@@ -626,7 +626,7 @@
                 "issues": "https://github.com/PHPCSStandards/PHPCSUtils/issues",
                 "source": "https://github.com/PHPCSStandards/PHPCSUtils"
             },
-            "time": "2023-07-16T21:39:41+00:00"
+            "time": "2023-08-25T11:51:44+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1287,12 +1287,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "7a0792500b5d9f0b4d81fba229b191e747bd2ef2"
+                "reference": "c16c8b67835bc384c40b9f282b3a49a6f4cb5124"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7a0792500b5d9f0b4d81fba229b191e747bd2ef2",
-                "reference": "7a0792500b5d9f0b4d81fba229b191e747bd2ef2",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/c16c8b67835bc384c40b9f282b3a49a6f4cb5124",
+                "reference": "c16c8b67835bc384c40b9f282b3a49a6f4cb5124",
                 "shasum": ""
             },
             "conflict": {
@@ -1377,7 +1377,7 @@
                 "contao/listing-bundle": ">=4,<4.4.8",
                 "contao/managed-edition": "<=1.5",
                 "cosenary/instagram": "<=2.3",
-                "craftcms/cms": "<4.4.12",
+                "craftcms/cms": "<=4.4.14",
                 "croogo/croogo": "<4",
                 "cuyz/valinor": "<0.12",
                 "czproject/git-php": "<4.0.3",
@@ -1458,6 +1458,7 @@
                 "friendsofsymfony/rest-bundle": ">=1.2,<1.2.2",
                 "friendsofsymfony/user-bundle": ">=1.2,<1.3.5",
                 "friendsoftypo3/mediace": ">=7.6.2,<7.6.5",
+                "friendsoftypo3/openid": ">=4.5,<4.5.31|>=4.7,<4.7.16|>=6,<6.0.11|>=6.1,<6.1.6",
                 "froala/wysiwyg-editor": "<3.2.7",
                 "froxlor/froxlor": "<2.1",
                 "fuel/core": "<1.8.1",
@@ -1652,7 +1653,7 @@
                 "pimcore/customer-management-framework-bundle": "<3.4.2",
                 "pimcore/data-hub": "<1.2.4",
                 "pimcore/perspective-editor": "<1.5.1",
-                "pimcore/pimcore": "<10.6.7",
+                "pimcore/pimcore": "<10.6.8",
                 "pixelfed/pixelfed": "<=0.11.4",
                 "pocketmine/bedrock-protocol": "<8.0.2",
                 "pocketmine/pocketmine-mp": "<4.22.3|>=5,<5.2.1",
@@ -1836,8 +1837,9 @@
                 "verot/class.upload.php": "<=1.0.3|>=2,<=2.0.4",
                 "vova07/yii2-fileapi-widget": "<0.1.9",
                 "vrana/adminer": "<4.8.1",
+                "waldhacker/hcaptcha": "<2.1.2",
                 "wallabag/tcpdf": "<6.2.22",
-                "wallabag/wallabag": "<=2.5.4",
+                "wallabag/wallabag": "<=2.6.2",
                 "wanglelecc/laracms": "<=1.0.3",
                 "web-auth/webauthn-framework": ">=3.3,<3.3.4",
                 "webbuilders-group/silverstripe-kapost-bridge": "<0.4",
@@ -1938,7 +1940,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-17T20:04:28+00:00"
+            "time": "2023-08-29T00:13:38+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -2579,12 +2581,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "a813c38729aef0034ff7b0f5f0ac54e94ea76804"
+                "reference": "b0ecdf10fa5a15bbf341b6dd75d1b23bd803aaaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/a813c38729aef0034ff7b0f5f0ac54e94ea76804",
-                "reference": "a813c38729aef0034ff7b0f5f0ac54e94ea76804",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/b0ecdf10fa5a15bbf341b6dd75d1b23bd803aaaf",
+                "reference": "b0ecdf10fa5a15bbf341b6dd75d1b23bd803aaaf",
                 "shasum": ""
             },
             "require": {
@@ -2629,7 +2631,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2023-08-06T23:03:57+00:00"
+            "time": "2023-08-27T15:25:51+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2809,16 +2811,16 @@
         },
         {
             "name": "wp-coding-standards/wpcs",
-            "version": "dev-develop",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress-Coding-Standards.git",
-                "reference": "25d2e7ebd8d0cf05925e1e6a72d2da2f02930419"
+                "reference": "bb792cb331472b82c5d7f28fb9b8ec2d20f68826"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/25d2e7ebd8d0cf05925e1e6a72d2da2f02930419",
-                "reference": "25d2e7ebd8d0cf05925e1e6a72d2da2f02930419",
+                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/bb792cb331472b82c5d7f28fb9b8ec2d20f68826",
+                "reference": "bb792cb331472b82c5d7f28fb9b8ec2d20f68826",
                 "shasum": ""
             },
             "require": {
@@ -2842,7 +2844,6 @@
                 "ext-iconv": "For improved results",
                 "ext-mbstring": "For improved results"
             },
-            "default-branch": true,
             "type": "phpcodesniffer-standard",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2866,7 +2867,7 @@
                 "source": "https://github.com/WordPress/WordPress-Coding-Standards",
                 "wiki": "https://github.com/WordPress/WordPress-Coding-Standards/wiki"
             },
-            "time": "2023-08-18T08:37:21+00:00"
+            "time": "2023-08-21T14:28:38+00:00"
         },
         {
             "name": "yoast/phpunit-polyfills",
@@ -2874,12 +2875,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Yoast/PHPUnit-Polyfills.git",
-                "reference": "f4c425a8aae6c1f2d448289b42311d58af5ff7a4"
+                "reference": "224e4a1329c03d8bad520e3fc4ec980034a4b212"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Yoast/PHPUnit-Polyfills/zipball/f4c425a8aae6c1f2d448289b42311d58af5ff7a4",
-                "reference": "f4c425a8aae6c1f2d448289b42311d58af5ff7a4",
+                "url": "https://api.github.com/repos/Yoast/PHPUnit-Polyfills/zipball/224e4a1329c03d8bad520e3fc4ec980034a4b212",
+                "reference": "224e4a1329c03d8bad520e3fc4ec980034a4b212",
                 "shasum": ""
             },
             "require": {
@@ -2926,14 +2927,13 @@
                 "issues": "https://github.com/Yoast/PHPUnit-Polyfills/issues",
                 "source": "https://github.com/Yoast/PHPUnit-Polyfills"
             },
-            "time": "2023-06-06T15:51:44+00:00"
+            "time": "2023-08-19T14:25:08+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "wp-coding-standards/wpcs": 20
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
