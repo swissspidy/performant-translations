@@ -4,8 +4,8 @@
  * Plugin URI:  https://github.com/swissspidy/performant-translations
  * Description: A feature project to make the internationalization (i18n) system in WordPress faster than ever before.
  * Version:     0.1.0
- * Author:      Pascal Birchler
- * Author URI:  https://pascalbirchler.com
+ * Author:      WordPress Performance Team
+ * Author URI:  https://make.wordpress.org/performance/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: performant-translations
