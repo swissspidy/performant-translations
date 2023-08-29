@@ -2,6 +2,7 @@
 .github
 .idea
 .phpbench
+.wordpress-org
 artifacts
 bin
 build-cs
@@ -24,6 +25,7 @@ vendor
 codecov.yml
 composer.json
 composer.lock
+CONTRIBUTING.md
 package.json
 package-lock.json
 phpbench.json
@@ -34,5 +36,6 @@ phpunit.xml.dist
 phpunit-integration.xml.dist
 phpunit-integration-multisite.xml.dist
 README.md
+SECURITY.md
 tsconfig.json
 tsconfig.tsbuildinfo

@@ -18,10 +18,9 @@ jobs:
               id: deploy
               with:
                   generate-zip: true
-                  dry-run: true
               env:
-                  SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                   SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+                  SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                   SLUG: performant-translations
 
             - name: Upload release asset
