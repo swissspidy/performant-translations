@@ -1,8 +1,8 @@
 === Performant Translations ===
 
-Contributors:      swissspidy, dd32
+Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.3
-Stable tag:        0.1.0
+Stable tag:        1.0.0
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization

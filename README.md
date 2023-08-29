@@ -1,4 +1,4 @@
-# Performant Translations (Ginger MO)
+# Performant Translations (née Ginger MO)
 
 [![Commit activity](https://img.shields.io/github/commit-activity/m/swissspidy/performant-translations)](https://github.com/swissspidy/performant-translations/pulse/monthly)
 [![Code Coverage](https://codecov.io/gh/swissspidy/performant-translations/branch/main/graph/badge.svg)](https://codecov.io/gh/swissspidy/performant-translations)
