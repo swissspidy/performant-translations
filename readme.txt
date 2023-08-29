@@ -13,15 +13,13 @@ Making internationalization/localization in WordPress faster than ever before.
 
 This project uses a new approach to handle translation files in WordPress, making localization blazing fast.
 
-An [in-depth i18n performance analysis](https://make.wordpress.org/core/2023/07/24/i18n-performance-analysis/) showed
-that localized WordPress sites load significantly slower than a site without translations.
+An [in-depth i18n performance analysis](https://make.wordpress.org/core/2023/07/24/i18n-performance-analysis/) showed that localized WordPress sites load significantly slower than a site without translations.
 
 With this plugin's new approach to localization, this overhead is massively reduced, making your site fast again.
 
 The primary purpose of this plugin is to allow broader testing of these enhancements, for which the goal is to eventually land in WordPress core.
 
-Performant Translations supports multiple file formats (`.mo`, `.php`, and `.json`), as well as multiple text domains and locales loaded at the same time.
-By default, it converts existing `.mo` files to `.php` and afterwards only loads the translations from the `.php` file.
+Performant Translations supports multiple file formats (`.mo`, `.php`, and `.json`), as well as multiple text domains and locales loaded at the same time. By default, it converts existing `.mo` files to `.php` and afterwards only loads the translations from the `.php` file.
 
 == Installation ==
 
