@@ -25,3 +25,5 @@ jobs:
 
             - name: Upload release asset
               run: gh release upload ${{ github.event.release.tag_name }} ${{ steps.deploy.outputs.zip-path }}
+              env:
+                  GH_TOKEN: ${{ github.token }}
