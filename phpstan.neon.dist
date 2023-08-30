@@ -15,5 +15,8 @@ parameters:
 		- build-cs/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
 	bootstrapFiles:
 		- tests/phpstan/bootstrap.php
+	ignoreErrors:
+		# WordPress core includes a polyfill.
+		-	message: '/^Function str_ends_with not found\./'
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
