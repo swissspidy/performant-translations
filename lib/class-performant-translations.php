@@ -237,6 +237,39 @@ class Performant_Translations {
 	}
 
 	/**
+	 * Regenerate preferred translation files when an MO file is updated in Loco Translate.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @param string $file Path to translation file.
+	 * @return void
+	 */
+	public static function regenerate_translation_file( string $file ) {
+		if ( ! str_ends_with( $file, '.mo' ) ) {
+			return;
+		}
+
+		/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+		$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
+		if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
+			$preferred_format = 'php';
+		}
+
+		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
+
+		/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+		$convert = apply_filters( 'performant_translations_convert_files', true );
+
+		if ( 'mo' !== $preferred_format && $convert ) {
+			$source      = Ginger_MO_Translation_File::create( $file );
+			$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
+			if ( false !== $source && false !== $destination ) {
+				$source->export( $destination );
+			}
+		}
+	}
+
+	/**
 	 * Hook into WordPress.
 	 *
 	 * @codeCoverageIgnore
@@ -253,5 +286,8 @@ class Performant_Translations {
 		add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
 
 		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
+
+		// Plugin integrations.
+		add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
 	}
 }
