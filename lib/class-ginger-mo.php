@@ -271,7 +271,7 @@ class Ginger_MO {
 
 		return isset( $translation['entries'][ $num ] ) ?
 			$translation['entries'][ $num ] :
-			$translation['entries'][ 0 ];
+			$translation['entries'][0];
 	}
 
 	/**
