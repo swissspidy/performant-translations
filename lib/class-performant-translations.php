@@ -241,7 +241,7 @@ class Performant_Translations {
 	 *
 	 * This compatibility code is added out of courtesy and is not intended
 	 * to be merged into WordPress core.
-	 * 
+	 *
 	 * @codeCoverageIgnore
 	 *
 	 * @param string $file Path to translation file.
