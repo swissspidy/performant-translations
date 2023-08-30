@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.3
-Stable tag:        1.0.0
+Stable tag:        1.0.1
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
@@ -77,11 +77,21 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.0.1 = 
+
+* Enhancement: Regenerate translation files when Loco Translate updates MO files.
+* Fixed: Add hardening for invalid context being passed.
+* Fixed: Fix handling of locales without plurals, such as Persian.
+
 = 1.0.0 =
 
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+
+This release includes bug fixes for usage with certain plugins and locales. 
 
 = 1.0.0 =
 
