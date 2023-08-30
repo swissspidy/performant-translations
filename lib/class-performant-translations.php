@@ -239,6 +239,9 @@ class Performant_Translations {
 	/**
 	 * Regenerate preferred translation files when an MO file is updated in Loco Translate.
 	 *
+	 * This compatibility code is added out of courtesy and is not intended
+	 * to be merged into WordPress core.
+	 * 
 	 * @codeCoverageIgnore
 	 *
 	 * @param string $file Path to translation file.
