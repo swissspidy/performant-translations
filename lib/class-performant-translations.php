@@ -12,6 +12,8 @@ class Performant_Translations {
 	/**
 	 * Loads a text domain.
 	 *
+	 * @global WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
+	 *
 	 * @param bool        $override Whether to override the .mo file loading.
 	 * @param string      $domain   Text domain. Unique identifier for retrieving translated strings.
 	 * @param string      $mofile   Path to the MO file.
@@ -19,7 +21,10 @@ class Performant_Translations {
 	 * @return bool True on success, false otherwise.
 	 */
 	public static function load_textdomain( $override, $domain, $mofile, $locale ) {
-		global $l10n, $wp_textdomain_registry;
+		/*
+		 * @var WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
+		 */
+		global $l10n, $wp_textdomain_registry, $wp_filesystem;
 
 		// Another override is already in progress, prevent conflicts.
 		if ( $override ) {
@@ -96,7 +101,13 @@ class Performant_Translations {
 				$source      = Ginger_MO_Translation_File::create( $mofile );
 				$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
 				if ( false !== $source && false !== $destination ) {
-					$source->export( $destination );
+					$destination->import( $source );
+
+					if ( true === WP_Filesystem() ) {
+						$wp_filesystem->put_contents( $mofile_preferred, $destination->export() );
+					} else {
+						file_put_contents( $mofile_preferred, $destination->export(), LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+					}
 				}
 			}
 		}
@@ -160,6 +171,8 @@ class Performant_Translations {
 	 *
 	 * @since 0.0.1
 	 *
+	 * @global WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
+	 *
 	 * @param WP_Upgrader $upgrader   WP_Upgrader instance. In other contexts this might be a
 	 *                                Theme_Upgrader, Plugin_Upgrader, Core_Upgrade, or Language_Pack_Upgrader instance.
 	 * @param array       $hook_extra {
@@ -185,6 +198,11 @@ class Performant_Translations {
 	 * @phpstan-param array{action: string, type: string, bulk: bool, plugins: string[], themes: string[], translations: array<int, array{language: string, type: string, slug: string, version: string}>} $hook_extra
 	 */
 	public static function upgrader_process_complete( $upgrader, $hook_extra ) {
+		/*
+		 * @var WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
+		 */
+		global $wp_filesystem;
+
 		if ( 'translation' !== $hook_extra['type'] || array() === $hook_extra['translations'] ) {
 			return;
 		}
@@ -218,7 +236,13 @@ class Performant_Translations {
 					$source      = Ginger_MO_Translation_File::create( $file );
 					$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
 					if ( false !== $source && false !== $destination ) {
-						$source->export( $destination );
+
+						if ( true !== $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
+							return;
+						}
+
+						$destination->import( $source );
+						$wp_filesystem->put_contents( $mofile_preferred, $destination->export() );
 					}
 				}
 			}
@@ -244,10 +268,17 @@ class Performant_Translations {
 	 *
 	 * @codeCoverageIgnore
 	 *
+	 * @global WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
+	 *
 	 * @param string $file Path to translation file.
 	 * @return void
 	 */
 	public static function regenerate_translation_file( string $file ) {
+		/*
+		 * @var WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
+		 */
+		global $wp_filesystem;
+
 		if ( ! str_ends_with( $file, '.mo' ) ) {
 			return;
 		}
@@ -267,7 +298,13 @@ class Performant_Translations {
 			$source      = Ginger_MO_Translation_File::create( $file );
 			$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
 			if ( false !== $source && false !== $destination ) {
-				$source->export( $destination );
+				$destination->import( $source );
+
+				if ( true === WP_Filesystem() ) {
+					$wp_filesystem->put_contents( $mofile_preferred, $destination->export() );
+				} else {
+					file_put_contents( $mofile_preferred, $destination->export(), LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+				}
 			}
 		}
 	}
