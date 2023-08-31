@@ -98,13 +98,17 @@ class Performant_Translations_Compat_Provider {
 	/**
 	 * Translates a plural string.
 	 *
-	 * @param string      $singular Singular translation.
-	 * @param string      $plural   Plural translation.
+	 * @param string|null $singular Singular string.
+	 * @param string|null $plural   Plural string.
 	 * @param int|float   $count    Count. Should be an integer, but some plugins pass floats.
 	 * @param string|null $context  Context.
-	 * @return string Translation.
+	 * @return string|null Translation if it exists, or the unchanged singular string.
 	 */
 	public function translate_plural( $singular, $plural, $count = 1, $context = '' ) {
+		if ( null === $singular || null === $plural ) {
+			return $singular;
+		}
+
 		$translation = Ginger_MO::instance()->translate_plural( array( $singular, $plural ), (int) $count, (string) $context, $this->textdomain );
 		if ( false !== $translation ) {
 			return $translation;
@@ -117,11 +121,15 @@ class Performant_Translations_Compat_Provider {
 	/**
 	 * Translates a singular string.
 	 *
-	 * @param string      $singular Singular translation.
+	 * @param string|null $singular Singular string.
 	 * @param string|null $context  Context.
-	 * @return string Translation.
+	 * @return string|null Translation if it exists, or the unchanged singular string
 	 */
 	public function translate( $singular, $context = '' ) {
+		if ( null === $singular ) {
+			return $singular;
+		}
+
 		$translation = Ginger_MO::instance()->translate( $singular, (string) $context, $this->textdomain );
 		if ( false !== $translation ) {
 			return $translation;

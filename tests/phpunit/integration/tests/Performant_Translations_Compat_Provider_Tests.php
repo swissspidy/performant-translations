@@ -244,4 +244,32 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		$this->assertSame( '%d cars', $translation_2, 'Actual plural translation fallback does not match expected one' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 	}
+
+	/**
+	 * @covers ::translate
+	 * @covers ::translate_plural
+	 *
+	 * @link https://core.trac.wordpress.org/ticket/41257
+	 *
+	 * @return void
+	 */
+	public function test_translate_invalid_edge_cases() {
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$null_string   = __( null, 'wp-tests-domain' );
+		$null_singular = _n( null, 'plural', 1, 'wp-tests-domain' );
+		$null_plural   = _n( 'singular', null, 1, 'wp-tests-domain' );
+		$null_both     = _n( null, null, 1, 'wp-tests-domain' );
+		$null_context  = _x( 'foo', null, 'wp-tests-domain' );
+		$float_number  = _n( '%d house', '%d houses', 7.5, 'wp-tests-domain' );
+
+		unload_textdomain( 'wp-tests-domain' );
+
+		$this->assertNull( $null_string );
+		$this->assertNull( $null_singular );
+		$this->assertSame( 'singular', $null_plural );
+		$this->assertNull( $null_both );
+		$this->assertSame( 'foo', $null_context );
+		$this->assertSame( '%d houses', $float_number );
+	}
 }

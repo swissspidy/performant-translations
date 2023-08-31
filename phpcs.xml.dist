@@ -12,6 +12,7 @@
 		<properties>
 			<property name="text_domain" value="performant-translations" />
 		</properties>
+		<exclude-pattern>tests/*</exclude-pattern>
 	</rule>
 
 	<!-- Make sure we prefix everything in the global namespace. -->
