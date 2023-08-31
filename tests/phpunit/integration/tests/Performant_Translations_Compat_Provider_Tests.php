@@ -263,6 +263,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		$null_context  = _x( 'foo', null, 'wp-tests-domain' );
 		$float_number  = _n( '%d house', '%d houses', 7.5, 'wp-tests-domain' );
 
+		unload_textdomain( 'wp-tests-domain' );
+
 		$this->assertNull( $null_string );
 		$this->assertNull( $null_singular );
 		$this->assertSame( 'singular', $null_plural );
