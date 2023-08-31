@@ -351,6 +351,35 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
+	 * @covers ::load
+	 * @covers ::unload
+	 * @covers ::is_loaded
+	 * @covers ::translate
+	 * @covers ::translate_plural
+	 * @covers ::locate_translation
+	 * @covers ::get_files
+	 * @covers Ginger_MO_Translation_File::get_plural_form
+	 * @covers Ginger_MO_Translation_File::make_plural_form_function
+	 *
+	 * @return void
+	 */
+	public function test_load_no_plurals() {
+		$ginger_mo = new Ginger_MO();
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'fa_IR.mo', 'unittest' ) );
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
+
+		$this->assertFalse( $ginger_mo->translate( "string that doesn't exist", '', 'unittest' ) );
+
+		$this->assertSame( 'رونوشت‌ها فعال نشدند.', $ginger_mo->translate( 'Revisions not enabled.', '', 'unittest' ) );
+		$this->assertSame( 'افزودن جدید', $ginger_mo->translate( 'Add New', 'file', 'unittest' ) );
+
+		$this->assertSame( '%s دیدگاه', $ginger_mo->translate_plural( array( '%s comment', '%s comments' ), 0, '', 'unittest' ) );
+		$this->assertSame( '%s دیدگاه', $ginger_mo->translate_plural( array( '%s comment', '%s comments' ), 1, '', 'unittest' ) );
+		$this->assertSame( '%s دیدگاه', $ginger_mo->translate_plural( array( '%s comment', '%s comments' ), 2, '', 'unittest' ) );
+	}
+
+	/**
 	 * @covers ::get_headers
 	 *
 	 * @return void
