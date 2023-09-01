@@ -478,7 +478,7 @@ jobs:
                   comment-id: ${{ steps.find-comment.outputs.comment-id }}
                   edit-mode: replace
                   body-path: ${{ env.WP_ARTIFACTS_PATH }}/performance-results.md
-                  token: ${{ secrets.PR_COMMENT_TOKEN }}
+                  token: ${{ secrets.WORKFLOW_TOKEN }}
 
             - name: Add workflow summary
               run: |

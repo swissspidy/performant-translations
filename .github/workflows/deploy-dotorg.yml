@@ -7,7 +7,7 @@ on:
 
 jobs:
     release:
-        name: Publish release.
+        name: Publish release
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -26,4 +26,4 @@ jobs:
             - name: Upload release asset
               run: gh release upload ${{ github.event.release.tag_name }} ${{ steps.deploy.outputs.zip-path }}
               env:
-                  GH_TOKEN: ${{ github.token }}
+                  GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
