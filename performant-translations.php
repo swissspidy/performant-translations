@@ -3,7 +3,7 @@
  * Plugin Name: Performant Translations
  * Plugin URI:  https://github.com/swissspidy/performant-translations
  * Description: Making internationalization/localization in WordPress faster than ever before.
- * Version:     1.0.1
+ * Version:     1.0.2
  * Author:      WordPress Performance Team
  * Author URI:  https://make.wordpress.org/performance/
  * License:     GPL-2.0+
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'PERFORMANT_TRANSLATIONS_VERSION', '1.0.1' );
+define( 'PERFORMANT_TRANSLATIONS_VERSION', '1.0.2' );
 
 require __DIR__ . '/lib/class-ginger-mo.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-file.php';

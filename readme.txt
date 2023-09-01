@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.3
-Stable tag:        1.0.1
+Stable tag:        1.0.2
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
@@ -83,6 +83,10 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 == Changelog ==
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
+
+= 1.0.2 =
+
+* Fixed: Add hardening for invalid values being passed to translation functions.
 
 = 1.0.1 = 
 
