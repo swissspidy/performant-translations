@@ -101,6 +101,10 @@ class Performant_Translations {
 				$contents = Ginger_MO_Translation_File::transform( $mofile, $preferred_format );
 
 				if ( false !== $contents ) {
+					if ( ! function_exists( 'WP_Filesystem' ) ) {
+						require_once ABSPATH . '/wp-admin/includes/file.php';
+					}
+
 					if ( true === WP_Filesystem() ) {
 						$wp_filesystem->put_contents( $mofile_preferred, $contents );
 					} else {
@@ -294,6 +298,10 @@ class Performant_Translations {
 			$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
 
 			if ( false !== $contents ) {
+				if ( ! function_exists( 'WP_Filesystem' ) ) {
+					require_once ABSPATH . '/wp-admin/includes/file.php';
+				}
+
 				if ( true === WP_Filesystem() ) {
 					$wp_filesystem->put_contents( $mofile_preferred, $contents );
 				} else {
