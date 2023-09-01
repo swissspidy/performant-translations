@@ -111,13 +111,15 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @param string $file_contents
 	 * @param string|bool $expected_error
 	 * @return void
+	 *
+	 * @phpstan-param 'mo'|'json'|'php' $type
 	 */
 	public function test_invalid_files( string $type, string $file_contents, $expected_error = null ) {
 		$file = $this->temp_file( $file_contents );
 
 		$this->assertNotFalse( $file );
 
-		$instance = Ginger_MO_Translation_File::create( $file, 'read', $type );
+		$instance = Ginger_MO_Translation_File::create( $file, $type );
 
 		$this->assertInstanceOf( Ginger_MO_Translation_File::class, $instance );
 
@@ -135,7 +137,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @return array{0: array{0: string, 1: string|false, 2?: string}}
+	 * @return array{0: array{0: 'mo'|'json'|'php', 1: string|false, 2?: string}}
 	 */
 	public function data_invalid_files(): array {
 		return array(

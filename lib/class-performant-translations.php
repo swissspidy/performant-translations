@@ -98,15 +98,13 @@ class Performant_Translations {
 			$convert = apply_filters( 'performant_translations_convert_files', true );
 
 			if ( 'mo' !== $preferred_format && $convert ) {
-				$source      = Ginger_MO_Translation_File::create( $mofile );
-				$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
-				if ( false !== $source && false !== $destination ) {
-					$destination->import( $source );
+				$contents = Ginger_MO_Translation_File::transform( $mofile, $preferred_format );
 
+				if ( false !== $contents ) {
 					if ( true === WP_Filesystem() ) {
-						$wp_filesystem->put_contents( $mofile_preferred, $destination->export() );
+						$wp_filesystem->put_contents( $mofile_preferred, $contents );
 					} else {
-						file_put_contents( $mofile_preferred, $destination->export(), LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+						file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 					}
 				}
 			}
@@ -233,16 +231,14 @@ class Performant_Translations {
 				$convert = apply_filters( 'performant_translations_convert_files', true );
 
 				if ( 'mo' !== $preferred_format && $convert ) {
-					$source      = Ginger_MO_Translation_File::create( $file );
-					$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
-					if ( false !== $source && false !== $destination ) {
+					if ( true !== $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
+						return;
+					}
 
-						if ( true !== $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
-							return;
-						}
+					$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
 
-						$destination->import( $source );
-						$wp_filesystem->put_contents( $mofile_preferred, $destination->export() );
+					if ( false !== $contents ) {
+						$wp_filesystem->put_contents( $mofile_preferred, $contents );
 					}
 				}
 			}
@@ -295,15 +291,13 @@ class Performant_Translations {
 		$convert = apply_filters( 'performant_translations_convert_files', true );
 
 		if ( 'mo' !== $preferred_format && $convert ) {
-			$source      = Ginger_MO_Translation_File::create( $file );
-			$destination = Ginger_MO_Translation_File::create( $mofile_preferred, 'write' );
-			if ( false !== $source && false !== $destination ) {
-				$destination->import( $source );
+			$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
 
+			if ( false !== $contents ) {
 				if ( true === WP_Filesystem() ) {
-					$wp_filesystem->put_contents( $mofile_preferred, $destination->export() );
+					$wp_filesystem->put_contents( $mofile_preferred, $contents );
 				} else {
-					file_put_contents( $mofile_preferred, $destination->export(), LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+					file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 				}
 			}
 		}

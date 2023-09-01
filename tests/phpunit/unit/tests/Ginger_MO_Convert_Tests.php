@@ -2,35 +2,38 @@
 
 class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 
-
 	/**
 	 * @dataProvider data_export_matrix
 	 *
 	 * @param string $source_file
 	 * @param string $destination_format
 	 * @return void
+	 *
+	 * @phpstan-param 'mo'|'json'|'php' $destination_format
 	 */
 	public function test_convert_format( string $source_file, string $destination_format ) {
 		$destination_file = $this->temp_file();
 
 		$this->assertNotFalse( $destination_file );
 
-		$source      = Ginger_MO_Translation_File::create( $source_file );
-		$destination = Ginger_MO_Translation_File::create( $destination_file, 'write', $destination_format );
+		$source = Ginger_MO_Translation_File::create( $source_file );
 
 		$this->assertInstanceOf( Ginger_MO_Translation_File::class, $source );
+
+		$contents = Ginger_MO_Translation_File::transform( $source_file, $destination_format );
+
+		$this->assertNotFalse( $contents );
+
+		file_put_contents( $destination_file, $contents );
+
+		$destination = Ginger_MO_Translation_File::create( $destination_file, $destination_format );
+
 		$this->assertInstanceOf( Ginger_MO_Translation_File::class, $destination );
-		$this->assertFalse( $source->error() );
-		$this->assertFalse( $destination->error() );
-
-		$this->assertTrue( $source->export( $destination ) );
-
-		$this->assertFalse( $source->error() );
 		$this->assertFalse( $destination->error() );
 
 		$this->assertTrue( filesize( $destination_file ) > 0 );
 
-		$destination_read = Ginger_MO_Translation_File::create( $destination_file, 'read', $destination_format );
+		$destination_read = Ginger_MO_Translation_File::create( $destination_file, $destination_format );
 
 		$this->assertInstanceOf( Ginger_MO_Translation_File::class, $destination_read );
 		$this->assertFalse( $destination_read->error() );
@@ -58,7 +61,7 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @return array<array{0:string, 1: string}>
+	 * @return array<array{0:string, 1: 'mo'|'json'|'php'}>
 	 */
 	public function data_export_matrix(): array {
 		$formats = array( 'mo', 'json', 'php' );

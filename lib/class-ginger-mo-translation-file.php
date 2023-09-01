@@ -63,24 +63,15 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Creates a new Ginger_MO_Translation_File instance for a given file.
 	 *
-	 * @throws \Exception When file or directory cannot be read/written.
-	 *
 	 * @param string      $file     File name.
-	 * @param string      $context  Optional. Context. Either 'read' or 'write'. Default 'read'.
 	 * @param string|null $filetype Optional. File type. Default inferred from file name.
 	 * @return false|Ginger_MO_Translation_File
+	 *
+	 * @phpstan-param 'mo'|'json'|'php'|null $filetype
 	 */
-	public static function create( string $file, string $context = 'read', string $filetype = null ) {
-		if ( 'write' === $context ) {
-			if ( file_exists( $file ) ) {
-				if ( ! is_writable( $file ) ) {
-					throw new \Exception( 'File is not writable' );
-				} elseif ( ! is_writable( dirname( $file ) ) ) {
-					throw new \Exception( 'Directory is not writable' );
-				}
-			}
-		} elseif ( ! is_readable( $file ) ) {
-			throw new \Exception( 'File is not readable' );
+	public static function create( string $file, string $filetype = null ) {
+		if ( ! is_readable( $file ) ) {
+			return false;
 		}
 
 		if ( null === $filetype ) {
@@ -107,48 +98,47 @@ class Ginger_MO_Translation_File {
 		return false;
 	}
 
-
 	/**
 	 * Creates a new Ginger_MO_Translation_File instance for a given file.
 	 *
-	 * @param Ginger_MO_Translation_File $source   Source file.
-	 * @param string                     $file     File name.
-	 * @param string|null                $filetype Optional. File type. Default inferred from file name.
-	 * @return false|Ginger_MO_Translation_File
+	 * @param string $file     Source file name.
+	 * @param string $filetype Desired target file type.
+	 * @return string|false Transformed translation file contents on success, false otherwise.
+	 *
+	 * @phpstan-param 'mo'|'json'|'php' $filetype
 	 */
-	public static function create_from( Ginger_MO_Translation_File $source, string $file, string $filetype = null ) {
-		if ( null === $filetype ) {
-			$pos = strrpos( $file, '.' );
-			if ( false !== $pos ) {
-				$filetype = substr( $file, $pos + 1 );
-			}
-		}
+	public static function transform( string $file, string $filetype ) {
+		$destination = null;
 
-		$moe = null;
+		$source = self::create( $file );
+
+		if ( false === $source ) {
+			return false;
+		}
 
 		switch ( $filetype ) {
 			case 'mo':
-				$moe = new Ginger_MO_Translation_File_MO( $file );
+				$destination = new Ginger_MO_Translation_File_MO( 'tmp' );
 				break;
 			case 'php':
-				$moe = new Ginger_MO_Translation_File_PHP( $file );
+				$destination = new Ginger_MO_Translation_File_PHP( 'tmp' );
 				break;
 			case 'json':
 				if ( function_exists( 'json_decode' ) ) {
-					$moe = new Ginger_MO_Translation_File_JSON( $file );
+					$destination = new Ginger_MO_Translation_File_JSON( 'tmp' );
 				}
 				break;
 			default:
 				return false;
 		}
 
-		if ( null === $moe ) {
+		if ( null === $destination ) {
 			return false;
 		}
 
-		$moe->import( $source );
+		$destination->import( $source );
 
-		return $moe;
+		return $destination->export();
 	}
 
 	/**
@@ -247,7 +237,7 @@ class Ginger_MO_Translation_File {
 	 * @param Ginger_MO_Translation_File $source Source file.
 	 * @return bool True on success, false otherwise.
 	 */
-	public function import( Ginger_MO_Translation_File $source ): bool {
+	protected function import( Ginger_MO_Translation_File $source ): bool {
 		if ( false !== $source->error() ) {
 			return false;
 		}
@@ -279,16 +269,20 @@ class Ginger_MO_Translation_File {
 	/**
 	 * Parses the file.
 	 *
+	 * @todo Move to interface or make abstract.
+	 *
 	 * @return void
 	 */
-	protected function parse_file() {} // TODO: Move to interface or make abstract.
+	protected function parse_file() {}
 
 	/**
 	 * Exports translation contents as a file.
 	 *
+	 * @todo Move to interface or make abstract.
+	 *
 	 * @return string Translation file contents.
 	 */
-	public function export(): string { // TODO: Move to interface or make abstract.
+	public function export(): string {
 		return '';
 	}
 }
