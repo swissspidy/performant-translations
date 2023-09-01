@@ -6,6 +6,8 @@
 
 Making internationalization/localization in WordPress faster than ever before.
 
+**[Download now on WordPress.org](https://wordpress.org/plugins/performant-translations/)**
+
 ## Description
 
 This project uses a new approach to handle translation files in WordPress, making localization blazing fast.
@@ -14,6 +16,8 @@ An [in-depth i18n performance analysis](https://make.wordpress.org/core/2023/07/
 that localized WordPress sites load significantly slower than a site without translations.
 
 With this plugin's new approach to localization, this overhead is massively reduced, making your site fast again.
+
+If your site is using a language other than English (US), you should see immediate speed improvements simply by activating this plugin.
 
 The primary purpose of this plugin is to allow broader testing of these enhancements, for which the goal is to eventually land in WordPress core.
 
@@ -33,9 +37,14 @@ Plus, `.php` files can be stored in the so-called [OPcache](https://www.php.net/
 While the plugin is mostly considered to be a beta testing plugin, it has been tested and established to a degree where it should be okay to use in production.
 Still, as with every plugin, you are doing so at your own risk.
 
+### Has this plugin been tested with other multilingual plugins?
+
+Yes. This plugin has been tested with common multilingual plugins, such as WPML, Weglot, TranslatePress, and Polylang.
+If you still encounter issues, please let us know.
+
 #### Do I need to do anything special to enable this plugin?
 
-No. Once the plugin is activated, it just works. If you run into issues, please open a new support topic.
+No. Once the plugin is activated, it just works, and you should see speed improvements right away. If you run into issues, please open a new support topic.
 
 #### Can I safely remove this plugin after installation?
 

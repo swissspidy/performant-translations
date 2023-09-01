@@ -17,6 +17,8 @@ An [in-depth i18n performance analysis](https://make.wordpress.org/core/2023/07/
 
 With this plugin's new approach to localization, this overhead is massively reduced, making your site fast again.
 
+If your site is using a language other than English (US), you should see immediate speed improvements simply by activating this plugin.
+
 The primary purpose of this plugin is to allow broader testing of these enhancements, for which the goal is to eventually land in WordPress core.
 
 Performant Translations supports multiple file formats (`.mo`, `.php`, and `.json`), as well as multiple text domains and locales loaded at the same time. By default, it converts existing `.mo` files to `.php` and afterwards only loads the translations from the `.php` file.
@@ -51,9 +53,14 @@ Plus, `.php` files can be stored in the so-called [OPcache](https://www.php.net/
 While the plugin is mostly considered to be a beta testing plugin, it has been tested and established to a degree where it should be okay to use in production.
 Still, as with every plugin, you are doing so at your own risk.
 
+= Has this plugin been tested with other multilingual plugins? =
+
+Yes. This plugin has been tested with common multilingual plugins, such as WPML, Weglot, TranslatePress, and Polylang.
+If you still encounter issues, please let us know.
+
 = Do I need to do anything special to enable this plugin? =
 
-No. Once the plugin is activated, it just works. If you run into issues, please open a new support topic.
+No. Once the plugin is activated, it just works, and you should see speed improvements right away. If you run into issues, please open a new support topic.
 
 = Can I safely remove this plugin after installation? =
 
