@@ -356,12 +356,12 @@ jobs:
 
             - name: Run tests (JSON format)
               run: |
-                  echo "add_filter( 'ginger_mo_preferred_format', static function () { return 'json'; } );" >> tests/phpunit/includes/bootstrap.php
+                  echo "add_filter( 'performant_translations_preferred_format', static function () { return 'json'; } );" >> tests/phpunit/includes/bootstrap.php
                   vendor/bin/phpunit --group=l10n,i18n,pomo
 
             - name: Run tests (MO format)
               run: |
-                  echo "add_filter( 'ginger_mo_preferred_format', static function () { return 'mo'; } );" >> tests/phpunit/includes/bootstrap.php
+                  echo "add_filter( 'performant_translations_preferred_format', static function () { return 'mo'; } );" >> tests/phpunit/includes/bootstrap.php
                   vendor/bin/phpunit --group=l10n,i18n,pomo
 
     performance-tests:
