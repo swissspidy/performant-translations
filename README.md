@@ -39,7 +39,7 @@ Still, as with every plugin, you are doing so at your own risk.
 
 ### Has this plugin been tested with other multilingual plugins?
 
-Yes. This plugin has been tested with common multilingual plugins, such as WPML, Weglot, TranslatePress, and Polylang.
+Yes. This plugin has been tested with common multilingual plugins, such as WPML, Weglot, TranslatePress, MultilingualPress, and Polylang.
 If you still encounter issues, please let us know.
 
 #### Do I need to do anything special to enable this plugin?
