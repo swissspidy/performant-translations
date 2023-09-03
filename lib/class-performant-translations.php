@@ -35,12 +35,6 @@ class Performant_Translations {
 		// the locale.
 		Ginger_MO::instance()->set_locale( $locale );
 
-		/** This action is documented in wp-includes/l10n.php */
-		do_action( 'load_textdomain', $domain, $mofile );
-
-		/** This filter is documented in wp-includes/l10n.php */
-		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
-
 		/**
 		 * Filters the preferred file format for translation files.
 		 *
@@ -56,6 +50,12 @@ class Performant_Translations {
 		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $mofile );
 
 		if ( 'mo' !== $preferred_format ) {
+			/** This action is documented in wp-includes/l10n.php */
+			do_action( 'load_textdomain', $domain, $mofile_preferred );
+
+			/** This filter is documented in wp-includes/l10n.php */
+			$mofile_preferred = apply_filters( 'load_textdomain_mofile', $mofile_preferred, $domain );
+
 			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
 			if ( $success ) {
@@ -65,9 +65,15 @@ class Performant_Translations {
 
 				$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
 
-				return $success;
+				return true;
 			}
 		}
+
+		/** This action is documented in wp-includes/l10n.php */
+		do_action( 'load_textdomain', $domain, $mofile );
+
+		/** This filter is documented in wp-includes/l10n.php */
+		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
 
 		$success = Ginger_MO::instance()->load( $mofile, $domain, $locale );
 
