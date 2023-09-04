@@ -4,6 +4,7 @@
  * Plugin URI:  https://github.com/swissspidy/performant-translations
  * Description: Making internationalization/localization in WordPress faster than ever before.
  * Version:     1.0.2
+ * Network:     true
  * Author:      WordPress Performance Team
  * Author URI:  https://make.wordpress.org/performance/
  * License:     GPL-2.0+
