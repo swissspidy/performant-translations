@@ -21,7 +21,9 @@ class Performant_Translations {
 	 * @return bool True on success, false otherwise.
 	 */
 	public static function load_textdomain( $override, $domain, $mofile, $locale ) {
-		/*
+		/**
+		 * WP filesystem subclass.
+		 *
 		 * @var WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
 		 */
 		global $l10n, $wp_textdomain_registry, $wp_filesystem;
@@ -106,7 +108,7 @@ class Performant_Translations {
 					}
 
 					if ( true === WP_Filesystem() ) {
-						$wp_filesystem->put_contents( $mofile_preferred, $contents );
+						$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 					} else {
 						file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 					}
@@ -200,7 +202,9 @@ class Performant_Translations {
 	 * @phpstan-param array{action: string, type: string, bulk: bool, plugins: string[], themes: string[], translations: array<int, array{language: string, type: string, slug: string, version: string}>} $hook_extra
 	 */
 	public static function upgrader_process_complete( $upgrader, $hook_extra ) {
-		/*
+		/**
+		 * WP filesystem subclass.
+		 *
 		 * @var WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
 		 */
 		global $wp_filesystem;
@@ -242,7 +246,7 @@ class Performant_Translations {
 					$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
 
 					if ( false !== $contents ) {
-						$wp_filesystem->put_contents( $mofile_preferred, $contents );
+						$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 					}
 				}
 			}
@@ -274,7 +278,9 @@ class Performant_Translations {
 	 * @return void
 	 */
 	public static function regenerate_translation_file( string $file ) {
-		/*
+		/**
+		 * WP filesystem subclass.
+		 *
 		 * @var WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
 		 */
 		global $wp_filesystem;
@@ -303,7 +309,7 @@ class Performant_Translations {
 				}
 
 				if ( true === WP_Filesystem() ) {
-					$wp_filesystem->put_contents( $mofile_preferred, $contents );
+					$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 				} else {
 					file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 				}

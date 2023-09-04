@@ -37,7 +37,7 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	}
 
 	/**
-	 * Exports translation contents as a file.
+	 * Exports translation contents as a string.
 	 *
 	 * @return string Translation file contents.
 	 */

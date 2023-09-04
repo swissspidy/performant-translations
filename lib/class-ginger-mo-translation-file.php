@@ -276,7 +276,7 @@ class Ginger_MO_Translation_File {
 	protected function parse_file() {}
 
 	/**
-	 * Exports translation contents as a file.
+	 * Exports translation contents as a string.
 	 *
 	 * @todo Move to interface or make abstract.
 	 *
