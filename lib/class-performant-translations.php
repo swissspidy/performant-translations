@@ -209,7 +209,7 @@ class Performant_Translations {
 			}
 
 			if ( file_exists( $file ) ) {
-				/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+				/** This filter is documented in lib/class-performant-translations.php */
 				$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
 				if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
 					$preferred_format = 'php';
@@ -217,7 +217,7 @@ class Performant_Translations {
 
 				$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
 
-				/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+				/** This filter is documented in lib/class-performant-translations.php */
 				$convert = apply_filters( 'performant_translations_convert_files', true );
 
 				if ( 'mo' !== $preferred_format && $convert ) {
@@ -258,7 +258,7 @@ class Performant_Translations {
 			return;
 		}
 
-		/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+		/** This filter is documented in lib/class-performant-translations.php */
 		$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
 		if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
 			$preferred_format = 'php';
@@ -266,7 +266,7 @@ class Performant_Translations {
 
 		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
 
-		/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+		/** This filter is documented in lib/class-performant-translations.php */
 		$convert = apply_filters( 'performant_translations_convert_files', true );
 
 		if ( 'mo' !== $preferred_format && $convert ) {
