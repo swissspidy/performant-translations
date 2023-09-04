@@ -56,6 +56,18 @@ class Performant_Translations {
 			/** This filter is documented in wp-includes/l10n.php */
 			$mofile_preferred = apply_filters( 'load_textdomain_mofile', $mofile_preferred, $domain );
 
+			/**
+			 * Filters the file path for loading translations for the given text domain.
+			 *
+			 * The file could be an MO, JSON, or PHP file.
+			 *
+			 * @since 1.0.3
+			 *
+			 * @param string $file   Path to the translation file to load.
+			 * @param string $domain The text domain.
+			 */
+			$mofile_preferred = apply_filters( 'performant_translations_load_translation_file', $mofile_preferred, $domain );
+
 			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
 			if ( $success ) {
@@ -74,6 +86,9 @@ class Performant_Translations {
 
 		/** This filter is documented in wp-includes/l10n.php */
 		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
+
+		/** This filter is documented in lib/class-performant-translations.php */
+		$mofile = apply_filters( 'performant_translations_load_translation_file', $mofile, $domain );
 
 		$success = Ginger_MO::instance()->load( $mofile, $domain, $locale );
 
