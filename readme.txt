@@ -88,6 +88,7 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 
 * Enhancement: Improved compatibility with Query Monitor's developer tools panel.
 * Enhancement: Added new `performant_translations_load_translation_file` filter.
+* Enhancement: enforce network-only activation on Multisite.
 
 = 1.0.2 =
 
@@ -107,7 +108,7 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 
 = 1.0.3 =
 
-This release improves compatibility with Query Monitor's developer tools panel.
+This release improves Multisite support and compatibility with Query Monitor's developer tools panel.
 
 = 1.0.2 =
 
