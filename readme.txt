@@ -84,6 +84,11 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.0.3 =
+
+* Enhancement: Improved compatibility with Query Monitor by running `load_textdomain` / `load_textdomain_mofile` hooks later.
+* Enhancement: Added new `performant_translations_load_translation_file` filter.
+
 = 1.0.2 =
 
 * Fixed: Add hardening for invalid values being passed to translation functions.
