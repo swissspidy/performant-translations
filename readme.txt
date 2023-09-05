@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.3
-Stable tag:        1.0.2
+Stable tag:        1.0.3
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
@@ -86,7 +86,7 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 
 = 1.0.3 =
 
-* Enhancement: Improved compatibility with Query Monitor by running `load_textdomain` / `load_textdomain_mofile` hooks later.
+* Enhancement: Improved compatibility with Query Monitor's developer tools panel.
 * Enhancement: Added new `performant_translations_load_translation_file` filter.
 
 = 1.0.2 =
@@ -104,6 +104,14 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+
+This release improves compatibility with Query Monitor's developer tools panel.
+
+= 1.0.2 =
+
+This release adds hardening for invalid values being passed to translation functions.
 
 = 1.0.1 =
 
