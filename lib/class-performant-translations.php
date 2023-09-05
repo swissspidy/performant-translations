@@ -42,12 +42,6 @@ class Performant_Translations {
 		// the locale.
 		Ginger_MO::instance()->set_locale( $locale );
 
-		/** This action is documented in wp-includes/l10n.php */
-		do_action( 'load_textdomain', $domain, $mofile );
-
-		/** This filter is documented in wp-includes/l10n.php */
-		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
-
 		/**
 		 * Filters the preferred file format for translation files.
 		 *
@@ -63,6 +57,24 @@ class Performant_Translations {
 		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $mofile );
 
 		if ( 'mo' !== $preferred_format ) {
+			/** This action is documented in wp-includes/l10n.php */
+			do_action( 'load_textdomain', $domain, $mofile_preferred );
+
+			/** This filter is documented in wp-includes/l10n.php */
+			$mofile_preferred = apply_filters( 'load_textdomain_mofile', $mofile_preferred, $domain );
+
+			/**
+			 * Filters the file path for loading translations for the given text domain.
+			 *
+			 * The file could be an MO, JSON, or PHP file.
+			 *
+			 * @since 1.0.3
+			 *
+			 * @param string $file   Path to the translation file to load.
+			 * @param string $domain The text domain.
+			 */
+			$mofile_preferred = apply_filters( 'performant_translations_load_translation_file', $mofile_preferred, $domain );
+
 			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
 			if ( $success ) {
@@ -72,9 +84,18 @@ class Performant_Translations {
 
 				$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
 
-				return $success;
+				return true;
 			}
 		}
+
+		/** This action is documented in wp-includes/l10n.php */
+		do_action( 'load_textdomain', $domain, $mofile );
+
+		/** This filter is documented in wp-includes/l10n.php */
+		$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
+
+		/** This filter is documented in lib/class-performant-translations.php */
+		$mofile = apply_filters( 'performant_translations_load_translation_file', $mofile, $domain );
 
 		$success = Ginger_MO::instance()->load( $mofile, $domain, $locale );
 
@@ -227,7 +248,7 @@ class Performant_Translations {
 			}
 
 			if ( file_exists( $file ) ) {
-				/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+				/** This filter is documented in lib/class-performant-translations.php */
 				$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
 				if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
 					$preferred_format = 'php';
@@ -235,7 +256,7 @@ class Performant_Translations {
 
 				$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
 
-				/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+				/** This filter is documented in lib/class-performant-translations.php */
 				$convert = apply_filters( 'performant_translations_convert_files', true );
 
 				if ( 'mo' !== $preferred_format && $convert ) {
@@ -289,7 +310,7 @@ class Performant_Translations {
 			return;
 		}
 
-		/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+		/** This filter is documented in lib/class-performant-translations.php */
 		$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
 		if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
 			$preferred_format = 'php';
@@ -297,7 +318,7 @@ class Performant_Translations {
 
 		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
 
-		/** This filter is documented in lib/class-ginger-mo-translation-compat.php */
+		/** This filter is documented in lib/class-performant-translations.php */
 		$convert = apply_filters( 'performant_translations_convert_files', true );
 
 		if ( 'mo' !== $preferred_format && $convert ) {
