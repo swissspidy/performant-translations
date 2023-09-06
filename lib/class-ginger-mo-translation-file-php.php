@@ -15,7 +15,7 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	 * @return void
 	 */
 	protected function parse_file() {
-		$this->parsed  = true;
+		$this->parsed = true;
 
 		$result = include $this->file;
 		if ( ! $result || ! is_array( $result ) ) {

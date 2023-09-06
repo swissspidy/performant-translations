@@ -17,7 +17,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	 * @return void
 	 */
 	protected function parse_file() {
-		$this->parsed  = true;
+		$this->parsed = true;
 
 		$data = file_get_contents( $this->file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
