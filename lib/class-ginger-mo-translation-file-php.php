@@ -15,6 +15,8 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	 * @return void
 	 */
 	protected function parse_file() {
+		$this->parsed = true;
+
 		$result = include $this->file;
 		if ( ! $result || ! is_array( $result ) ) {
 			$this->error = true;
@@ -33,7 +35,6 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 		}
 
 		$this->headers = array_change_key_case( $result );
-		$this->parsed  = true;
 	}
 
 	/**
