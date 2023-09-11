@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup Node
               uses: actions/setup-node@v3
@@ -31,7 +31,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -96,7 +96,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -189,7 +189,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -228,7 +228,7 @@ jobs:
                       experimental: true
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup Node
               uses: actions/setup-node@v3
@@ -304,7 +304,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   repository: 'wordpress/wordpress-develop'
                   ref: ${{ matrix.wp }}
@@ -343,7 +343,7 @@ jobs:
                   DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
 
             - name: Checkout Ginger MO
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
               with:
                   path: 'src/wp-content/plugins/performant-translations'
 
@@ -371,7 +371,7 @@ jobs:
             WP_ARTIFACTS_PATH: ${{ github.workspace }}/artifacts
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup Node
               uses: actions/setup-node@v3
