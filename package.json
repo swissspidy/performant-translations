@@ -21,7 +21,7 @@
 		"eslint-plugin-playwright": "^0.16.0",
 		"get-port": "^7.0.0",
 		"glob": "^10.3.4",
-		"lighthouse": "^11.0.0",
+		"lighthouse": "^11.1.0",
 		"patch-package": "^8.0.0",
 		"tablemark": "^3.0.0"
 	},
