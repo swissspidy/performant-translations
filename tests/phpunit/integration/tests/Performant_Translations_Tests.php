@@ -9,8 +9,8 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
-		if ( file_exists( DIR_TESTDATA . '/pomo/simple.php' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/simple.php' );
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.php' );
 		}
 
 		if ( file_exists( DIR_TESTDATA . '/pomo/simple.json' ) ) {
@@ -93,9 +93,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
 
-		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.php' );
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.php' );
 
 		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
 
@@ -123,9 +123,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
 
-		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.php' );
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.php' );
 
 		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
 
@@ -148,7 +148,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
@@ -317,9 +317,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 			)
 		);
 
-		$plugin = WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.php';
-		$theme  = WP_LANG_DIR . '/themes/internationalized-theme-de_DE.php';
-		$core   = WP_LANG_DIR . '/de_DE.php';
+		$plugin = WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php';
+		$theme  = WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php';
+		$core   = WP_LANG_DIR . '/de_DE.mo.php';
 
 		$plugin_exists = file_exists( $plugin );
 		$theme_exists  = file_exists( $theme );

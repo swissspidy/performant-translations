@@ -49,7 +49,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	public function test_unload_entire_textdomain() {
 		$instance = new Ginger_MO();
 		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
-		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest' ) );
+		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.mo.php', 'unittest' ) );
 		$this->assertTrue( $instance->is_loaded( 'unittest' ) );
 
 		$this->assertSame( 'translation', $instance->translate( 'original', '', 'unittest' ) );
@@ -83,11 +83,11 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	public function test_unload_specific_locale() {
 		$instance = new Ginger_MO();
 		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
-		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest' ) );
+		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.mo.php', 'unittest' ) );
 		$this->assertTrue( $instance->is_loaded( 'unittest' ) );
 
 		$this->assertFalse( $instance->is_loaded( 'unittest', 'es_ES' ) );
-		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.php', 'unittest', 'es_ES' ) );
+		$this->assertTrue( $instance->load( GINGER_MO_TEST_DATA . 'example-simple.mo.php', 'unittest', 'es_ES' ) );
 		$this->assertTrue( $instance->is_loaded( 'unittest', 'es_ES' ) );
 
 		$this->assertSame( 'translation', $instance->translate( 'original', '', 'unittest' ) );
@@ -206,7 +206,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		return array(
 			array( 'example-simple.json' ),
 			array( 'example-simple.mo' ),
-			array( 'example-simple.php' ),
+			array( 'example-simple.mo.php' ),
 		);
 	}
 
