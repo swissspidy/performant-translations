@@ -13,8 +13,8 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.php' );
 		}
 
-		if ( file_exists( DIR_TESTDATA . '/pomo/simple.json' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/simple.json' );
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.json' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.json' );
 		}
 
 		remove_all_filters( 'performant_translations_convert_files' );
@@ -172,9 +172,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.json' );
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.json' );
 
-		$load_json_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.json' );
+		$load_json_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.json' );
 
 		$unload_json_successful = unload_textdomain( 'wp-tests-domain' );
 
