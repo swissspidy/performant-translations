@@ -16,8 +16,14 @@ $locations = array(
 );
 
 foreach ( $locations as $location ) {
-	// TODO: Also delete JSON files coming from Ginger MO, but do not touch script translations from WordPress.
-	$lang_files = glob( $location . '/*.php' );
+	$lang_files = glob( $location . '/*.mo.php' );
+	if ( $lang_files ) {
+		foreach ( $lang_files as $lang_file ) {
+			wp_delete_file( $lang_file );
+		}
+	}
+
+	$lang_files = glob( $location . '/*.mo.json' );
 	if ( $lang_files ) {
 		foreach ( $lang_files as $lang_file ) {
 			wp_delete_file( $lang_file );
