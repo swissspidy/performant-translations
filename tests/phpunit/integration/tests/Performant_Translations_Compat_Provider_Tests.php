@@ -279,6 +279,11 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		$this->assertSame( '%d houses', $float_number );
 	}
 
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
 	public function test_merge_translations_when_plugin_override_is_only_applied_at_the_beginning() {
 		global $l10n;
 
@@ -298,6 +303,11 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		$this->assertInstanceOf( Translations::class, $l10n['wp-tests-domain'] );
 	}
 
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
 	public function test_merge_translations_when_plugin_override_is_only_applied_at_the_end() {
 		global $l10n;
 
