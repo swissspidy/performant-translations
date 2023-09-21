@@ -8,12 +8,18 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
+		unload_textdomain( 'wp-tests-domain' );
+
 		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' ) ) {
 			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.php' );
 		}
 
 		if ( file_exists( DIR_TESTDATA . '/pomo/plural.php' ) ) {
 			$this->unlink( DIR_TESTDATA . '/pomo/plural.php' );
+		}
+
+		if ( file_exists( DIR_TESTDATA . '/pomo/overload.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/overload.php' );
 		}
 	}
 
@@ -271,5 +277,43 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		$this->assertNull( $null_both );
 		$this->assertSame( 'foo', $null_context );
 		$this->assertSame( '%d houses', $float_number );
+	}
+
+	public function test_merge_translations_when_plugin_override_is_only_applied_at_the_beginning() {
+		global $l10n;
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		add_filter( 'override_load_textdomain', '__return_false', PHP_INT_MAX );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		remove_filter( 'override_load_textdomain', '__return_false', PHP_INT_MAX );
+
+		$simple = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Translations::class, $l10n['wp-tests-domain']);
+	}
+
+	public function test_merge_translations_when_plugin_override_is_only_applied_at_the_end() {
+		global $l10n;
+
+		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		add_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100, 4 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		$simple = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain']);
 	}
 }
