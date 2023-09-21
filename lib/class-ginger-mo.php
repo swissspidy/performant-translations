@@ -269,9 +269,7 @@ class Ginger_MO {
 		// TODO: Use nplurals from Plural-Forms header?
 		// See \Translations::translate_plural() in core.
 
-		return isset( $translation['entries'][ $num ] ) ?
-			$translation['entries'][ $num ] :
-			$translation['entries'][0];
+		return $translation['entries'][$num] ?? $translation['entries'][0];
 	}
 
 	/**
@@ -373,10 +371,6 @@ class Ginger_MO {
 			$locale = $this->current_locale;
 		}
 
-		if ( isset( $this->loaded_translations[ $locale ][ $textdomain ] ) ) {
-			return $this->loaded_translations[ $locale ][ $textdomain ];
-		}
-
-		return array();
+		return $this->loaded_translations[ $locale ][ $textdomain ] ?? array();
 	}
 }

@@ -48,7 +48,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$loaded_after_load = is_textdomain_loaded( 'wp-tests-domain' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$is_loaded = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
 		$headers   = Ginger_MO::instance()->get_headers( 'wp-tests-domain' );
@@ -202,7 +202,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$loaded_after_unload = is_textdomain_loaded( 'wp-tests-domain' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$is_loaded = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
 		$headers   = Ginger_MO::instance()->get_headers( 'wp-tests-domain' );

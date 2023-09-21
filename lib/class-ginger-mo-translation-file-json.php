@@ -79,7 +79,7 @@ class Ginger_MO_Translation_File_JSON extends Ginger_MO_Translation_File {
 	protected function create_file( $headers, $entries ): bool {
 		$headers = array_change_key_case( $headers );
 
-		$domain = isset( $headers['domain'] ) ? $headers['domain'] : 'messages';
+		$domain = $headers['domain'] ?? 'messages';
 
 		$data = array(
 			'domain'      => $domain,
