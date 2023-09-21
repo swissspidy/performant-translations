@@ -1,0 +1,27 @@
+diff --git a/node_modules/@wordpress/env/lib/init-config.js b/node_modules/@wordpress/env/lib/init-config.js
+index efde002..4b5e729 100644
+--- a/node_modules/@wordpress/env/lib/init-config.js
++++ b/node_modules/@wordpress/env/lib/init-config.js
+@@ -200,7 +200,6 @@ RUN apt-get -qy update
+ 
+ # Install some basic PHP dependencies.
+ RUN apt-get -qy install $PHPIZE_DEPS && touch /usr/local/etc/php/php.ini
+-
+ # Install git
+ RUN apt-get -qy install git
+ 
+@@ -244,14 +243,6 @@ RUN export COMPOSER_HASH=\`curl -sS https://composer.github.io/installer.sig\` &
+ RUN php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+ RUN rm /tmp/composer-setup.php`;
+ 
+-	// Install any Composer packages we might need globally.
+-	// Make sure to do this as the user and ensure the binaries are available in the $PATH.
+-	dockerFileContent += `
+-USER $HOST_UID:$HOST_GID
+-ENV PATH="\${PATH}:~/.composer/vendor/bin"
+-RUN composer global require --dev yoast/phpunit-polyfills:"^1.0"
+-USER root`;
+-
+ 	return dockerFileContent;
+ }
+ 
