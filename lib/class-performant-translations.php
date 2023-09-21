@@ -72,6 +72,7 @@ class Performant_Translations {
 
 			if ( $success ) {
 				// Unset Noop_Translations reference in get_translations_for_domain.
+				// TODO: What if it is actually an existing MO class instance somehow?
 				unset( $l10n[ $domain ] );
 				$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );
 
@@ -94,6 +95,7 @@ class Performant_Translations {
 
 		if ( $success ) {
 			// Unset Noop_Translations reference in get_translations_for_domain.
+			// TODO: What if it is actually an existing MO class instance somehow?
 			unset( $l10n[ $domain ] );
 
 			$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );
