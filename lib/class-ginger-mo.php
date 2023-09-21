@@ -269,7 +269,7 @@ class Ginger_MO {
 		// TODO: Use nplurals from Plural-Forms header?
 		// See \Translations::translate_plural() in core.
 
-		return $translation['entries'][$num] ?? $translation['entries'][0];
+		return $translation['entries'][ $num ] ?? $translation['entries'][0];
 	}
 
 	/**
