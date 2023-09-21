@@ -290,12 +290,12 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		remove_filter( 'override_load_textdomain', '__return_false', PHP_INT_MAX );
 
-		$simple = __( 'baba', 'wp-tests-domain' );
+		$simple  = __( 'baba', 'wp-tests-domain' );
 		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
 
 		$this->assertSame( 'dyado', $simple );
 		$this->assertSame( 'oney dragoney', $context );
-		$this->assertInstanceOf( Translations::class, $l10n['wp-tests-domain']);
+		$this->assertInstanceOf( Translations::class, $l10n['wp-tests-domain'] );
 	}
 
 	public function test_merge_translations_when_plugin_override_is_only_applied_at_the_end() {
@@ -309,11 +309,11 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
 
-		$simple = __( 'baba', 'wp-tests-domain' );
+		$simple  = __( 'baba', 'wp-tests-domain' );
 		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
 
 		$this->assertSame( 'dyado', $simple );
 		$this->assertSame( 'oney dragoney', $context );
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain']);
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain'] );
 	}
 }
