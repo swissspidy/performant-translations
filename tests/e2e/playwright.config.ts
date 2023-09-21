@@ -6,18 +6,18 @@ import { defineConfig, devices } from '@playwright/test';
 
 const STORAGE_STATE_PATH =
 	process.env.STORAGE_STATE_PATH ||
-	join( process.cwd(), 'artifacts/storage-states/admin.json' );
+	join(process.cwd(), 'artifacts/storage-states/admin.json');
 
-const config = defineConfig( {
-	reporter: process.env.CI ? [ [ 'github' ], [ 'list' ] ] : 'list',
-	forbidOnly: !! process.env.CI,
+const config = defineConfig({
+	reporter: process.env.CI ? [['github'], ['list']] : 'list',
+	forbidOnly: !!process.env.CI,
 	workers: 1,
 	retries: process.env.CI ? 2 : 0,
-	timeout: parseInt( process.env.TIMEOUT || '', 10 ) || 100_000, // Defaults to 100 seconds.
+	timeout: parseInt(process.env.TIMEOUT || '', 10) || 100_000, // Defaults to 100 seconds.
 	// Don't report slow test "files", as we will be running our tests in serial.
 	reportSlowTests: null,
 	testDir: 'specs',
-	outputDir: join( process.cwd(), 'artifacts/test-results' ),
+	outputDir: join(process.cwd(), 'artifacts/test-results'),
 	snapshotPathTemplate:
 		'{testDir}/{testFileDir}/__snapshots__/{arg}-{projectName}{ext}',
 	globalSetup: './config/global-setup.ts',
@@ -49,9 +49,9 @@ const config = defineConfig( {
 	projects: [
 		{
 			name: 'chromium',
-			use: { ...devices[ 'Desktop Chrome' ] },
+			use: { ...devices['Desktop Chrome'] },
 		},
 	],
-} );
+});
 
 export default config;
