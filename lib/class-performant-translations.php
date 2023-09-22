@@ -71,8 +71,11 @@ class Performant_Translations {
 			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
 			if ( $success ) {
+				if ( isset( $l10n[ $domain ] ) && $l10n[ $domain ] instanceof MO ) {
+					Ginger_MO::instance()->load( $l10n[ $domain ]->get_filename(), $domain, $locale );
+				}
+
 				// Unset Noop_Translations reference in get_translations_for_domain.
-				// TODO: What if it is actually an existing MO class instance somehow?
 				unset( $l10n[ $domain ] );
 				$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );
 
@@ -94,8 +97,11 @@ class Performant_Translations {
 		$success = Ginger_MO::instance()->load( $mofile, $domain, $locale );
 
 		if ( $success ) {
+			if ( isset( $l10n[ $domain ] ) && $l10n[ $domain ] instanceof MO ) {
+				Ginger_MO::instance()->load( $l10n[ $domain ]->get_filename(), $domain, $locale );
+			}
+
 			// Unset Noop_Translations reference in get_translations_for_domain.
-			// TODO: What if it is actually an existing MO class instance somehow?
 			unset( $l10n[ $domain ] );
 
 			$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );

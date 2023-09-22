@@ -8,6 +8,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
+		unload_textdomain( 'wp-tests-domain' );
+
 		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' ) ) {
 			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.php' );
 		}
