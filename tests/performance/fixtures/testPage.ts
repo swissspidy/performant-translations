@@ -6,7 +6,7 @@ class TestPage {
 	admin: Admin;
 	requestUtils: RequestUtils;
 
-	constructor( {
+	constructor({
 		page,
 		admin,
 		requestUtils,
@@ -14,18 +14,18 @@ class TestPage {
 		page: Page;
 		admin: Admin;
 		requestUtils: RequestUtils;
-	} ) {
+	}) {
 		this.page = page;
 		this.admin = admin;
 		this.requestUtils = requestUtils;
 	}
 
-	async visitHomepage( query?: string ) {
-		await this.page.goto( '/' + ( query ? `?${ query }` : '' ) );
+	async visitHomepage(query?: string) {
+		await this.page.goto('/' + (query ? `?${query}` : ''));
 	}
 
-	async visitDashboard( query: string = '' ) {
-		await this.admin.visitAdminPage( 'index.php', query );
+	async visitDashboard(query: string = '') {
+		await this.admin.visitAdminPage('index.php', query);
 	}
 }
 

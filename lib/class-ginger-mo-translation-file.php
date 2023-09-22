@@ -198,7 +198,7 @@ class Ginger_MO_Translation_File {
 			$this->parse_file();
 		}
 
-		return isset( $this->entries[ $text ] ) ? $this->entries[ $text ] : false;
+		return $this->entries[ $text ] ?? false;
 	}
 
 	/**

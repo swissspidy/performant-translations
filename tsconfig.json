@@ -6,7 +6,7 @@
 		"jsx": "preserve",
 		"target": "esnext",
 		"module": "esnext",
-		"lib": [ "dom", "esnext" ],
+		"lib": ["dom", "esnext"],
 		"declaration": true,
 		"declarationMap": true,
 		"composite": true,
@@ -30,8 +30,8 @@
 		"esModuleInterop": false,
 		"resolveJsonModule": true,
 
-		"typeRoots": [ "./typings", "./node_modules/@types" ],
+		"typeRoots": ["./typings", "./node_modules/@types"],
 		"types": []
 	},
-	"include": [ "tests/**/*" ]
+	"include": ["tests/**/*"]
 }

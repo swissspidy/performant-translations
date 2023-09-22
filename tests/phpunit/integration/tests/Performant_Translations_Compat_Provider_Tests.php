@@ -8,8 +8,10 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
-		if ( file_exists( DIR_TESTDATA . '/pomo/simple.php' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/simple.php' );
+		unload_textdomain( 'wp-tests-domain' );
+
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.php' );
 		}
 
 		if ( file_exists( DIR_TESTDATA . '/pomo/plural.php' ) ) {
@@ -28,7 +30,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$entries = $compat_instance ? $compat_instance->entries : array();
 
@@ -67,7 +69,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/plural.mo' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$entries = $compat_instance ? $compat_instance->entries : array();
 
@@ -108,7 +110,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$entries = $compat_instance ? $compat_instance->entries : array();
 
@@ -155,7 +157,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$load_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$headers = $compat_instance ? $compat_instance->headers : array();
 
@@ -184,7 +186,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$translation         = $compat_instance ? $compat_instance->translate( 'baba' ) : false;
 		$translation_missing = $compat_instance ? $compat_instance->translate( 'does not exist' ) : false;
@@ -207,7 +209,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/plural.mo' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$translation_1       = $compat_instance ? $compat_instance->translate_plural( 'one dragon', '%d dragons', 1 ) : false;
 		$translation_2       = $compat_instance ? $compat_instance->translate_plural( 'one dragon', '%d dragons', 2 ) : false;
@@ -232,7 +234,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/plural.mo' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$translation_1 = $compat_instance ? $compat_instance->translate_plural( '%d house', '%d houses', 1 ) : false;
 		$translation_2 = $compat_instance ? $compat_instance->translate_plural( '%d car', '%d cars', 2 ) : false;

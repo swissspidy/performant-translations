@@ -9,16 +9,22 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
-		if ( file_exists( DIR_TESTDATA . '/pomo/simple.php' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/simple.php' );
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.php' );
 		}
 
-		if ( file_exists( DIR_TESTDATA . '/pomo/simple.json' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/simple.json' );
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.json' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.json' );
+		}
+
+		if ( file_exists( DIR_TESTDATA . '/pomo/context.mo.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/context.mo.php' );
 		}
 
 		remove_all_filters( 'performant_translations_convert_files' );
 		remove_all_filters( 'performant_translations_preferred_format' );
+
+		unload_textdomain( 'wp-tests-domain' );
 	}
 
 	/**
@@ -48,7 +54,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$loaded_after_load = is_textdomain_loaded( 'wp-tests-domain' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$is_loaded = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
 		$headers   = Ginger_MO::instance()->get_headers( 'wp-tests-domain' );
@@ -88,14 +94,38 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
+	public function test_load_textdomain_mo_files() {
+		add_filter(
+			'performant_translations_preferred_format',
+			static function () {
+				return 'mo';
+			}
+		);
+
+		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
+
+		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
+		$this->assertTrue( $unload_mo_successful );
+		$this->assertFalse( $file_exists );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
 	public function test_load_textdomain_creates_and_reads_php_files() {
 		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
 
-		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.php' );
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.php' );
 
 		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
 
@@ -123,9 +153,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
 
-		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.php' );
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.php' );
 
 		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
 
@@ -148,7 +178,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.php' );
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
@@ -172,9 +202,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.json' );
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.json' );
 
-		$load_json_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.json' );
+		$load_json_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.json' );
 
 		$unload_json_successful = unload_textdomain( 'wp-tests-domain' );
 
@@ -183,6 +213,114 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$this->assertTrue( $file_exists );
 		$this->assertTrue( $load_json_successful, 'JSON file not successfully loaded' );
 		$this->assertTrue( $unload_json_successful );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_existing_translation_is_kept() {
+		global $l10n;
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		add_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100, 4 );
+
+		$simple  = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Translations::class, $l10n['wp-tests-domain'] );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_loads_existing_translation() {
+		global $l10n;
+
+		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		add_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100, 4 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		$simple  = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain'] );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_loads_existing_translation_mo_files() {
+		global $l10n;
+
+		add_filter(
+			'performant_translations_preferred_format',
+			static function () {
+				return 'mo';
+			}
+		);
+
+		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		add_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100, 4 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		$simple  = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain'] );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_loads_existing_translation_php_files() {
+		global $l10n;
+
+		// Just to ensure the PHP files exist.
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+		unload_textdomain( 'wp-tests-domain' );
+
+		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		add_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100, 4 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		$simple  = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain'] );
 	}
 
 	/**
@@ -202,7 +340,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$loaded_after_unload = is_textdomain_loaded( 'wp-tests-domain' );
 
-		$compat_instance = isset( $l10n['wp-tests-domain'] ) ? $l10n['wp-tests-domain'] : null;
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
 		$is_loaded = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
 		$headers   = Ginger_MO::instance()->get_headers( 'wp-tests-domain' );
@@ -317,9 +455,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 			)
 		);
 
-		$plugin = WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.php';
-		$theme  = WP_LANG_DIR . '/themes/internationalized-theme-de_DE.php';
-		$core   = WP_LANG_DIR . '/de_DE.php';
+		$plugin = WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php';
+		$theme  = WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php';
+		$core   = WP_LANG_DIR . '/de_DE.mo.php';
 
 		$plugin_exists = file_exists( $plugin );
 		$theme_exists  = file_exists( $theme );

@@ -54,7 +54,7 @@ class Performant_Translations {
 			$preferred_format = 'php';
 		}
 
-		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $mofile );
+		$mofile_preferred = str_replace( '.mo', ".mo.$preferred_format", $mofile );
 
 		if ( 'mo' !== $preferred_format ) {
 			/** This action is documented in wp-includes/l10n.php */
@@ -78,6 +78,10 @@ class Performant_Translations {
 			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
 			if ( $success ) {
+				if ( isset( $l10n[ $domain ] ) && $l10n[ $domain ] instanceof MO ) {
+					Ginger_MO::instance()->load( $l10n[ $domain ]->get_filename(), $domain, $locale );
+				}
+
 				// Unset Noop_Translations reference in get_translations_for_domain.
 				unset( $l10n[ $domain ] );
 				$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );
@@ -100,6 +104,10 @@ class Performant_Translations {
 		$success = Ginger_MO::instance()->load( $mofile, $domain, $locale );
 
 		if ( $success ) {
+			if ( isset( $l10n[ $domain ] ) && $l10n[ $domain ] instanceof MO ) {
+				Ginger_MO::instance()->load( $l10n[ $domain ]->get_filename(), $domain, $locale );
+			}
+
 			// Unset Noop_Translations reference in get_translations_for_domain.
 			unset( $l10n[ $domain ] );
 
@@ -254,7 +262,7 @@ class Performant_Translations {
 					$preferred_format = 'php';
 				}
 
-				$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
+				$mofile_preferred = str_replace( '.mo', ".mo.$preferred_format", $file );
 
 				/** This filter is documented in lib/class-performant-translations.php */
 				$convert = apply_filters( 'performant_translations_convert_files', true );
@@ -316,7 +324,7 @@ class Performant_Translations {
 			$preferred_format = 'php';
 		}
 
-		$mofile_preferred = str_replace( '.mo', ".$preferred_format", $file );
+		$mofile_preferred = str_replace( '.mo', ".mo.$preferred_format", $file );
 
 		/** This filter is documented in lib/class-performant-translations.php */
 		$convert = apply_filters( 'performant_translations_convert_files', true );
