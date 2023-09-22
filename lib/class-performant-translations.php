@@ -10,6 +10,28 @@
  */
 class Performant_Translations {
 	/**
+	 * Hook into WordPress.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return void
+	 */
+	public static function init() {
+		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
+		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
+
+		add_action( 'init', array( __CLASS__, 'set_locale' ) );
+		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
+
+		add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
+
+		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
+
+		// Plugin integrations.
+		add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
+	}
+
+	/**
 	 * Loads a text domain.
 	 *
 	 * @global WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
@@ -195,14 +217,12 @@ class Performant_Translations {
 	 * @param string $locale The new locale.
 	 * @return void
 	 */
-	public static function change_locale( $locale ) {
+	public static function change_locale( string $locale ) {
 		Ginger_MO::instance()->set_locale( $locale );
 	}
 
 	/**
 	 * Creates PHP translation files after the translation updates process.
-	 *
-	 * @since 0.0.1
 	 *
 	 * @global WP_Filesystem_Base $wp_filesystem WP filesystem subclass.
 	 *
@@ -344,27 +364,5 @@ class Performant_Translations {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Hook into WordPress.
-	 *
-	 * @codeCoverageIgnore
-	 *
-	 * @return void
-	 */
-	public static function init() {
-		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
-		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
-
-		add_action( 'init', array( __CLASS__, 'set_locale' ) );
-		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
-
-		add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
-
-		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
-
-		// Plugin integrations.
-		add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
 	}
 }

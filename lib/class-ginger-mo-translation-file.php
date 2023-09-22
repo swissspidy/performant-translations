@@ -8,7 +8,7 @@
 /**
  * Class Ginger_MO_Translation_File.
  */
-class Ginger_MO_Translation_File {
+abstract class Ginger_MO_Translation_File {
 	/**
 	 * List of headers.
 	 *
@@ -96,49 +96,6 @@ class Ginger_MO_Translation_File {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Creates a new Ginger_MO_Translation_File instance for a given file.
-	 *
-	 * @param string $file     Source file name.
-	 * @param string $filetype Desired target file type.
-	 * @return string|false Transformed translation file contents on success, false otherwise.
-	 *
-	 * @phpstan-param 'mo'|'json'|'php' $filetype
-	 */
-	public static function transform( string $file, string $filetype ) {
-		$destination = null;
-
-		$source = self::create( $file );
-
-		if ( false === $source ) {
-			return false;
-		}
-
-		switch ( $filetype ) {
-			case 'mo':
-				$destination = new Ginger_MO_Translation_File_MO( 'tmp' );
-				break;
-			case 'php':
-				$destination = new Ginger_MO_Translation_File_PHP( 'tmp' );
-				break;
-			case 'json':
-				if ( function_exists( 'json_decode' ) ) {
-					$destination = new Ginger_MO_Translation_File_JSON( 'tmp' );
-				}
-				break;
-			default:
-				return false;
-		}
-
-		if ( null === $destination ) {
-			return false;
-		}
-
-		$destination->import( $source );
-
-		return $destination->export();
 	}
 
 	/**
@@ -232,6 +189,66 @@ class Ginger_MO_Translation_File {
 	}
 
 	/**
+	 * Makes a function, which will return the right translation index, according to the
+	 * plural forms header
+	 *
+	 * @param string $expression Plural form expression.
+	 * @return callable(int $num): int Plural forms function.
+	 */
+	public function make_plural_form_function( string $expression ) {
+		try {
+			$handler = new Plural_Forms( rtrim( $expression, ';' ) );
+			return array( $handler, 'get' );
+		} catch ( Exception $e ) {
+			// Fall back to default plural-form function.
+			return $this->make_plural_form_function( 'n != 1' );
+		}
+	}
+
+	/**
+	 * Creates a new Ginger_MO_Translation_File instance for a given file.
+	 *
+	 * @param string $file     Source file name.
+	 * @param string $filetype Desired target file type.
+	 * @return string|false Transformed translation file contents on success, false otherwise.
+	 *
+	 * @phpstan-param 'mo'|'json'|'php' $filetype
+	 */
+	public static function transform( string $file, string $filetype ) {
+		$destination = null;
+
+		$source = self::create( $file );
+
+		if ( false === $source ) {
+			return false;
+		}
+
+		switch ( $filetype ) {
+			case 'mo':
+				$destination = new Ginger_MO_Translation_File_MO( '' );
+				break;
+			case 'php':
+				$destination = new Ginger_MO_Translation_File_PHP( '' );
+				break;
+			case 'json':
+				if ( function_exists( 'json_decode' ) ) {
+					$destination = new Ginger_MO_Translation_File_JSON( '' );
+				}
+				break;
+			default:
+				return false;
+		}
+
+		if ( null === $destination ) {
+			return false;
+		}
+
+		$destination->import( $source );
+
+		return $destination->export();
+	}
+
+	/**
 	 * Imports translations from another file.
 	 *
 	 * @param Ginger_MO_Translation_File $source Source file.
@@ -250,39 +267,17 @@ class Ginger_MO_Translation_File {
 	}
 
 	/**
-	 * Makes a function, which will return the right translation index, according to the
-	 * plural forms header
+	 * Exports translation contents as a string.
 	 *
-	 * @param string $expression Plural form expression.
-	 * @return callable(int $num): int Plural forms function.
+	 * @return string Translation file contents.
 	 */
-	public function make_plural_form_function( string $expression ) {
-		try {
-			$handler = new Plural_Forms( rtrim( $expression, ';' ) );
-			return array( $handler, 'get' );
-		} catch ( Exception $e ) {
-			// Fall back to default plural-form function.
-			return $this->make_plural_form_function( 'n != 1' );
-		}
-	}
+	abstract public function export(): string;
 
 	/**
 	 * Parses the file.
 	 *
-	 * @todo Move to interface or make abstract.
-	 *
 	 * @return void
 	 */
-	protected function parse_file() {}
+	abstract protected function parse_file();
 
-	/**
-	 * Exports translation contents as a string.
-	 *
-	 * @todo Move to interface or make abstract.
-	 *
-	 * @return string Translation file contents.
-	 */
-	public function export(): string {
-		return '';
-	}
 }
