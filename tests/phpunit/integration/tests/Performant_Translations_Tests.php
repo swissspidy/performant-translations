@@ -17,8 +17,14 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.json' );
 		}
 
+		if ( file_exists( DIR_TESTDATA . '/pomo/context.mo.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/context.mo.php' );
+		}
+
 		remove_all_filters( 'performant_translations_convert_files' );
 		remove_all_filters( 'performant_translations_preferred_format' );
+
+		unload_textdomain( 'wp-tests-domain' );
 	}
 
 	/**

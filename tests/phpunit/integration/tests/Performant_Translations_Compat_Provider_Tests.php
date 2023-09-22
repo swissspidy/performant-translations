@@ -17,10 +17,6 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		if ( file_exists( DIR_TESTDATA . '/pomo/plural.php' ) ) {
 			$this->unlink( DIR_TESTDATA . '/pomo/plural.php' );
 		}
-
-		if ( file_exists( DIR_TESTDATA . '/pomo/overload.php' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/overload.php' );
-		}
 	}
 
 	/**
