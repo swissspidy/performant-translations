@@ -203,6 +203,8 @@ class Performant_Translations {
 	/**
 	 * Sets the current locale on init.
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @return void
 	 */
 	public static function set_locale() {
