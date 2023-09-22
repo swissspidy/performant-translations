@@ -256,8 +256,6 @@ class Performant_Translations {
 		 */
 		global $wp_filesystem;
 
-		var_dump( 'file_put' );
-
 		if ( 'translation' !== $hook_extra['type'] || array() === $hook_extra['translations'] ) {
 			return;
 		}
