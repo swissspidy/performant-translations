@@ -409,10 +409,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::load_textdomain
-	 * @covers Ginger_MO::get_entries
-	 * @covers Ginger_MO::get_headers
-	 * @covers Ginger_MO::normalize_header
+	 * @covers ::unload_textdomain
 	 *
 	 * @return void
 	 */

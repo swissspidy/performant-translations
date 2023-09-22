@@ -27,5 +27,7 @@ parameters:
 		  paths:
 		  	- tests/phpunit/unit/tests/Ginger_MO_Convert_Tests.php
 		  	- tests/phpunit/unit/tests/Ginger_MO_Tests.php
+		- message: '/^Access to an undefined property Performant_Translations_Compat_Provider::\$foo.$/'
+		  path: tests/phpunit/integration/tests/Performant_Translations_Compat_Provider_Tests.php
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon

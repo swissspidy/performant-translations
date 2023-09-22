@@ -147,7 +147,6 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		);
 	}
 
-
 	/**
 	 * @covers ::__get
 	 *
@@ -175,6 +174,23 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 			$headers,
 			'Actual translation headers do not match expected ones'
 		);
+	}
+
+	/**
+	 * @covers ::__get
+	 *
+	 * @return void
+	 */
+	public function test_getter_unsupported_property() {
+		global $l10n;
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$compat_instance = $l10n['wp-tests-domain'] ?? null;
+
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance );
+
+		$this->assertNull( $compat_instance->foo );
 	}
 
 	/**
