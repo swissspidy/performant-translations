@@ -186,6 +186,54 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_existing_translation_is_kept() {
+		global $l10n;
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		add_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100, 4 );
+
+		$simple  = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Translations::class, $l10n['wp-tests-domain'] );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_loads_existing_translation() {
+		global $l10n;
+
+		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		add_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100, 4 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		$simple  = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain'] );
+	}
+
+	/**
 	 * @covers ::unload_textdomain
 	 * @covers Ginger_MO::get_entries
 	 * @covers Ginger_MO::get_headers
