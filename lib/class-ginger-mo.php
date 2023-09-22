@@ -323,7 +323,6 @@ class Ginger_MO {
 			$entries = array_merge( $entries, $moe->entries() );
 		}
 
-		// TODO: Return Translation_Entry instances instead to maintain back compat.
 		return $entries;
 	}
 
