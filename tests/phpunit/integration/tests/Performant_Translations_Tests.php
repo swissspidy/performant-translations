@@ -307,13 +307,6 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
 		unload_textdomain( 'wp-tests-domain' );
 
-		add_filter(
-			'performant_translations_preferred_format',
-			static function () {
-				return 'mo';
-			}
-		);
-
 		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
 
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
