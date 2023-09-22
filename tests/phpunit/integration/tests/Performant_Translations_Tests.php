@@ -625,7 +625,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 			add_filter( 'filesystem_method', '__return_empty_string' );
 		};
 
-		add_action( 'upgrader_process_complete', $callback );
+		add_action( 'upgrader_process_complete', $callback, 1 );
 
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		require_once ABSPATH . 'wp-admin/includes/class-language-pack-upgrader.php';
@@ -670,7 +670,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$theme_exists  = file_exists( $theme );
 		$core_exists   = file_exists( $core );
 
-		remove_action( 'upgrader_process_complete', $callback );
+		remove_action( 'upgrader_process_complete', $callback, 1 );
 
 		$this->assertIsNotBool( $result );
 		$this->assertNotWPError( $result );
