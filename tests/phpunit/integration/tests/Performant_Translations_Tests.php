@@ -94,6 +94,30 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
+	public function test_load_textdomain_mo_files() {
+		add_filter(
+			'performant_translations_preferred_format',
+			static function () {
+				return 'mo';
+			}
+		);
+
+		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
+
+		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
+		$this->assertTrue( $unload_mo_successful );
+		$this->assertFalse( $file_exists );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
 	public function test_load_textdomain_creates_and_reads_php_files() {
 		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 
@@ -238,6 +262,39 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$this->assertSame( 'oney dragoney', $context );
 		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain'] );
 	}
+
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_loads_existing_translation_mo_files() {
+		global $l10n;
+
+		add_filter(
+			'performant_translations_preferred_format',
+			static function () {
+				return 'mo';
+			}
+		);
+
+		remove_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		add_filter( 'override_load_textdomain', array( Performant_Translations::class, 'load_textdomain' ), 100, 4 );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/context.mo' );
+
+		$simple  = __( 'baba', 'wp-tests-domain' );
+		$context = _x( 'one dragon', 'not so dragon', 'wp-tests-domain' );
+
+		$this->assertSame( 'dyado', $simple );
+		$this->assertSame( 'oney dragoney', $context );
+		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $l10n['wp-tests-domain'] );
+	}
+
 
 	/**
 	 * @covers ::unload_textdomain
