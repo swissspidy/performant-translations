@@ -243,7 +243,11 @@ abstract class Ginger_MO_Translation_File {
 			return false;
 		}
 
-		$destination->import( $source );
+		$success = $destination->import( $source );
+
+		if ( ! $success ) {
+			return false;
+		}
 
 		return $destination->export();
 	}
@@ -279,5 +283,4 @@ abstract class Ginger_MO_Translation_File {
 	 * @return void
 	 */
 	abstract protected function parse_file();
-
 }

@@ -9,20 +9,26 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
-		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.php' );
-		}
+		$generated_translation_files = array(
+			DIR_TESTDATA . '/pomo/simple.mo.php',
+			DIR_TESTDATA . '/pomo/simple.mo.json',
+			DIR_TESTDATA . '/pomo/simple.mo.json',
+			DIR_TESTDATA . '/pomo/context.mo.php',
+			WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php',
+			WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php',
+			WP_LANG_DIR . '/de_DE.mo.php',
+		);
 
-		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.json' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.json' );
-		}
-
-		if ( file_exists( DIR_TESTDATA . '/pomo/context.mo.php' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/context.mo.php' );
+		foreach ( $generated_translation_files as $file ) {
+			if ( file_exists( $file ) ) {
+				$this->unlink( $file );
+			}
 		}
 
 		remove_all_filters( 'performant_translations_convert_files' );
 		remove_all_filters( 'performant_translations_preferred_format' );
+
+		remove_all_filters( 'filesystem_method' );
 
 		unload_textdomain( 'wp-tests-domain' );
 	}
@@ -91,6 +97,29 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::load_textdomain
+	 * @covers Ginger_MO::get_entries
+	 * @covers Ginger_MO::get_headers
+	 * @covers Ginger_MO::normalize_header
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_existing_override() {
+		add_filter( 'override_load_textdomain', '__return_true' );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$is_loaded_wp = is_textdomain_loaded( 'wp-tests-domain' );
+
+		$is_loaded = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
+
+		remove_filter( 'override_load_textdomain', '__return_true' );
+
+		$this->assertFalse( $is_loaded_wp );
+		$this->assertFalse( $is_loaded );
+	}
+
+	/**
+	 * @covers ::load_textdomain
 	 *
 	 * @return void
 	 */
@@ -148,6 +177,31 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 				return 'unknown-format';
 			}
 		);
+
+		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$file_exists = file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' );
+
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.php' );
+
+		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
+		$this->assertTrue( $unload_mo_successful );
+		$this->assertTrue( $file_exists );
+		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
+		$this->assertTrue( $unload_php_successful );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_creates_and_reads_php_files_no_wp_filesystem() {
+		add_filter( 'filesystem_method', '__return_empty_string' );
 
 		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 
@@ -356,13 +410,40 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::load_textdomain
+	 * @covers Ginger_MO::get_entries
+	 * @covers Ginger_MO::get_headers
+	 * @covers Ginger_MO::normalize_header
+	 *
+	 * @return void
+	 */
+	public function test_unload_textdomain_existing_override() {
+		add_filter( 'override_unload_textdomain', '__return_true' );
+
+		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
+
+		$unload_successful = unload_textdomain( 'wp-tests-domain' );
+
+		$is_loaded = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
+
+		remove_filter( 'override_unload_textdomain', '__return_true' );
+
+		$unload_successful_after = unload_textdomain( 'wp-tests-domain' );
+
+		$is_loaded_after = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
+
+		$this->assertTrue( $unload_successful );
+		$this->assertTrue( $is_loaded );
+		$this->assertTrue( $unload_successful_after );
+		$this->assertFalse( $is_loaded_after );
+	}
+
+	/**
+	 * @covers ::load_textdomain
 	 * @covers ::unload_textdomain
 	 *
 	 * @return void
 	 */
 	public function test_switch_to_locale_translations_stay_loaded_default_textdomain() {
-		global $l10n;
-
 		switch_to_locale( 'es_ES' );
 
 		$actual = __( 'Invalid parameter.' );
@@ -415,7 +496,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers Performant_Translations::upgrader_process_complete
+	 * @covers ::upgrader_process_complete
 	 *
 	 * @return void
 	 */
@@ -463,9 +544,70 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$theme_exists  = file_exists( $theme );
 		$core_exists   = file_exists( $core );
 
-		unlink( $plugin );
-		unlink( $theme );
-		unlink( $core );
+		$this->assertIsNotBool( $result );
+		$this->assertNotWPError( $result );
+		$this->assertNotEmpty( $result );
+
+		$this->assertTrue( $plugin_exists );
+		$this->assertTrue( $theme_exists );
+		$this->assertTrue( $core_exists );
+	}
+
+	/**
+	 * @covers ::upgrader_process_complete
+	 *
+	 * @return void
+	 */
+	public function test_create_translation_files_after_translations_update_if_filtered_format_is_unsupported() {
+		add_filter(
+			'performant_translations_preferred_format',
+			static function () {
+				return 'unknown-format';
+			}
+		);
+
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/class-language-pack-upgrader.php';
+		require_once DIR_PLUGIN_TESTDATA . '/class-dummy-upgrader-skin.php';
+		require_once DIR_PLUGIN_TESTDATA . '/class-dummy-language-pack-upgrader.php';
+
+		$upgrader = new Dummy_Language_Pack_Upgrader( new Dummy_Upgrader_Skin() );
+
+		// These translations exist in the core test suite.
+		// See https://github.com/WordPress/wordpress-develop/tree/e3d345800d3403f3902dc7b18c1ddb07158b0bd3/tests/phpunit/data/languages.
+		$result = $upgrader->bulk_upgrade(
+			array(
+				(object) array(
+					'type'     => 'plugin',
+					'slug'     => 'internationalized-plugin',
+					'language' => 'de_DE',
+					'version'  => '99.9.9',
+					'package'  => '/tmp/notused.zip',
+				),
+				(object) array(
+					'type'     => 'theme',
+					'slug'     => 'internationalized-theme',
+					'language' => 'de_DE',
+					'version'  => '99.9.9',
+					'package'  => '/tmp/notused.zip',
+				),
+				(object) array(
+					'type'     => 'core',
+					'slug'     => 'default',
+					'language' => 'de_DE',
+					'version'  => '99.9.9',
+					'package'  => '/tmp/notused.zip',
+				),
+			)
+		);
+
+		$plugin = WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php';
+		$theme  = WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php';
+		$core   = WP_LANG_DIR . '/de_DE.mo.php';
+
+		$plugin_exists = file_exists( $plugin );
+		$theme_exists  = file_exists( $theme );
+		$core_exists   = file_exists( $core );
 
 		$this->assertIsNotBool( $result );
 		$this->assertNotWPError( $result );
@@ -477,7 +619,73 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers Performant_Translations::upgrader_process_complete
+	 * @covers ::upgrader_process_complete
+	 *
+	 * @return void
+	 */
+	public function test_create_translation_files_after_translations_update_no_wp_filesystem() {
+		$callback = static function () {
+			add_filter( 'filesystem_method', '__return_empty_string' );
+		};
+
+		add_action( 'upgrader_process_complete', $callback );
+
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/class-language-pack-upgrader.php';
+		require_once DIR_PLUGIN_TESTDATA . '/class-dummy-upgrader-skin.php';
+		require_once DIR_PLUGIN_TESTDATA . '/class-dummy-language-pack-upgrader.php';
+
+		$upgrader = new Dummy_Language_Pack_Upgrader( new Dummy_Upgrader_Skin() );
+
+		// These translations exist in the core test suite.
+		// See https://github.com/WordPress/wordpress-develop/tree/e3d345800d3403f3902dc7b18c1ddb07158b0bd3/tests/phpunit/data/languages.
+		$result = $upgrader->bulk_upgrade(
+			array(
+				(object) array(
+					'type'     => 'plugin',
+					'slug'     => 'internationalized-plugin',
+					'language' => 'de_DE',
+					'version'  => '99.9.9',
+					'package'  => '/tmp/notused.zip',
+				),
+				(object) array(
+					'type'     => 'theme',
+					'slug'     => 'internationalized-theme',
+					'language' => 'de_DE',
+					'version'  => '99.9.9',
+					'package'  => '/tmp/notused.zip',
+				),
+				(object) array(
+					'type'     => 'core',
+					'slug'     => 'default',
+					'language' => 'de_DE',
+					'version'  => '99.9.9',
+					'package'  => '/tmp/notused.zip',
+				),
+			)
+		);
+
+		$plugin = WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php';
+		$theme  = WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php';
+		$core   = WP_LANG_DIR . '/de_DE.mo.php';
+
+		$plugin_exists = file_exists( $plugin );
+		$theme_exists  = file_exists( $theme );
+		$core_exists   = file_exists( $core );
+
+		remove_action( 'upgrader_process_complete', $callback );
+
+		$this->assertIsNotBool( $result );
+		$this->assertNotWPError( $result );
+		$this->assertNotEmpty( $result );
+
+		$this->assertTrue( $plugin_exists );
+		$this->assertTrue( $theme_exists );
+		$this->assertTrue( $core_exists );
+	}
+
+	/**
+	 * @covers ::upgrader_process_complete
 	 *
 	 * @return void
 	 */

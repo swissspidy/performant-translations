@@ -203,8 +203,6 @@ class Performant_Translations {
 	/**
 	 * Sets the current locale on init.
 	 *
-	 * @codeCoverageIgnore
-	 *
 	 * @return void
 	 */
 	public static function set_locale() {
@@ -258,6 +256,8 @@ class Performant_Translations {
 		 */
 		global $wp_filesystem;
 
+		var_dump( 'file_put' );
+
 		if ( 'translation' !== $hook_extra['type'] || array() === $hook_extra['translations'] ) {
 			return;
 		}
@@ -288,14 +288,16 @@ class Performant_Translations {
 				$convert = apply_filters( 'performant_translations_convert_files', true );
 
 				if ( 'mo' !== $preferred_format && $convert ) {
-					if ( true !== $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
+					$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
+
+					if ( false === $contents ) {
 						return;
 					}
 
-					$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
-
-					if ( false !== $contents ) {
+					if ( true === $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
 						$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+					} else {
+						file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 					}
 				}
 			}

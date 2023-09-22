@@ -103,9 +103,13 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertFalse( $instance->translate( 'original', '', 'unittest', 'es_ES' ) );
 	}
 
-
 	/**
 	 * @dataProvider data_invalid_files
+	 *
+	 * @covers Ginger_MO_Translation_File::create
+	 * @covers Ginger_MO_Translation_File::parse
+	 * @covers Ginger_MO_Translation_File::headers
+	 * @covers Ginger_MO_Translation_File::error
 	 *
 	 * @param string $type
 	 * @param string $file_contents
@@ -159,11 +163,30 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 *
 	 * @return void
 	 */
-	public function test_non_existent_file() {
+	public function test_load_non_existent_file() {
 		$instance = new Ginger_MO();
 
 		$this->assertFalse( $instance->load( GINGER_MO_TEST_DATA . 'file-that-doesnt-exist.mo', 'unittest' ) );
 		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
+	}
+
+	/**
+	 * @covers Ginger_MO_Translation_File::create
+	 *
+	 * @return void
+	 */
+	public function test_create_non_existent_file() {
+		$this->assertFalse( Ginger_MO_Translation_File::create( 'this-file-does-not-exist' ) );
+	}
+
+	/**
+	 * @covers Ginger_MO_Translation_File::create
+	 *
+	 * @return void
+	 */
+	public function test_create_invalid_filetype() {
+		$file = $this->temp_file( '' );
+		$this->assertFalse( Ginger_MO_Translation_File::create( $file, 'foo' ) );
 	}
 
 	/**

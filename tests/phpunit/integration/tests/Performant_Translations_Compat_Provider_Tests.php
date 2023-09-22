@@ -20,6 +20,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::__construct
 	 * @covers ::__get
 	 * @covers ::make_entry
 	 *
