@@ -106,11 +106,6 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	/**
 	 * @dataProvider data_invalid_files
 	 *
-	 * @covers Ginger_MO_Translation_File::create
-	 * @covers Ginger_MO_Translation_File::parse_file
-	 * @covers Ginger_MO_Translation_File::headers
-	 * @covers Ginger_MO_Translation_File::error
-	 *
 	 * @param string $type
 	 * @param string $file_contents
 	 * @param string|bool $expected_error

@@ -150,7 +150,7 @@ abstract class Ginger_MO_Translation_File {
 	 * @param string $text String to translate.
 	 * @return false|string Translation(s) on success, false otherwise.
 	 */
-	public function translate( $text ) {
+	public function translate( string $text ) {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
@@ -164,7 +164,7 @@ abstract class Ginger_MO_Translation_File {
 	 * @param int $number Count.
 	 * @return int Plural form.
 	 */
-	public function get_plural_form( $number ): int {
+	public function get_plural_form( int $number ): int {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
@@ -259,6 +259,7 @@ abstract class Ginger_MO_Translation_File {
 	 */
 	protected function parse_file() {
 		// Needs to be implemented in child classes.
+		// Not abstract because it's used in this class.
 	}
 
 	/**
