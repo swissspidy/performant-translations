@@ -107,7 +107,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @dataProvider data_invalid_files
 	 *
 	 * @covers Ginger_MO_Translation_File::create
-	 * @covers Ginger_MO_Translation_File::parse
+	 * @covers Ginger_MO_Translation_File::parse_file
 	 * @covers Ginger_MO_Translation_File::headers
 	 * @covers Ginger_MO_Translation_File::error
 	 *
@@ -186,7 +186,8 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 */
 	public function test_create_invalid_filetype() {
 		$file = $this->temp_file( '' );
-		$this->assertFalse( Ginger_MO_Translation_File::create( $file, 'foo' ) );
+		$this->assertNotFalse( $file );
+		$this->assertFalse( Ginger_MO_Translation_File::create( $file, 'invalid' ) );
 	}
 
 	/**

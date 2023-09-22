@@ -17,9 +17,11 @@ class Dummy_Upgrader_Skin extends WP_Upgrader_Skin {
 	public function footer() {}
 
 	/**
-	 * @return void
+	 * @return bool
 	 */
-	public function request_filesystem_credentials( $error = false, $context = '', $allow_relaxed_file_ownership = false ) {}
+	public function request_filesystem_credentials( $error = false, $context = '', $allow_relaxed_file_ownership = false ) {
+		return false;
+	}
 
 	/**
 	 * @param string $feedback Message data.

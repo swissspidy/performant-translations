@@ -253,6 +253,15 @@ abstract class Ginger_MO_Translation_File {
 	}
 
 	/**
+	 * Parses the file.
+	 *
+	 * @return void
+	 */
+	protected function parse_file() {
+		// Needs to be implemented in child classes.
+	}
+
+	/**
 	 * Imports translations from another file.
 	 *
 	 * @param Ginger_MO_Translation_File $source Source file.
@@ -276,11 +285,4 @@ abstract class Ginger_MO_Translation_File {
 	 * @return string Translation file contents.
 	 */
 	abstract public function export(): string;
-
-	/**
-	 * Parses the file.
-	 *
-	 * @return void
-	 */
-	abstract protected function parse_file();
 }
