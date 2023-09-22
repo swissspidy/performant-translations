@@ -8,7 +8,7 @@
 /**
  * Class Ginger_MO_Translation_File.
  */
-class Ginger_MO_Translation_File {
+abstract class Ginger_MO_Translation_File {
 	/**
 	 * List of headers.
 	 *
@@ -55,31 +55,25 @@ class Ginger_MO_Translation_File {
 	 * Constructor.
 	 *
 	 * @param string $file    File to load.
-	 * @param string $context Optional. Context. Either 'read' or 'write'. Default 'read'.
 	 */
-	protected function __construct( string $file, string $context = 'read' ) {
+	protected function __construct( string $file ) {
 		$this->file = $file;
-
-		if ( 'write' === $context ) {
-			if ( file_exists( $file ) ) {
-				$this->error = is_writable( $file ) ? false : 'File is not writable'; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
-			} elseif ( ! is_writable( dirname( $file ) ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
-				$this->error = 'Directory not writable';
-			}
-		} elseif ( ! is_readable( $file ) ) {
-			$this->error = 'File not readable';
-		}
 	}
 
 	/**
 	 * Creates a new Ginger_MO_Translation_File instance for a given file.
 	 *
 	 * @param string      $file     File name.
-	 * @param string      $context  Optional. Context. Either 'read' or 'write'. Default 'read'.
 	 * @param string|null $filetype Optional. File type. Default inferred from file name.
 	 * @return false|Ginger_MO_Translation_File
+	 *
+	 * @phpstan-param 'mo'|'json'|'php'|null $filetype
 	 */
-	public static function create( string $file, string $context = 'read', string $filetype = null ) {
+	public static function create( string $file, string $filetype = null ) {
+		if ( ! is_readable( $file ) ) {
+			return false;
+		}
+
 		if ( null === $filetype ) {
 			$pos = strrpos( $file, '.' );
 			if ( false !== $pos ) {
@@ -89,12 +83,12 @@ class Ginger_MO_Translation_File {
 
 		switch ( $filetype ) {
 			case 'mo':
-				return new Ginger_MO_Translation_File_MO( $file, $context );
+				return new Ginger_MO_Translation_File_MO( $file );
 			case 'php':
-				return new Ginger_MO_Translation_File_PHP( $file, $context );
+				return new Ginger_MO_Translation_File_PHP( $file );
 			case 'json':
 				if ( function_exists( 'json_decode' ) ) {
-					return new Ginger_MO_Translation_File_JSON( $file, $context );
+					return new Ginger_MO_Translation_File_JSON( $file );
 				}
 				break;
 			default:
@@ -156,7 +150,7 @@ class Ginger_MO_Translation_File {
 	 * @param string $text String to translate.
 	 * @return false|string Translation(s) on success, false otherwise.
 	 */
-	public function translate( $text ) {
+	public function translate( string $text ) {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
@@ -170,7 +164,7 @@ class Ginger_MO_Translation_File {
 	 * @param int $number Count.
 	 * @return int Plural form.
 	 */
-	public function get_plural_form( $number ): int {
+	public function get_plural_form( int $number ): int {
 		if ( ! $this->parsed ) {
 			$this->parse_file();
 		}
@@ -195,27 +189,6 @@ class Ginger_MO_Translation_File {
 	}
 
 	/**
-	 * Exports translations to file.
-	 *
-	 * @param Ginger_MO_Translation_File $destination Destination file.
-	 * @return bool True on success, false otherwise.
-	 */
-	public function export( Ginger_MO_Translation_File $destination ): bool {
-		if ( false !== $destination->error() ) {
-			return false;
-		}
-
-		if ( ! $this->parsed ) {
-			$this->parse_file();
-		}
-
-		$destination->create_file( $this->headers, $this->entries );
-		$this->error = $destination->error();
-
-		return false === $this->error;
-	}
-
-	/**
 	 * Makes a function, which will return the right translation index, according to the
 	 * plural forms header
 	 *
@@ -233,22 +206,84 @@ class Ginger_MO_Translation_File {
 	}
 
 	/**
+	 * Creates a new Ginger_MO_Translation_File instance for a given file.
+	 *
+	 * @param string $file     Source file name.
+	 * @param string $filetype Desired target file type.
+	 * @return string|false Transformed translation file contents on success, false otherwise.
+	 *
+	 * @phpstan-param 'mo'|'json'|'php' $filetype
+	 */
+	public static function transform( string $file, string $filetype ) {
+		$destination = null;
+
+		$source = self::create( $file );
+
+		if ( false === $source ) {
+			return false;
+		}
+
+		switch ( $filetype ) {
+			case 'mo':
+				$destination = new Ginger_MO_Translation_File_MO( '' );
+				break;
+			case 'php':
+				$destination = new Ginger_MO_Translation_File_PHP( '' );
+				break;
+			case 'json':
+				if ( function_exists( 'json_decode' ) ) {
+					$destination = new Ginger_MO_Translation_File_JSON( '' );
+				}
+				break;
+			default:
+				return false;
+		}
+
+		if ( null === $destination ) {
+			return false;
+		}
+
+		$success = $destination->import( $source );
+
+		if ( ! $success ) {
+			return false;
+		}
+
+		return $destination->export();
+	}
+
+	/**
 	 * Parses the file.
 	 *
 	 * @return void
 	 */
-	protected function parse_file() {} // TODO: Move to interface or make abstract.
+	protected function parse_file() {
+		// Needs to be implemented in child classes.
+		// Not abstract because it's used in this class.
+	}
 
 	/**
-	 * Writes translations to file.
+	 * Imports translations from another file.
 	 *
-	 * @param array<string, string> $headers Headers.
-	 * @param array<string, string> $entries Entries.
+	 * @param Ginger_MO_Translation_File $source Source file.
 	 * @return bool True on success, false otherwise.
 	 */
-	protected function create_file( $headers, $entries ): bool {
-		// TODO: Move to interface or make abstract.
-		$this->error = 'Format not supported.';
-		return false;
+	protected function import( Ginger_MO_Translation_File $source ): bool {
+		if ( false !== $source->error() ) {
+			return false;
+		}
+
+		$this->headers = $source->headers();
+		$this->entries = $source->entries();
+		$this->error   = $source->error();
+
+		return false === $this->error;
 	}
+
+	/**
+	 * Exports translation contents as a string.
+	 *
+	 * @return string Translation file contents.
+	 */
+	abstract public function export(): string;
 }

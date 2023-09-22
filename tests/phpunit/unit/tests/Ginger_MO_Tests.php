@@ -103,7 +103,6 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertFalse( $instance->translate( 'original', '', 'unittest', 'es_ES' ) );
 	}
 
-
 	/**
 	 * @dataProvider data_invalid_files
 	 *
@@ -111,13 +110,15 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @param string $file_contents
 	 * @param string|bool $expected_error
 	 * @return void
+	 *
+	 * @phpstan-param 'mo'|'json'|'php' $type
 	 */
 	public function test_invalid_files( string $type, string $file_contents, $expected_error = null ) {
 		$file = $this->temp_file( $file_contents );
 
 		$this->assertNotFalse( $file );
 
-		$instance = Ginger_MO_Translation_File::create( $file, 'read', $type );
+		$instance = Ginger_MO_Translation_File::create( $file, $type );
 
 		$this->assertInstanceOf( Ginger_MO_Translation_File::class, $instance );
 
@@ -135,7 +136,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @return array{0: array{0: string, 1: string|false, 2?: string}}
+	 * @return array{0: array{0: 'mo'|'json'|'php', 1: string|false, 2?: string}}
 	 */
 	public function data_invalid_files(): array {
 		return array(
@@ -157,11 +158,31 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 *
 	 * @return void
 	 */
-	public function test_non_existent_file() {
+	public function test_load_non_existent_file() {
 		$instance = new Ginger_MO();
 
 		$this->assertFalse( $instance->load( GINGER_MO_TEST_DATA . 'file-that-doesnt-exist.mo', 'unittest' ) );
 		$this->assertFalse( $instance->is_loaded( 'unittest' ) );
+	}
+
+	/**
+	 * @covers Ginger_MO_Translation_File::create
+	 *
+	 * @return void
+	 */
+	public function test_create_non_existent_file() {
+		$this->assertFalse( Ginger_MO_Translation_File::create( 'this-file-does-not-exist' ) );
+	}
+
+	/**
+	 * @covers Ginger_MO_Translation_File::create
+	 *
+	 * @return void
+	 */
+	public function test_create_invalid_filetype() {
+		$file = $this->temp_file( '' );
+		$this->assertNotFalse( $file );
+		$this->assertFalse( Ginger_MO_Translation_File::create( $file, 'invalid' ) );
 	}
 
 	/**

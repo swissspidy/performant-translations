@@ -38,18 +38,14 @@ class Ginger_MO_Translation_File_PHP extends Ginger_MO_Translation_File {
 	}
 
 	/**
-	 * Writes translations to file.
+	 * Exports translation contents as a string.
 	 *
-	 * @param array<string, string> $headers Headers.
-	 * @param array<string, string> $entries Entries.
-	 * @return bool True on success, false otherwise.
+	 * @return string Translation file contents.
 	 */
-	protected function create_file( $headers, $entries ): bool {
-		$data = array_merge( $headers, array( 'messages' => $entries ) );
+	public function export(): string {
+		$data = array_merge( $this->headers, array( 'messages' => $this->entries ) );
 
-		$file_contents = '<?php' . PHP_EOL . 'return ' . $this->var_export( $data ) . ';' . PHP_EOL;
-
-		return (bool) file_put_contents( $this->file, $file_contents ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+		return '<?php' . PHP_EOL . 'return ' . $this->var_export( $data ) . ';' . PHP_EOL;
 	}
 
 	/**

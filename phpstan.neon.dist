@@ -17,11 +17,17 @@ parameters:
 		- tests/phpstan/bootstrap.php
 	ignoreErrors:
 		# WordPress core includes a polyfill.
-		-	message: '/^Function str_ends_with not found\./'
+		- message: '/^Function str_ends_with not found\./'
 		# We explicitly want to test with improper values.
-		-	message: '/^Parameter #\d \$(text|single|plural|context) of function (__|_n|_x) expects string, null given\.$/'
-		-	message: '/^Parameter #3 \$number of function _n expects int, float given\.$/'
+		- message: '/^Parameter #\d \$(text|single|plural|context) of function (__|_n|_x) expects string, null given\.$/'
+		- message: '/^Parameter #3 \$number of function _n expects int, float given\.$/'
 		- message: '/^Call to method PHPUnit\\Framework\\Assert::assertNull\(\) with string will always evaluate to false.$/'
+		  path: tests/phpunit/integration/tests/Performant_Translations_Compat_Provider_Tests.php
+		- message: "/'invalid' given.$/"
+		  paths:
+		  	- tests/phpunit/unit/tests/Ginger_MO_Convert_Tests.php
+		  	- tests/phpunit/unit/tests/Ginger_MO_Tests.php
+		- message: '/^Access to an undefined property Performant_Translations_Compat_Provider::\$foo.$/'
 		  path: tests/phpunit/integration/tests/Performant_Translations_Compat_Provider_Tests.php
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon

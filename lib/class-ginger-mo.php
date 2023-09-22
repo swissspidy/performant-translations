@@ -84,6 +84,7 @@ class Ginger_MO {
 		if ( null === $locale ) {
 			$locale = $this->current_locale;
 		}
+
 		$translation_file = realpath( $translation_file );
 
 		if ( false === $translation_file ) {

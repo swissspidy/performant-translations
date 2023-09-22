@@ -28,16 +28,6 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	const MAGIC_MARKER = 0x950412de;
 
 	/**
-	 * Constructor.
-	 *
-	 * @param string $file    File to load.
-	 * @param string $context Context.
-	 */
-	protected function __construct( $file, $context ) {
-		parent::__construct( $file, $context );
-	}
-
-	/**
 	 * Detects endian and validates file.
 	 *
 	 * @param string $header File contents.
@@ -171,19 +161,17 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 	}
 
 	/**
-	 * Writes translations to file.
+	 * Exports translation contents as a string.
 	 *
-	 * @param array<string, string> $headers Headers.
-	 * @param array<string, string> $entries Entries.
-	 * @return bool True on success, false otherwise.
+	 * @return string Translation file contents.
 	 */
-	protected function create_file( $headers, $entries ): bool {
+	public function export(): string {
 		// Prefix the headers as the first key.
 		$headers_string = '';
-		foreach ( $headers as $header => $value ) {
+		foreach ( $this->headers as $header => $value ) {
 			$headers_string .= "{$header}: $value\n";
 		}
-		$entries     = array_merge( array( '' => $headers_string ), $entries );
+		$entries     = array_merge( array( '' => $headers_string ), $this->entries );
 		$entry_count = count( $entries );
 
 		if ( false === $this->uint32 ) {
@@ -216,6 +204,6 @@ class Ginger_MO_Translation_File_MO extends Ginger_MO_Translation_File {
 			$t_entries     .= $translations . pack( 'x' );
 		}
 
-		return (bool) file_put_contents( $this->file, $file_header . $o_addr . $t_addr . $o_entries . $t_entries ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+		return $file_header . $o_addr . $t_addr . $o_entries . $t_entries;
 	}
 }
