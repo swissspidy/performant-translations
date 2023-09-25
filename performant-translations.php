@@ -20,6 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+// Safeguard in case the class is added to core or elsewhere.
+if ( class_exists( 'Ginger_MO' ) ) {
+	return;
+}
+
 define( 'PERFORMANT_TRANSLATIONS_VERSION', '1.0.3' );
 
 require __DIR__ . '/lib/class-ginger-mo.php';
