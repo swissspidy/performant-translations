@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.3
-Stable tag:        1.0.3
+Stable tag:        1.0.4
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
@@ -84,11 +84,18 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.0.4 =
+
+* Enhancement: Several minor performance improvements.
+* Enhancement: Use different file extension (`.mo.php` instead of just `.php`) to prevent conflicts.
+* Enhancement: "Import" existing translation file if one is already loaded for a text domain.
+* Enhancement: Use WP Filesystem API if available.
+
 = 1.0.3 =
 
 * Enhancement: Improved compatibility with Query Monitor's developer tools panel.
 * Enhancement: Added new `performant_translations_load_translation_file` filter.
-* Enhancement: enforce network-only activation on Multisite.
+* Enhancement: Enforce network-only activation on Multisite.
 
 = 1.0.2 =
 
@@ -105,6 +112,10 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.4 =
+
+This release includes some performance improvements, as well as enhanced compatibility with certain setups.
 
 = 1.0.3 =
 
