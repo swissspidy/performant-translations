@@ -76,9 +76,9 @@ class Performant_Translations {
 			$preferred_format = 'php';
 		}
 
-		$mofile_preferred = str_replace( '.mo', ".mo.$preferred_format", $mofile );
+		$mofile_preferred = "$mofile.$preferred_format";
 
-		if ( 'mo' !== $preferred_format ) {
+		if ( 'mo' !== $preferred_format && ! str_ends_with( $mofile, $preferred_format ) ) {
 			/** This action is documented in wp-includes/l10n.php */
 			do_action( 'load_textdomain', $domain, $mofile_preferred );
 
@@ -142,15 +142,13 @@ class Performant_Translations {
 			 *
 			 * Only runs when no corresponding PHP or JSON translation file exists yet.
 			 *
-			 * The preferred format is determined by the {@see 'performant_translations_prefer_php_files'} filter
-			 *
-			 * Useful for testing/debugging.
+			 * The preferred format is determined by the {@see 'performant_translations_preferred_format'} filter
 			 *
 			 * @param bool $convert Whether to convert MO files to PHP files. Default true.
 			 */
 			$convert = apply_filters( 'performant_translations_convert_files', true );
 
-			if ( 'mo' !== $preferred_format && $convert ) {
+			if ( 'mo' !== $preferred_format && $convert && ! str_ends_with( $mofile, $preferred_format ) ) {
 				$contents = Ginger_MO_Translation_File::transform( $mofile, $preferred_format );
 
 				if ( false !== $contents ) {
@@ -282,12 +280,12 @@ class Performant_Translations {
 					$preferred_format = 'php';
 				}
 
-				$mofile_preferred = str_replace( '.mo', ".mo.$preferred_format", $file );
+				$mofile_preferred = "$file.$preferred_format";
 
 				/** This filter is documented in lib/class-performant-translations.php */
 				$convert = apply_filters( 'performant_translations_convert_files', true );
 
-				if ( 'mo' !== $preferred_format && $convert ) {
+				if ( 'mo' !== $preferred_format && $convert && ! str_ends_with( $file, $preferred_format ) ) {
 					$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
 
 					if ( false === $contents ) {
@@ -346,12 +344,12 @@ class Performant_Translations {
 			$preferred_format = 'php';
 		}
 
-		$mofile_preferred = str_replace( '.mo', ".mo.$preferred_format", $file );
+		$mofile_preferred = "$file.$preferred_format";
 
 		/** This filter is documented in lib/class-performant-translations.php */
 		$convert = apply_filters( 'performant_translations_convert_files', true );
 
-		if ( 'mo' !== $preferred_format && $convert ) {
+		if ( 'mo' !== $preferred_format && $convert && ! str_ends_with( $file, $preferred_format ) ) {
 			$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
 
 			if ( false !== $contents ) {
