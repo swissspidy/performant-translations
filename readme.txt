@@ -84,6 +84,10 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.0.5 =
+
+* Enhancement: Improved compatibility with Loco Translate to avoid duplicate files.
+
 = 1.0.4 =
 
 * Enhancement: Several minor performance improvements.
@@ -112,6 +116,10 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.5 =
+
+This release includes enhanced compatibility with Loco Translate to avoid duplicate files.
 
 = 1.0.4 =
 
