@@ -314,7 +314,7 @@ class Performant_Translations {
 	}
 
 	/**
-	 * Regenerate preferred translation files when an MO file is updated in Loco Translate.
+	 * Regenerates a PHP or JSON translation file from a given MO file.
 	 *
 	 * This compatibility code is added out of courtesy and is not intended
 	 * to be merged into WordPress core.
@@ -349,7 +349,7 @@ class Performant_Translations {
 		/** This filter is documented in lib/class-performant-translations.php */
 		$convert = apply_filters( 'performant_translations_convert_files', true );
 
-		if ( 'mo' !== $preferred_format && $convert && ! str_ends_with( $file, $preferred_format ) ) {
+		if ( 'mo' !== $preferred_format && $convert ) {
 			$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
 
 			if ( false !== $contents ) {
