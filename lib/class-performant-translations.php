@@ -78,7 +78,7 @@ class Performant_Translations {
 
 		$mofile_preferred = "$mofile.$preferred_format";
 
-		if ( 'mo' !== $preferred_format && ! str_ends_with( $mofile, $preferred_format ) ) {
+		if ( 'mo' !== $preferred_format || str_ends_with( $mofile, $preferred_format ) ) {
 			/** This action is documented in wp-includes/l10n.php */
 			do_action( 'load_textdomain', $domain, $mofile_preferred );
 
@@ -148,7 +148,7 @@ class Performant_Translations {
 			 */
 			$convert = apply_filters( 'performant_translations_convert_files', true );
 
-			if ( 'mo' !== $preferred_format && $convert && ! str_ends_with( $mofile, $preferred_format ) ) {
+			if ( 'mo' !== $preferred_format && $convert && str_ends_with( $mofile, '.mo' ) ) {
 				$contents = Ginger_MO_Translation_File::transform( $mofile, $preferred_format );
 
 				if ( false !== $contents ) {
@@ -285,7 +285,7 @@ class Performant_Translations {
 				/** This filter is documented in lib/class-performant-translations.php */
 				$convert = apply_filters( 'performant_translations_convert_files', true );
 
-				if ( 'mo' !== $preferred_format && $convert && ! str_ends_with( $file, $preferred_format ) ) {
+				if ( 'mo' !== $preferred_format && $convert ) {
 					$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
 
 					if ( false === $contents ) {
