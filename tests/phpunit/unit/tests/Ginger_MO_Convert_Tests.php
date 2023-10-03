@@ -82,11 +82,6 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	 * @return void
 	 */
 	public function test_convert_format_invalid_source() {
-		$source      = $this->temp_file();
-		$destination = $this->temp_file();
-
-		$this->assertNotFalse( $source );
-		$this->assertNotFalse( $destination );
 		$this->assertFalse( Ginger_MO_Translation_File::transform( 'this-file-does-not-exist', 'invalid' ) );
 		$this->assertFalse( Ginger_MO_Translation_File::transform( GINGER_MO_TEST_DATA . 'example-simple.mo', 'invalid' ) );
 		$this->assertNotFalse( Ginger_MO_Translation_File::transform( GINGER_MO_TEST_DATA . 'example-simple.mo', 'php' ) );
