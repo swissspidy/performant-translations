@@ -29,7 +29,6 @@ define( 'PERFORMANT_TRANSLATIONS_VERSION', '1.0.5' );
 
 require __DIR__ . '/lib/class-ginger-mo.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-file.php';
-require __DIR__ . '/lib/class-ginger-mo-translation-file-json.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-file-mo.php';
 require __DIR__ . '/lib/class-ginger-mo-translation-file-php.php';
 require __DIR__ . '/lib/class-performant-translations-compat-provider.php';

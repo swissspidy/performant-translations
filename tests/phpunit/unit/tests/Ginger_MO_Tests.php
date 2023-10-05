@@ -111,7 +111,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @param string|bool $expected_error
 	 * @return void
 	 *
-	 * @phpstan-param 'mo'|'json'|'php' $type
+	 * @phpstan-param 'mo'|'php' $type
 	 */
 	public function test_invalid_files( string $type, string $file_contents, $expected_error = null ) {
 		$file = $this->temp_file( $file_contents );
@@ -136,14 +136,12 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @return array{0: array{0: 'mo'|'json'|'php', 1: string|false, 2?: string}}
+	 * @return array{0: array{0: 'mo'|'php', 1: string|false, 2?: string}}
 	 */
 	public function data_invalid_files(): array {
 		return array(
 			array( 'php', '' ),
 			array( 'php', '<?php // This is a php file without a payload' ),
-			array( 'json', '' ),
-			array( 'json', 'Random data in a file' ),
 			array( 'mo', '', 'Invalid Data.' ),
 			array( 'mo', 'Random data in a file long enough to be a real header', "Magic Marker doesn't exist" ),
 			array( 'mo', pack( 'V*', 0x950412de ), 'Invalid Data.' ),
@@ -225,7 +223,6 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 */
 	public function data_simple_example_files(): array {
 		return array(
-			array( 'example-simple.json' ),
 			array( 'example-simple.mo' ),
 			array( 'example-simple.php' ),
 		);

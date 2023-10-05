@@ -46,11 +46,4 @@ foreach ( $locations as $location ) {
 			wp_delete_file( $lang_file );
 		}
 	}
-
-	$lang_files = glob( $location . '/*.mo.json' );
-	if ( $lang_files ) {
-		foreach ( $lang_files as $lang_file ) {
-			wp_delete_file( $lang_file );
-		}
-	}
 }

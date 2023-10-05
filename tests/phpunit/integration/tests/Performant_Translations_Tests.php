@@ -11,8 +11,6 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	public function tear_down() {
 		$generated_translation_files = array(
 			DIR_TESTDATA . '/pomo/simple.mo.php',
-			DIR_TESTDATA . '/pomo/simple.mo.json',
-			DIR_TESTDATA . '/pomo/simple.mo.json',
 			DIR_TESTDATA . '/pomo/context.mo.php',
 			WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php',
 			WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php',
@@ -227,34 +225,6 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
 		$this->assertFileDoesNotExist( DIR_TESTDATA . '/pomo/simple.mo.php' );
-	}
-
-	/**
-	 * @covers ::load_textdomain
-	 *
-	 * @return void
-	 */
-	public function test_load_textdomain_creates_and_reads_json_files() {
-		add_filter(
-			'performant_translations_preferred_format',
-			static function () {
-				return 'json';
-			}
-		);
-
-		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
-
-		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
-
-		$load_json_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.json' );
-
-		$unload_json_successful = unload_textdomain( 'wp-tests-domain' );
-
-		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
-		$this->assertTrue( $unload_mo_successful );
-		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.mo.json' );
-		$this->assertTrue( $load_json_successful, 'JSON file not successfully loaded' );
-		$this->assertTrue( $unload_json_successful );
 	}
 
 	/**

@@ -21,7 +21,7 @@ If your site is using a language other than English (US), you should see immedia
 
 The primary purpose of this plugin is to allow broader testing of these enhancements, for which the goal is to eventually land in WordPress core.
 
-Performant Translations supports multiple file formats (`.mo`, `.php`, and `.json`), as well as multiple text domains and locales loaded at the same time. By default, it converts existing `.mo` files to `.php` and afterwards only loads the translations from the `.php` file.
+Performant Translations supports multiple file formats (`.mo` and `.php`), as well as multiple text domains and locales loaded at the same time. By default, it converts existing `.mo` files to `.php` and afterwards only loads the translations from the `.php` file.
 
 == Installation ==
 

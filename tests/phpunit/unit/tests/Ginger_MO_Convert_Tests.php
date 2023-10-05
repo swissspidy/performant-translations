@@ -8,7 +8,7 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	 * @param string $destination_format
 	 * @return void
 	 *
-	 * @phpstan-param 'mo'|'json'|'php' $destination_format
+	 * @phpstan-param 'mo'|'php' $destination_format
 	 */
 	public function test_convert_format( string $source_file, string $destination_format ) {
 		$destination_file = $this->temp_file();
@@ -60,10 +60,10 @@ class Ginger_MO_Convert_Tests extends Ginger_MO_TestCase {
 	}
 
 	/**
-	 * @return array<array{0:string, 1: 'mo'|'json'|'php'}>
+	 * @return array<array{0:string, 1: 'mo'|'php'}>
 	 */
 	public function data_export_matrix(): array {
-		$formats = array( 'mo', 'json', 'php' );
+		$formats = array( 'mo', 'php' );
 
 		$matrix = array();
 
