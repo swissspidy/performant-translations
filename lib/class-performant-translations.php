@@ -144,7 +144,7 @@ class Performant_Translations {
 			 *
 			 * The preferred format is determined by the {@see 'performant_translations_preferred_format'} filter
 			 *
-			 * @param bool $convert Whether to convert MO files to PHP files. Default true.
+			 * @param bool $preferred_format Whether to convert MO files to PHP files. Default true.
 			 */
 			$convert = apply_filters( 'performant_translations_convert_files', true );
 
