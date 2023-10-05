@@ -34,7 +34,6 @@ class TestUtils {
 		});
 
 		await this.requestUtils.deactivatePlugin('performant-translations');
-		await this.requestUtils.deactivatePlugin('ginger-mo-prefer-json');
 		await this.requestUtils.deactivatePlugin('ginger-mo-prefer-mo');
 
 		await this.clearCaches();
