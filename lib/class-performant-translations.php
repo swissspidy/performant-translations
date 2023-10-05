@@ -69,10 +69,10 @@ class Performant_Translations {
 		 *
 		 * Useful for testing/debugging.
 		 *
-		 * @param string $convert Preferred file format. Possible values: 'php', 'mo', 'json'. Default: 'php'.
+		 * @param string $convert Preferred file format. Possible values: 'php', 'mo'. Default: 'php'.
 		 */
 		$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
-		if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
+		if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
 			$preferred_format = 'php';
 		}
 
@@ -88,7 +88,7 @@ class Performant_Translations {
 			/**
 			 * Filters the file path for loading translations for the given text domain.
 			 *
-			 * The file could be an MO, JSON, or PHP file.
+			 * The file could be an MO or PHP file.
 			 *
 			 * @since 1.0.3
 			 *
@@ -140,11 +140,11 @@ class Performant_Translations {
 			/**
 			 * Filters whether existing MO files should be automatically converted to the preferred format.
 			 *
-			 * Only runs when no corresponding PHP or JSON translation file exists yet.
+			 * Only runs when no corresponding PHP translation file exists yet.
 			 *
 			 * The preferred format is determined by the {@see 'performant_translations_preferred_format'} filter
 			 *
-			 * @param bool $convert Whether to convert MO files to PHP files. Default true.
+			 * @param bool $preferred_format Whether to convert MO files to PHP files. Default true.
 			 */
 			$convert = apply_filters( 'performant_translations_convert_files', true );
 
@@ -276,7 +276,7 @@ class Performant_Translations {
 			if ( file_exists( $file ) ) {
 				/** This filter is documented in lib/class-performant-translations.php */
 				$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
-				if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
+				if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
 					$preferred_format = 'php';
 				}
 
@@ -314,7 +314,7 @@ class Performant_Translations {
 	}
 
 	/**
-	 * Regenerates a PHP or JSON translation file from a given MO file.
+	 * Regenerates a PHP translation file from a given MO file.
 	 *
 	 * This compatibility code is added out of courtesy and is not intended
 	 * to be merged into WordPress core.
@@ -340,7 +340,7 @@ class Performant_Translations {
 
 		/** This filter is documented in lib/class-performant-translations.php */
 		$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
-		if ( ! in_array( $preferred_format, array( 'php', 'mo', 'json' ), true ) ) {
+		if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
 			$preferred_format = 'php';
 		}
 

@@ -5,10 +5,6 @@ export const testCases: TestCase[] = [
 	{ locale: 'de_DE', scenario: Scenario.Default },
 	{ locale: 'de_DE', scenario: Scenario.GingerMo },
 	{ locale: 'de_DE', scenario: Scenario.GingerMoPhp },
-	{
-		locale: 'de_DE',
-		scenario: Scenario.GingerMoJson,
-	},
 ];
 
 type IterationCallback = () => Promise<Record<string, number>>;
