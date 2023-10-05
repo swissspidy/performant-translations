@@ -15,18 +15,13 @@ class TestUtils {
 
 		if (
 			scenario === Scenario.GingerMo ||
-			scenario === Scenario.GingerMoPhp ||
-			scenario === Scenario.GingerMoJson
+			scenario === Scenario.GingerMoPhp
 		) {
 			await this.requestUtils.activatePlugin('performant-translations');
 		}
 
 		if (scenario === Scenario.GingerMo) {
 			await this.requestUtils.activatePlugin('ginger-mo-prefer-mo');
-		}
-
-		if (scenario === Scenario.GingerMoJson) {
-			await this.requestUtils.activatePlugin('ginger-mo-prefer-json');
 		}
 
 		await this.clearCaches();
