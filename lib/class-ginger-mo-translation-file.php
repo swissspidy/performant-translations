@@ -208,8 +208,6 @@ abstract class Ginger_MO_Translation_File {
 	 * @phpstan-param 'mo'|'php' $filetype
 	 */
 	public static function transform( string $file, string $filetype ) {
-		$destination = null;
-
 		$source = self::create( $file );
 
 		if ( false === $source ) {
