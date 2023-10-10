@@ -15,21 +15,21 @@ class Metrics {
 	 *
 	 * @param fields Optional fields to filter.
 	 */
-	async getServerTiming(fields: string[] = []) {
-		return this.page.evaluate<Record<string, number>, string[]>(
-			(f: string[]) =>
+	async getServerTiming( fields: string[] = [] ) {
+		return this.page.evaluate< Record< string, number >, string[] >(
+			( f: string[] ) =>
 				(
 					performance.getEntriesByType(
 						'navigation'
 					) as PerformanceNavigationTiming[]
-				)[0].serverTiming.reduce(
-					(acc, entry) => {
-						if (f.length === 0 || f.includes(entry.name)) {
-							acc[entry.name] = entry.duration;
+				 )[ 0 ].serverTiming.reduce(
+					( acc, entry ) => {
+						if ( f.length === 0 || f.includes( entry.name ) ) {
+							acc[ entry.name ] = entry.duration;
 						}
 						return acc;
 					},
-					{} as Record<string, number>
+					{} as Record< string, number >
 				),
 			fields
 		);
@@ -39,13 +39,13 @@ class Metrics {
 	 * Returns time to first byte (TTFB) from PerformanceObserver.
 	 */
 	async getTimeToFirstByte() {
-		return this.page.evaluate<number>(
+		return this.page.evaluate< number >(
 			() =>
 				(
 					performance.getEntriesByType(
 						'navigation'
 					) as PerformanceNavigationTiming[]
-				)[0].responseStart
+				 )[ 0 ].responseStart
 		);
 	}
 
@@ -56,16 +56,16 @@ class Metrics {
 			undefined
 		);
 
-		if (!result) {
-			return {} as Record<string, number>;
+		if ( ! result ) {
+			return {} as Record< string, number >;
 		}
 
 		const { lhr } = result;
 
-		const LCP = lhr.audits['largest-contentful-paint'].numericValue || 0;
-		const TBT = lhr.audits['total-blocking-time'].numericValue || 0;
+		const LCP = lhr.audits[ 'largest-contentful-paint' ].numericValue || 0;
+		const TBT = lhr.audits[ 'total-blocking-time' ].numericValue || 0;
 		const TTI = lhr.audits.interactive.numericValue || 0;
-		const CLS = lhr.audits['cumulative-layout-shift'].numericValue || 0;
+		const CLS = lhr.audits[ 'cumulative-layout-shift' ].numericValue || 0;
 
 		return {
 			LCP,
