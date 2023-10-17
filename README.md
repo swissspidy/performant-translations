@@ -37,7 +37,7 @@ Plus, `.php` files can be stored in the so-called [OPcache](https://www.php.net/
 While the plugin is mostly considered to be a beta testing plugin, it has been tested and established to a degree where it should be okay to use in production.
 Still, as with every plugin, you are doing so at your own risk.
 
-### Has this plugin been tested with other multilingual plugins?
+#### Has this plugin been tested with other multilingual plugins?
 
 Yes. This plugin has been tested with common multilingual plugins, such as WPML, Weglot, TranslatePress, MultilingualPress, and Polylang.
 If you still encounter issues, please let us know.
