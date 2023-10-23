@@ -22,11 +22,9 @@
 		"get-port": "^7.0.0",
 		"glob": "^10.3.10",
 		"lighthouse": "^11.2.0",
-		"patch-package": "^8.0.0",
 		"tablemark": "^3.0.0"
 	},
 	"scripts": {
-		"postinstall": "patch-package",
 		"lint": "wp-scripts lint-js",
 		"format": "wp-scripts format",
 		"test:e2e": "node_modules/@playwright/test/cli.js test --config tests/e2e/playwright.config.ts",
