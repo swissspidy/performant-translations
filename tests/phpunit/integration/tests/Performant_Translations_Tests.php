@@ -164,6 +164,37 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
+	public function test_load_textdomain_creates_and_reads_php_files_despite_permission_issues() {
+		// Create a non-writable PHP version to simulate issues with writing to the same directory.
+		file_put_contents( WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.mo.php', '' );
+		chmod( WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.mo.php', 0000 );
+
+		$load_mo_successful = load_textdomain(
+			'custom-internationalized-plugin',
+			WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.mo'
+		);
+
+		$unload_mo_successful = unload_textdomain( 'custom-internationalized-plugin' );
+
+		$load_php_successful = load_textdomain( 'custom-internationalized-plugin', WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.mo.php' );
+
+		$unload_php_successful = unload_textdomain( 'custom-internationalized-plugin' );
+
+		$this->unlink( WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.mo.php' );
+
+		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
+		$this->assertTrue( $unload_mo_successful );
+		$this->assertFileDoesNotExist( WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin-de_DE.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.mo.php' );
+		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
+		$this->assertTrue( $unload_php_successful );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
 	public function test_load_textdomain_creates_and_reads_php_files_if_filtered_format_is_unsupported() {
 		add_filter(
 			'performant_translations_preferred_format',
