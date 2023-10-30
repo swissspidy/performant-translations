@@ -118,8 +118,8 @@ class Performant_Translations {
 
 				if ( str_contains( $modir, WP_PLUGIN_DIR ) ) {
 					$new_location = WP_LANG_DIR . '/plugins/' . $filename;
-				} elseif ( str_contains( $modir, get_template_directory() ) ) {
-					$new_location = WP_LANG_DIR . '/themes/' . $filename;
+				} elseif ( str_contains( $modir, basename( get_stylesheet_directory() ) ) ) {
+					$new_location = WP_LANG_DIR . '/themes/' . basename( get_stylesheet_directory() ) . '-' . $filename;
 				}
 
 				if ( '' !== $new_location ) {
@@ -209,8 +209,8 @@ class Performant_Translations {
 
 						if ( str_contains( $modir, WP_PLUGIN_DIR ) ) {
 							$new_location = WP_LANG_DIR . '/plugins/' . $filename;
-						} elseif ( str_contains( $modir, get_template_directory() ) ) {
-							$new_location = WP_LANG_DIR . '/themes/' . $filename;
+						} elseif ( str_contains( $modir, basename( get_stylesheet_directory() ) ) ) {
+							$new_location = WP_LANG_DIR . '/themes/' . basename( get_stylesheet_directory() ) . '-' . $filename;
 						}
 
 						if ( '' !== $new_location ) {
