@@ -15,7 +15,7 @@
 	"type": "module",
 	"devDependencies": {
 		"@playwright/test": "^1.39.0",
-		"@wordpress/e2e-test-utils-playwright": "^0.12.0",
+		"@wordpress/e2e-test-utils-playwright": "^0.13.0",
 		"@wordpress/env": "^8.11.0",
 		"@wordpress/scripts": "^26.16.0",
 		"eslint-plugin-playwright": "^0.18.0",
