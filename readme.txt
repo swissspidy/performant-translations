@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.4
-Stable tag:        1.0.6
+Stable tag:        1.0.7
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
@@ -84,6 +84,11 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.0.7 =
+
+* Fixed: Prevent issue where not all core translations were updated.
+* Enhancement: Change the order translations are loaded in to improve backward compatibility.
+
 = 1.0.6 =
 
 * Enhancement: Remove JSON file support.
@@ -121,6 +126,10 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.7 =
+
+Fixes an issue where not all core translations were updated.
 
 = 1.0.6 =
 
