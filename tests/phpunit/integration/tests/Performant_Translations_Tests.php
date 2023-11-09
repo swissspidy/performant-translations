@@ -15,6 +15,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 			WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php',
 			WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php',
 			WP_LANG_DIR . '/de_DE.mo.php',
+			WP_LANG_DIR . '/admin-de_DE.mo.php',
+			WP_LANG_DIR . '/admin-network-de_DE.mo.php',
+			WP_LANG_DIR . '/continents-cities-de_DE.mo.php',
 		);
 
 		foreach ( $generated_translation_files as $file ) {
@@ -510,7 +513,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 				(object) array(
 					'type'     => 'core',
 					'slug'     => 'default',
-					'language' => 'de_DE',
+					'language' => 'es_ES',
 					'version'  => '99.9.9',
 					'package'  => '/tmp/notused.zip',
 				),
@@ -523,7 +526,10 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php' );
 		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/de_DE.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/es_ES.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/admin-es_ES.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/admin-network-es_ES.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/continents-cities-es_ES.mo.php' );
 	}
 
 	/**
