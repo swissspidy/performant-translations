@@ -261,41 +261,47 @@ class Performant_Translations {
 		}
 
 		foreach ( $hook_extra['translations'] as $translation ) {
+			$files = array();
 			switch ( $translation['type'] ) {
 				case 'plugin':
-					$file = WP_LANG_DIR . '/plugins/' . $translation['slug'] . '-' . $translation['language'] . '.mo';
+					$files[] = WP_LANG_DIR . '/plugins/' . $translation['slug'] . '-' . $translation['language'] . '.mo';
 					break;
 				case 'theme':
-					$file = WP_LANG_DIR . '/themes/' . $translation['slug'] . '-' . $translation['language'] . '.mo';
+					$files[] = WP_LANG_DIR . '/themes/' . $translation['slug'] . '-' . $translation['language'] . '.mo';
 					break;
 				default:
-					$file = WP_LANG_DIR . '/' . $translation['language'] . '.mo';
+					$files[] = WP_LANG_DIR . '/' . $translation['language'] . '.mo';
+					$files[] = WP_LANG_DIR . '/admin-' . $translation['language'] . '.mo';
+					$files[] = WP_LANG_DIR . '/admin-network-' . $translation['language'] . '.mo';
+					$files[] = WP_LANG_DIR . '/continents-cities-' . $translation['language'] . '.mo';
 					break;
 			}
 
-			if ( file_exists( $file ) ) {
-				/** This filter is documented in lib/class-performant-translations.php */
-				$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
-				if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
-					$preferred_format = 'php';
-				}
-
-				$mofile_preferred = "$file.$preferred_format";
-
-				/** This filter is documented in lib/class-performant-translations.php */
-				$convert = apply_filters( 'performant_translations_convert_files', true );
-
-				if ( 'mo' !== $preferred_format && $convert ) {
-					$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
-
-					if ( false === $contents ) {
-						return;
+			foreach ( $files as $file ) {
+				if ( file_exists( $file ) ) {
+					/** This filter is documented in lib/class-performant-translations.php */
+					$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
+					if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
+						$preferred_format = 'php';
 					}
 
-					if ( true === $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
-						$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
-					} else {
-						file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+					$mofile_preferred = "$file.$preferred_format";
+
+					/** This filter is documented in lib/class-performant-translations.php */
+					$convert = apply_filters( 'performant_translations_convert_files', true );
+
+					if ( 'mo' !== $preferred_format && $convert ) {
+						$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
+
+						if ( false === $contents ) {
+							return;
+						}
+
+						if ( true === $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
+							$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+						} else {
+							file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+						}
 					}
 				}
 			}
