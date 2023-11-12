@@ -327,6 +327,43 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertFalse( $ginger_mo->translate_plural( array( 'one dragon', '%d dragons' ), 1, '', 'unittest', 'en_US' ), 'String should not be translated in en_US' );
 	}
 
+
+	/**
+	 * @covers ::unload
+	 *
+	 * @return void
+	 */
+	public function test_unload_with_multiple_locales() {
+		$ginger_mo = new Ginger_MO();
+
+		$ginger_mo->set_locale( 'de_DE' );
+
+		$this->assertSame( 'de_DE', $ginger_mo->get_locale() );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'example-simple.mo', 'unittest' ) );
+		$ginger_mo->set_locale( 'es_ES' );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'simple.mo', 'unittest' ) );
+		$ginger_mo->set_locale( 'pl_PL' );
+		$this->assertTrue( $ginger_mo->load( GINGER_MO_TEST_DATA . 'plural.mo', 'unittest' ) );
+		$this->assertSame( 'pl_PL', $ginger_mo->get_locale() );
+
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest' ) );
+
+		$ginger_mo->set_locale( 'en_US' );
+		$this->assertSame( 'en_US', $ginger_mo->get_locale() );
+
+		$this->assertFalse( $ginger_mo->is_loaded( 'unittest' ) );
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest', 'pl_PL' ) );
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest', 'es_ES' ) );
+		$this->assertTrue( $ginger_mo->is_loaded( 'unittest', 'de_DE' ) );
+
+		$this->assertTrue( $ginger_mo->unload( 'unittest' ) );
+
+		$this->assertFalse( $ginger_mo->is_loaded( 'unittest' ) );
+		$this->assertFalse( $ginger_mo->is_loaded( 'unittest', 'pl_PL' ) );
+		$this->assertFalse( $ginger_mo->is_loaded( 'unittest', 'es_ES' ) );
+		$this->assertFalse( $ginger_mo->is_loaded( 'unittest', 'de_DE' ) );
+	}
+
 	/**
 	 * @covers ::load
 	 * @covers ::locate_translation
