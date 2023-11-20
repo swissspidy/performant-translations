@@ -76,6 +76,7 @@ class Performant_Translations {
 			$preferred_format = 'php';
 		}
 
+		$modir            = dirname( $mofile );
 		$mofile_preferred = "$mofile.$preferred_format";
 
 		if ( 'mo' !== $preferred_format || str_ends_with( $mofile, $preferred_format ) ) {
@@ -108,9 +109,42 @@ class Performant_Translations {
 				unset( $l10n[ $domain ] );
 				$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );
 
-				$wp_textdomain_registry->set( $domain, $locale, dirname( $mofile ) );
+				$wp_textdomain_registry->set( $domain, $locale, $modir );
 
 				return true;
+			} elseif ( str_ends_with( $mofile, 'mo' ) ) {
+				$filename     = basename( $mofile_preferred );
+				$new_location = '';
+
+				if ( str_contains( $modir, WP_PLUGIN_DIR ) ) {
+					$new_location = WP_LANG_DIR . '/plugins/' . $filename;
+				} elseif ( str_contains( $modir, basename( get_stylesheet_directory() ) ) ) {
+					$new_location = WP_LANG_DIR . '/themes/' . basename( get_stylesheet_directory() ) . '-' . $filename;
+				}
+
+				if ( '' !== $new_location ) {
+					/** This filter is documented in wp-includes/l10n.php */
+					$new_location = apply_filters( 'load_textdomain_mofile', $new_location, $domain );
+
+					/** This filter is documented in lib/class-performant-translations.php */
+					$new_location = apply_filters( 'performant_translations_load_translation_file', $new_location, $domain );
+
+					$success = Ginger_MO::instance()->load( $new_location, $domain, $locale );
+
+					if ( $success ) {
+						if ( isset( $l10n[ $domain ] ) && $l10n[ $domain ] instanceof MO ) {
+							Ginger_MO::instance()->load( $l10n[ $domain ]->get_filename(), $domain, $locale );
+						}
+
+						// Unset Noop_Translations reference in get_translations_for_domain.
+						unset( $l10n[ $domain ] );
+						$l10n[ $domain ] = new Performant_Translations_Compat_Provider( $domain );
+
+						$wp_textdomain_registry->set( $domain, $locale, dirname( $new_location ) );
+
+						return true;
+					}
+				}
 			}
 		}
 
@@ -156,10 +190,38 @@ class Performant_Translations {
 						require_once ABSPATH . '/wp-admin/includes/file.php';
 					}
 
+					$filename      = basename( $mofile_preferred );
+					$write_success = false;
+
 					if ( true === WP_Filesystem() ) {
-						$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+						$write_success = $wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 					} else {
-						file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+						if ( is_writable( $modir ) ) {
+							$write_success = (bool) file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+						}
+					}
+
+					// If file creation within wp-content/plugins or wp-content/themes failed,
+					// try creating it in wp-content/languages instead.
+					// See https://github.com/swissspidy/performant-translations/issues/108
+					if ( ! $write_success ) {
+						$new_location = '';
+
+						if ( str_contains( $modir, WP_PLUGIN_DIR ) ) {
+							$new_location = WP_LANG_DIR . '/plugins/' . $filename;
+						} elseif ( str_contains( $modir, basename( get_stylesheet_directory() ) ) ) {
+							$new_location = WP_LANG_DIR . '/themes/' . basename( get_stylesheet_directory() ) . '-' . $filename;
+						}
+
+						if ( '' !== $new_location ) {
+							if ( true === WP_Filesystem() ) {
+								$wp_filesystem->put_contents( $new_location, $contents, FS_CHMOD_FILE );
+							} else {
+								if ( is_writable( $modir ) ) {
+									(bool) file_put_contents( $new_location, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+								}
+							}
+						}
 					}
 				}
 			}
