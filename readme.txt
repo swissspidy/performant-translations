@@ -84,7 +84,7 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
-= 1.0.8
+= 1.0.8 =
 
 * Fixed: Added workaround for potential file permission issues.
 
