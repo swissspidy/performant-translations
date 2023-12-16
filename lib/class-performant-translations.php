@@ -29,6 +29,7 @@ class Performant_Translations {
 
 		// Plugin integrations.
 		add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
+		add_action( 'wpml_st_translation_file_updated', array( __CLASS__, 'regenerate_translation_file' ) );
 	}
 
 	/**
@@ -383,6 +384,9 @@ class Performant_Translations {
 
 	/**
 	 * Regenerates a PHP translation file from a given MO file.
+	 *
+	 * Useful for plugins such as Loco Translate or WPML which generate custom MO files.
+	 * Prevents stale PHP files in those cases.
 	 *
 	 * This compatibility code is added out of courtesy and is not intended
 	 * to be merged into WordPress core.
