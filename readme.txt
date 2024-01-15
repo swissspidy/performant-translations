@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.4
-Stable tag:        1.0.8
+Stable tag:        1.0.9
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
