@@ -379,6 +379,9 @@ class Performant_Translations {
 	 * @return void
 	 */
 	public static function add_generator_tag() {
+		if ( apply_filters( 'performant_translations_hide_version', false ) ) {
+			return;
+		}
 		echo '<meta name="generator" content="Performant Translations ' . esc_attr( PERFORMANT_TRANSLATIONS_VERSION ) . '">' . "\n";
 	}
 
