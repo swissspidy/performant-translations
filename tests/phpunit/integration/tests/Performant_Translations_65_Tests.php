@@ -57,9 +57,8 @@ class Performant_Translations_65_Tests extends WP_UnitTestCase {
 		$this->assertSame( 10, has_filter( 'load_translation_file', array( Performant_Translations_65::class, 'load_translation_file' ) ) );
 	}
 
-
 	/**
-	 * @covers ::load_textdomain
+	 * @covers ::load_translation_file
 	 *
 	 * @return void
 	 */
@@ -87,7 +86,7 @@ class Performant_Translations_65_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::load_textdomain
+	 * @covers ::load_translation_file
 	 *
 	 * @return void
 	 */
@@ -110,7 +109,7 @@ class Performant_Translations_65_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::load_textdomain
+	 * @covers ::load_translation_file
 	 *
 	 * @return void
 	 */
@@ -137,7 +136,7 @@ class Performant_Translations_65_Tests extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::load_textdomain
+	 * @covers ::load_translation_file
 	 *
 	 * @return void
 	 */
