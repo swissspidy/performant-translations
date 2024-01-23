@@ -289,7 +289,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                wp: ['trunk', '6.4']
+                wp: ['6.4']
         services:
             mysql:
                 image: mariadb:latest
@@ -355,15 +355,8 @@ jobs:
               run: vendor/bin/phpunit --group=l10n,i18n,pomo
 
             - name: Run tests (MO format)
-              if: ${{ matrix.wp == '6.4' }}
               run: |
                   echo "add_filter( 'performant_translations_preferred_format', static function () { return 'mo'; } );" >> tests/phpunit/includes/bootstrap.php
-                  vendor/bin/phpunit --group=l10n,i18n,pomo
-
-            - name: Run tests (MO format)
-              if: ${{ matrix.wp == 'trunk' }}
-              run: |
-                  echo "add_filter( 'translation_file_format', static function () { return 'mo'; } );" >> tests/phpunit/includes/bootstrap.php
                   vendor/bin/phpunit --group=l10n,i18n,pomo
 
     performance-tests:
