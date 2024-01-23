@@ -289,7 +289,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                wp: ['trunk', '6.3']
+                wp: ['trunk', '6.4']
         services:
             mysql:
                 image: mariadb:latest
@@ -342,26 +342,28 @@ jobs:
                   DB_PASSWORD: ''
                   DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
 
-            - name: Checkout Ginger MO
+            - name: Checkout Performant Translations
               uses: actions/checkout@v4
               with:
                   path: 'src/wp-content/plugins/performant-translations'
 
-            - name: Load Ginger MO for tests
+            - name: Load Performant Translations for tests
               run: |
                   echo "require dirname( __DIR__, 3 ) . '/src/wp-content/plugins/performant-translations/performant-translations.php';" >> tests/phpunit/includes/bootstrap.php
 
             - name: Run tests (PHP format)
               run: vendor/bin/phpunit --group=l10n,i18n,pomo
 
-            - name: Run tests (JSON format)
+            - name: Run tests (MO format)
+              if: ${{ matrix.wp == '6.4' }}
               run: |
-                  echo "add_filter( 'performant_translations_preferred_format', static function () { return 'json'; } );" >> tests/phpunit/includes/bootstrap.php
+                  echo "add_filter( 'performant_translations_preferred_format', static function () { return 'mo'; } );" >> tests/phpunit/includes/bootstrap.php
                   vendor/bin/phpunit --group=l10n,i18n,pomo
 
             - name: Run tests (MO format)
+              if: ${{ matrix.wp == 'trunk' }}
               run: |
-                  echo "add_filter( 'performant_translations_preferred_format', static function () { return 'mo'; } );" >> tests/phpunit/includes/bootstrap.php
+                  echo "add_filter( 'translation_file_format', static function () { return 'mo'; } );" >> tests/phpunit/includes/bootstrap.php
                   vendor/bin/phpunit --group=l10n,i18n,pomo
 
     performance-tests:
