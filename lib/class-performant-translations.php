@@ -17,11 +17,9 @@ class Performant_Translations {
 	 * @return void
 	 */
 	public static function init() {
-		$wp_version = get_bloginfo( 'version' );
-
 		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
 
-		if ( version_compare( $wp_version, '6.5-alpha-57337', '>=' ) ) {
+		if ( class_exists( 'WP_Translation_Controller' ) ) {
 			require_once __DIR__ . '/class-performant-translations-65.php';
 
 			Performant_Translations_65::init();

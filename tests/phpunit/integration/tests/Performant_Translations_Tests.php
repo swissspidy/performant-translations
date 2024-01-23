@@ -75,10 +75,8 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$loaded_after_load = is_textdomain_loaded( 'wp-tests-domain' );
 
-		$is_trunk = version_compare( get_bloginfo( 'version' ), '6.5-alpha-57337', '>=' );
-
 		$compat_instance   = $l10n['wp-tests-domain'] ?? null;
-		$expected_instance = $is_trunk ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$expected_instance = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
 
 		$is_loaded = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
 		$headers   = Ginger_MO::instance()->get_headers( 'wp-tests-domain' );

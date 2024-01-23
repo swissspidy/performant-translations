@@ -7,7 +7,7 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		if ( version_compare( get_bloginfo( 'version' ), '6.5-alpha-57337', '>=' ) ) {
+		if ( class_exists( 'WP_Translation_Controller' ) ) {
 			$this->markTestSkipped( 'This test is no longer relevant on trunk' );
 		}
 	}
