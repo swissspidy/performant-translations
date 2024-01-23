@@ -22,7 +22,7 @@ class Performant_Translations {
 		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
 
 		if ( version_compare( $wp_version, '6.5-alpha-57337', '>=' ) ) {
-			require_once __DIR__ . '/lib/class-performant-translations-65.php';
+			require_once __DIR__ . '/class-performant-translations-65.php';
 
 			Performant_Translations_65::init();
 		} else {
