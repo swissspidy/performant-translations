@@ -1,6 +1,6 @@
 <?php
 /**
- * Compatibility & Implementation for WordPress.
+ * Compatibility & Implementation for WordPress < 6.5.
  *
  * @package Performant_Translations
  */
@@ -17,19 +17,27 @@ class Performant_Translations {
 	 * @return void
 	 */
 	public static function init() {
-		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
-		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
-
-		add_action( 'init', array( __CLASS__, 'set_locale' ) );
-		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
-
-		add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
+		$wp_version = get_bloginfo( 'version' );
 
 		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
 
-		// Plugin integrations.
-		add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
-		add_action( 'wpml_st_translation_file_updated', array( __CLASS__, 'regenerate_translation_file' ) );
+		if ( version_compare( $wp_version, '6.5-alpha-57337', '>=' ) ) {
+			require_once __DIR__ . '/lib/class-performant-translations-65.php';
+
+			Performant_Translations_65::init();
+		} else {
+			add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
+			add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
+
+			add_action( 'init', array( __CLASS__, 'set_locale' ) );
+			add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
+
+			add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
+
+			// Plugin integrations.
+			add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
+			add_action( 'wpml_st_translation_file_updated', array( __CLASS__, 'regenerate_translation_file' ) );
+		}
 	}
 
 	/**
