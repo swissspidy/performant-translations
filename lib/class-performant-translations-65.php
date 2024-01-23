@@ -179,7 +179,7 @@ class Performant_Translations_65 {
 
 			foreach ( $files as $file ) {
 				if ( file_exists( $file ) ) {
-					$domain = isset( $translation['slug'] ) ? $translation['slug'] : 'default';
+					$domain = $translation['slug'];
 
 					/** This filter is documented in wp-includes/l10n.php */
 					$preferred_format = apply_filters( 'translation_file_format', 'php', $domain ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound

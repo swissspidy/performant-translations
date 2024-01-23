@@ -30,5 +30,7 @@ parameters:
 		  	- tests/phpunit/unit/tests/Ginger_MO_Tests.php
 		- message: '/^Access to an undefined property Performant_Translations_Compat_Provider::\$foo.$/'
 		  path: tests/phpunit/integration/tests/Performant_Translations_Compat_Provider_Tests.php
+		# Stubs for 6.5 are not available yet.
+		- message: '/^Call to static method transform\(\) on an unknown class WP_Translation_File.$/'
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
