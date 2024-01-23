@@ -58,7 +58,7 @@ class Performant_Translations_65 {
 		}
 
 		/** This filter is documented in wp-includes/l10n.php */
-		$preferred_format = apply_filters( 'translation_file_format', 'php', $domain );
+		$preferred_format = apply_filters( 'translation_file_format', 'php', $domain ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
 			$preferred_format = 'php';
 		}
@@ -94,7 +94,7 @@ class Performant_Translations_65 {
 
 			// If file creation within wp-content/plugins or wp-content/themes failed,
 			// try creating it in wp-content/languages instead.
-			// See https://github.com/swissspidy/performant-translations/issues/108
+			// See https://github.com/swissspidy/performant-translations/issues/108.
 			if ( ! $write_success ) {
 				$new_location = '';
 
@@ -182,7 +182,7 @@ class Performant_Translations_65 {
 					$domain = isset( $translation['slug'] ) ? $translation['slug'] : 'default';
 
 					/** This filter is documented in wp-includes/l10n.php */
-					$preferred_format = apply_filters( 'translation_file_format', 'php', $domain );
+					$preferred_format = apply_filters( 'translation_file_format', 'php', $domain ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 					if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
 						$preferred_format = 'php';
 					}
