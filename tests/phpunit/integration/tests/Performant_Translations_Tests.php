@@ -4,24 +4,31 @@
  * @coversDefaultClass Performant_Translations
  */
 class Performant_Translations_Tests extends WP_UnitTestCase {
+	public function set_up() {
+		parent::set_up();
+
+		if ( version_compare( get_bloginfo( 'version' ), '6.5-alpha-57337', '>=' ) ) {
+			$this->markTestSkipped( 'This test is no longer relevant on trunk' );
+		}
+	}
 
 	/**
 	 * @return void
 	 */
 	public function tear_down() {
 		$generated_translation_files = array(
-			DIR_TESTDATA . '/pomo/simple.mo.php',
-			DIR_TESTDATA . '/pomo/context.mo.php',
-			WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php',
-			WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php',
-			WP_LANG_DIR . '/de_DE.mo.php',
-			WP_LANG_DIR . '/admin-de_DE.mo.php',
-			WP_LANG_DIR . '/admin-network-de_DE.mo.php',
-			WP_LANG_DIR . '/continents-cities-de_DE.mo.php',
-			WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.mo.php',
-			WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.mo.php',
-			DIR_TESTDATA . '/themedir1/custom-internationalized-theme/languages/de_DE.mo.php',
-			WP_LANG_DIR . '/themes/custom-internationalized-theme-de_DE.mo.php',
+			DIR_TESTDATA . '/pomo/simple.l10n.php',
+			DIR_TESTDATA . '/pomo/context.l10n.php',
+			WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.l10n.php',
+			WP_LANG_DIR . '/themes/internationalized-theme-de_DE.l10n.php',
+			WP_LANG_DIR . '/de_DE.l10n.php',
+			WP_LANG_DIR . '/admin-de_DE.l10n.php',
+			WP_LANG_DIR . '/admin-network-de_DE.l10n.php',
+			WP_LANG_DIR . '/continents-cities-de_DE.l10n.php',
+			WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.l10n.php',
+			WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.l10n.php',
+			DIR_TESTDATA . '/themedir1/custom-internationalized-theme/languages/de_DE.l10n.php',
+			WP_LANG_DIR . '/themes/custom-internationalized-theme-de_DE.l10n.php',
 		);
 
 		foreach ( $generated_translation_files as $file ) {
@@ -68,7 +75,10 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$loaded_after_load = is_textdomain_loaded( 'wp-tests-domain' );
 
-		$compat_instance = $l10n['wp-tests-domain'] ?? null;
+		$is_trunk = version_compare( get_bloginfo( 'version' ), '6.5-alpha-57337', '>=' );
+
+		$compat_instance   = $l10n['wp-tests-domain'] ?? null;
+		$expected_instance = $is_trunk ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
 
 		$is_loaded = Ginger_MO::instance()->is_loaded( 'wp-tests-domain' );
 		$headers   = Ginger_MO::instance()->get_headers( 'wp-tests-domain' );
@@ -81,7 +91,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$this->assertFalse( $loaded_before_load, 'Text domain was already loaded at beginning of the test' );
 		$this->assertTrue( $load_successful, 'Text domain not successfully loaded' );
 		$this->assertTrue( $loaded_after_load, 'Text domain is not considered loaded' );
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$this->assertInstanceOf( $expected_instance, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertFalse( $loaded_after_unload, 'Text domain still considered loaded after unload' );
 		$this->assertTrue( $is_loaded, 'Text domain not considered loaded in Ginger-MO' );
@@ -145,7 +155,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
-		$this->assertFileDoesNotExist( DIR_TESTDATA . '/pomo/simple.mo.php' );
+		$this->assertFileDoesNotExist( DIR_TESTDATA . '/pomo/simple.l10n.php' );
 	}
 
 	/**
@@ -158,13 +168,13 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.php' );
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.l10n.php' );
 
 		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
-		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.mo.php' );
+		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.l10n.php' );
 		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
 		$this->assertTrue( $unload_php_successful );
 	}
@@ -178,8 +188,8 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		global $wp_textdomain_registry;
 
 		// Create a non-writable PHP version to simulate issues with writing to the same directory.
-		file_put_contents( WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.mo.php', '' );
-		chmod( WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.mo.php', 0000 );
+		file_put_contents( WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.l10n.php', '' );
+		chmod( WP_PLUGIN_DIR . '/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.l10n.php', 0000 );
 
 		$load_mo_successful = load_textdomain(
 			'custom-internationalized-plugin',
@@ -190,7 +200,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$load_php_successful = load_textdomain(
 			'custom-internationalized-plugin',
-			WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.mo.php'
+			WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.l10n.php'
 		);
 
 		$unload_php_successful = unload_textdomain( 'custom-internationalized-plugin' );
@@ -206,7 +216,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
-		$this->assertFileExists( WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.l10n.php' );
 		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
 		$this->assertTrue( $unload_php_successful );
 		$this->assertTrue( $load_converted_mo_successful );
@@ -225,8 +235,8 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		switch_theme( 'custom-internationalized-theme' );
 
 		// Create a non-writable PHP version to simulate issues with writing to the same directory.
-		file_put_contents( DIR_TESTDATA . '/themedir1/custom-internationalized-theme/languages/de_DE.mo.php', '' );
-		chmod( DIR_TESTDATA . '/themedir1/custom-internationalized-theme/languages/de_DE.mo.php', 0000 );
+		file_put_contents( DIR_TESTDATA . '/themedir1/custom-internationalized-theme/languages/de_DE.l10n.php', '' );
+		chmod( DIR_TESTDATA . '/themedir1/custom-internationalized-theme/languages/de_DE.l10n.php', 0000 );
 
 		$load_mo_successful = load_textdomain(
 			'custom-internationalized-theme',
@@ -237,7 +247,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$load_php_successful = load_textdomain(
 			'custom-internationalized-theme',
-			WP_LANG_DIR . '/themes/custom-internationalized-theme-de_DE.mo.php'
+			WP_LANG_DIR . '/themes/custom-internationalized-theme-de_DE.l10n.php'
 		);
 
 		$unload_php_successful = unload_textdomain( 'custom-internationalized-theme' );
@@ -253,7 +263,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
-		$this->assertFileExists( WP_LANG_DIR . '/themes/custom-internationalized-theme-de_DE.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/themes/custom-internationalized-theme-de_DE.l10n.php' );
 		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
 		$this->assertTrue( $unload_php_successful );
 		$this->assertTrue( $load_converted_mo_successful );
@@ -278,13 +288,13 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.php' );
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.l10n.php' );
 
 		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
-		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.mo.php' );
+		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.l10n.php' );
 		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
 		$this->assertTrue( $unload_php_successful );
 	}
@@ -301,13 +311,13 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$unload_mo_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo.php' );
+		$load_php_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.l10n.php' );
 
 		$unload_php_successful = unload_textdomain( 'wp-tests-domain' );
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
-		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.mo.php' );
+		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.l10n.php' );
 		$this->assertTrue( $load_php_successful, 'PHP file not successfully loaded' );
 		$this->assertTrue( $unload_php_successful );
 	}
@@ -326,7 +336,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$this->assertTrue( $load_mo_successful, 'MO file not successfully loaded' );
 		$this->assertTrue( $unload_mo_successful );
-		$this->assertFileDoesNotExist( DIR_TESTDATA . '/pomo/simple.mo.php' );
+		$this->assertFileDoesNotExist( DIR_TESTDATA . '/pomo/simple.l10n.php' );
 	}
 
 	/**
@@ -459,8 +469,8 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );
 		unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.mo.php' );
-		$this->assertFileDoesNotExist( DIR_TESTDATA . '/pomo/simple.mo.php.php' );
+		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.l10n.php' );
+		$this->assertFileDoesNotExist( DIR_TESTDATA . '/pomo/simple.l10n.php.php' );
 	}
 
 	/**
@@ -623,12 +633,12 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$this->assertNotWPError( $result );
 		$this->assertNotEmpty( $result );
 
-		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/es_ES.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/admin-es_ES.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/admin-network-es_ES.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/continents-cities-es_ES.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/es_ES.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/admin-es_ES.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/admin-network-es_ES.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/continents-cities-es_ES.l10n.php' );
 	}
 
 	/**
@@ -683,9 +693,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$this->assertNotWPError( $result );
 		$this->assertNotEmpty( $result );
 
-		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/de_DE.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/de_DE.l10n.php' );
 	}
 
 	/**
@@ -741,9 +751,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$this->assertNotWPError( $result );
 		$this->assertNotEmpty( $result );
 
-		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.mo.php' );
-		$this->assertFileExists( WP_LANG_DIR . '/de_DE.mo.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.l10n.php' );
+		$this->assertFileExists( WP_LANG_DIR . '/de_DE.l10n.php' );
 	}
 
 	/**

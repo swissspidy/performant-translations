@@ -4,14 +4,22 @@
  * @coversDefaultClass Performant_Translations_Compat_Provider
  */
 class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
+	public function set_up() {
+		parent::set_up();
+
+		if ( version_compare( get_bloginfo( 'version' ), '6.5-alpha-57337', '>=' ) ) {
+			$this->markTestSkipped( 'This test is no longer relevant on trunk' );
+		}
+	}
+
 	/**
 	 * @return void
 	 */
 	public function tear_down() {
 		unload_textdomain( 'wp-tests-domain' );
 
-		if ( file_exists( DIR_TESTDATA . '/pomo/simple.mo.php' ) ) {
-			$this->unlink( DIR_TESTDATA . '/pomo/simple.mo.php' );
+		if ( file_exists( DIR_TESTDATA . '/pomo/simple.l10n.php' ) ) {
+			$this->unlink( DIR_TESTDATA . '/pomo/simple.l10n.php' );
 		}
 
 		if ( file_exists( DIR_TESTDATA . '/pomo/plural.php' ) ) {

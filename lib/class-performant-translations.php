@@ -86,7 +86,11 @@ class Performant_Translations {
 		}
 
 		$modir            = dirname( $mofile );
-		$mofile_preferred = "$mofile.$preferred_format";
+		$mofile_preferred = $mofile;
+
+		if ( 'mo' !== $preferred_format ) {
+			$mofile_preferred = substr_replace( $mofile, ".l10n.$preferred_format", -strlen( '.mo' ) );
+		}
 
 		if ( 'mo' !== $preferred_format || str_ends_with( $mofile, $preferred_format ) ) {
 			/** This action is documented in wp-includes/l10n.php */
@@ -356,7 +360,11 @@ class Performant_Translations {
 						$preferred_format = 'php';
 					}
 
-					$mofile_preferred = "$file.$preferred_format";
+					$mofile_preferred = $file;
+
+					if ( 'mo' !== $preferred_format ) {
+						$mofile_preferred = substr_replace( $file, ".l10n.$preferred_format", -strlen( '.mo' ) );
+					}
 
 					/** This filter is documented in lib/class-performant-translations.php */
 					$convert = apply_filters( 'performant_translations_convert_files', true );
@@ -424,7 +432,11 @@ class Performant_Translations {
 			$preferred_format = 'php';
 		}
 
-		$mofile_preferred = "$file.$preferred_format";
+		$mofile_preferred = $file;
+
+		if ( 'mo' !== $preferred_format ) {
+			$mofile_preferred = substr_replace( $file, ".l10n.$preferred_format", -strlen( '.mo' ) );
+		}
 
 		/** This filter is documented in lib/class-performant-translations.php */
 		$convert = apply_filters( 'performant_translations_convert_files', true );

@@ -73,7 +73,7 @@ class Performant_Translations_65 {
 			return $file;
 		}
 
-		$contents = Ginger_MO_Translation_File::transform( $file, $preferred_format );
+		$contents = WP_Translation_File::transform( $file, $preferred_format );
 
 		if ( false !== $contents ) {
 			if ( ! function_exists( 'WP_Filesystem' ) ) {
@@ -187,7 +187,11 @@ class Performant_Translations_65 {
 						$preferred_format = 'php';
 					}
 
-					$mofile_preferred = "$file.$preferred_format";
+					$mofile_preferred = $file;
+
+					if ( 'mo' !== $preferred_format ) {
+						$mofile_preferred = substr_replace( $file, ".l10n.$preferred_format", -strlen( '.mo' ) );
+					}
 
 					/** This filter is documented in lib/class-performant-translations.php */
 					$convert = apply_filters( 'performant_translations_convert_files', true );
@@ -238,8 +242,8 @@ class Performant_Translations_65 {
 			return;
 		}
 
-		/** This filter is documented in lib/class-performant-translations.php */
-		$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
+		/** This filter is documented in wp-includes/l10n.php */
+		$preferred_format = apply_filters( 'translation_file_format', 'php' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
 			$preferred_format = 'php';
 		}
