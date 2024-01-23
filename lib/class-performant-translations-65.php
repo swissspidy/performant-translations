@@ -38,7 +38,7 @@ class Performant_Translations_65 {
 	 * @param string $domain The text domain.
 	 * @return string Unfiltered path.
 	 */
-	public function load_translation_file( $file, $domain ) {
+	public static function load_translation_file( $file, $domain ) {
 		/**
 		 * WP filesystem subclass.
 		 *
