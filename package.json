@@ -28,7 +28,6 @@
 		"lint": "wp-scripts lint-js",
 		"format": "wp-scripts format",
 		"test:e2e": "node_modules/@playwright/test/cli.js test --config tests/e2e/playwright.config.ts",
-		"test:performance": "node_modules/@playwright/test/cli.js test --config tests/performance/playwright.config.ts",
 		"wp-env": "wp-env"
 	}
 }
