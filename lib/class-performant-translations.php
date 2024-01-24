@@ -28,11 +28,21 @@ class Performant_Translations {
 		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
 
 		// Clear caches when writing files.
-		add_action( 'performant_translations_file_written', 'wp_opcache_invalidate' );
+		add_action( 'performant_translations_file_written', array( __CLASS__, 'opcache_invalidate' ) );
 
 		// Plugin integrations.
 		add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
 		add_action( 'wpml_st_translation_file_updated', array( __CLASS__, 'regenerate_translation_file' ) );
+	}
+
+	/**
+	 * Invalidates OPCache for a given file upon write/modification.
+	 *
+	 * @param string $file File path.
+	 * @return void
+	 */
+	public static function opcache_invalidate( string $file ) {
+		wp_opcache_invalidate( $file );
 	}
 
 	/**
