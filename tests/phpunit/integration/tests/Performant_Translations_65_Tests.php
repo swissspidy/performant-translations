@@ -46,6 +46,8 @@ class Performant_Translations_65_Tests extends WP_UnitTestCase {
 		unload_textdomain( 'wp-tests-domain' );
 
 		switch_theme( 'default' );
+
+		parent::tear_down();
 	}
 
 	/**
