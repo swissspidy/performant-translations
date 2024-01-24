@@ -27,6 +27,9 @@ class Performant_Translations {
 
 		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
 
+		// Clear caches when writing files.
+		add_action( 'performant_translations_file_written', 'wp_opcache_invalidate' );
+
 		// Plugin integrations.
 		add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
 		add_action( 'wpml_st_translation_file_updated', array( __CLASS__, 'regenerate_translation_file' ) );
@@ -203,7 +206,16 @@ class Performant_Translations {
 					}
 
 					if ( $write_success ) {
-						wp_opcache_invalidate( $mofile_preferred );
+						/**
+						 * Fires whenever a file has been created or modified.
+						 *
+						 * Useful for cache clearing or similar.
+						 *
+						 * @since 1.1.0
+						 *
+						 * @param string $file File path.
+						 */
+						do_action( 'performant_translations_file_written', $mofile_preferred );
 					} else {
 						// If file creation within wp-content/plugins or wp-content/themes failed,
 						// try creating it in wp-content/languages instead.
@@ -226,7 +238,8 @@ class Performant_Translations {
 							}
 
 							if ( $write_success ) {
-								wp_opcache_invalidate( $new_location );
+								/** This action is documented in lib/class-performant-translations.php */
+								do_action( 'performant_translations_file_written', $new_location );
 							}
 						}
 					}
@@ -372,7 +385,8 @@ class Performant_Translations {
 							file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 						}
 
-						wp_opcache_invalidate( $mofile_preferred );
+						/** This action is documented in lib/class-performant-translations.php */
+						do_action( 'performant_translations_file_written', $mofile_preferred );
 					}
 				}
 			}
@@ -443,7 +457,8 @@ class Performant_Translations {
 					file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 				}
 
-				wp_opcache_invalidate( $mofile_preferred );
+				/** This action is documented in lib/class-performant-translations.php */
+				do_action( 'performant_translations_file_written', $mofile_preferred );
 			}
 		}
 	}
