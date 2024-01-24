@@ -202,10 +202,12 @@ class Performant_Translations {
 						}
 					}
 
-					// If file creation within wp-content/plugins or wp-content/themes failed,
-					// try creating it in wp-content/languages instead.
-					// See https://github.com/swissspidy/performant-translations/issues/108
-					if ( ! $write_success ) {
+					if ( $write_success ) {
+						wp_opcache_invalidate( $mofile_preferred );
+					} else {
+						// If file creation within wp-content/plugins or wp-content/themes failed,
+						// try creating it in wp-content/languages instead.
+						// See https://github.com/swissspidy/performant-translations/issues/108
 						$new_location = '';
 
 						if ( str_contains( $modir, WP_PLUGIN_DIR ) ) {
@@ -216,11 +218,15 @@ class Performant_Translations {
 
 						if ( '' !== $new_location ) {
 							if ( true === WP_Filesystem() ) {
-								$wp_filesystem->put_contents( $new_location, $contents, FS_CHMOD_FILE );
+								$write_success = $wp_filesystem->put_contents( $new_location, $contents, FS_CHMOD_FILE );
 							} else {
 								if ( is_writable( $modir ) ) {
-									(bool) file_put_contents( $new_location, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+									$write_success = (bool) file_put_contents( $new_location, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 								}
+							}
+
+							if ( $write_success ) {
+								wp_opcache_invalidate( $new_location );
 							}
 						}
 					}
@@ -365,6 +371,8 @@ class Performant_Translations {
 						} else {
 							file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 						}
+
+						wp_opcache_invalidate( $mofile_preferred );
 					}
 				}
 			}
@@ -434,6 +442,8 @@ class Performant_Translations {
 				} else {
 					file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 				}
+
+				wp_opcache_invalidate( $mofile_preferred );
 			}
 		}
 	}
