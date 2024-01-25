@@ -135,6 +135,10 @@ class Performant_Translations {
 					/** This filter is documented in lib/class-performant-translations.php */
 					$new_location = apply_filters( 'performant_translations_load_translation_file', $new_location, $domain );
 
+					if ( ! is_string( $new_location ) ) {
+						return $override;
+					}
+
 					$success = Ginger_MO::instance()->load( $new_location, $domain, $locale );
 
 					if ( $success ) {
@@ -162,6 +166,10 @@ class Performant_Translations {
 
 		/** This filter is documented in lib/class-performant-translations.php */
 		$mofile = apply_filters( 'performant_translations_load_translation_file', $mofile, $domain );
+
+		if ( ! is_string( $mofile ) ) {
+			return $override;
+		}
 
 		$success = Ginger_MO::instance()->load( $mofile, $domain, $locale );
 
