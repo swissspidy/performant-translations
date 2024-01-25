@@ -99,6 +99,11 @@ class Performant_Translations {
 			 */
 			$mofile_preferred = apply_filters( 'performant_translations_load_translation_file', $mofile_preferred, $domain );
 
+			// Just some precaution, see https://wordpress.org/support/topic/wpml-newest-versions-error-500-on-installation-of-plugin/.
+			if ( ! is_string( $mofile_preferred ) ) {
+				return $override;
+			}
+
 			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
 			if ( $success ) {
