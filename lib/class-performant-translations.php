@@ -94,7 +94,7 @@ class Performant_Translations {
 			 *
 			 * @since 1.0.3
 			 *
-			 * @param string $file   Path to the translation file to load.
+			 * @param mixed  $file   Path to the translation file to load.
 			 * @param string $domain The text domain.
 			 */
 			$mofile_preferred = apply_filters( 'performant_translations_load_translation_file', $mofile_preferred, $domain );
