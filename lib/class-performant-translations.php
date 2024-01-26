@@ -1,6 +1,6 @@
 <?php
 /**
- * Compatibility & Implementation for WordPress.
+ * Compatibility & Implementation for WordPress < 6.5.
  *
  * @package Performant_Translations
  */
@@ -17,22 +17,26 @@ class Performant_Translations {
 	 * @return void
 	 */
 	public static function init() {
-		add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
-		add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
-
-		add_action( 'init', array( __CLASS__, 'set_locale' ) );
-		add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
-
-		add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
-
 		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
-
-		// Clear caches when writing files.
 		add_action( 'performant_translations_file_written', array( __CLASS__, 'opcache_invalidate' ) );
 
-		// Plugin integrations.
-		add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
-		add_action( 'wpml_st_translation_file_updated', array( __CLASS__, 'regenerate_translation_file' ) );
+		if ( class_exists( 'WP_Translation_Controller' ) ) {
+			require_once __DIR__ . '/class-performant-translations-65.php';
+
+			Performant_Translations_65::init();
+		} else {
+			add_filter( 'override_load_textdomain', array( __CLASS__, 'load_textdomain' ), 100, 4 );
+			add_filter( 'override_unload_textdomain', array( __CLASS__, 'unload_textdomain' ), 100, 3 );
+
+			add_action( 'init', array( __CLASS__, 'set_locale' ) );
+			add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
+
+			add_action( 'upgrader_process_complete', array( __CLASS__, 'upgrader_process_complete' ), 10, 2 );
+
+			// Plugin integrations.
+			add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
+			add_action( 'wpml_st_translation_file_updated', array( __CLASS__, 'regenerate_translation_file' ) );
+		}
 	}
 
 	/**
@@ -91,7 +95,11 @@ class Performant_Translations {
 		}
 
 		$modir            = dirname( $mofile );
-		$mofile_preferred = "$mofile.$preferred_format";
+		$mofile_preferred = $mofile;
+
+		if ( 'mo' !== $preferred_format ) {
+			$mofile_preferred = substr_replace( $mofile, ".l10n.$preferred_format", -strlen( '.mo' ) );
+		}
 
 		if ( 'mo' !== $preferred_format || str_ends_with( $mofile, $preferred_format ) ) {
 			/** This action is documented in wp-includes/l10n.php */
@@ -377,7 +385,11 @@ class Performant_Translations {
 						$preferred_format = 'php';
 					}
 
-					$mofile_preferred = "$file.$preferred_format";
+					$mofile_preferred = $file;
+
+					if ( 'mo' !== $preferred_format ) {
+						$mofile_preferred = substr_replace( $file, ".l10n.$preferred_format", -strlen( '.mo' ) );
+					}
 
 					/** This filter is documented in lib/class-performant-translations.php */
 					$convert = apply_filters( 'performant_translations_convert_files', true );
@@ -390,13 +402,15 @@ class Performant_Translations {
 						}
 
 						if ( true === $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
-							$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+							$file_written = $wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 						} else {
-							file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+							$file_written = (bool) file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 						}
 
-						/** This action is documented in lib/class-performant-translations.php */
-						do_action( 'performant_translations_file_written', $mofile_preferred );
+						if ( $file_written ) {
+							/** This action is documented in lib/class-performant-translations.php */
+							do_action( 'performant_translations_file_written', $mofile_preferred );
+						}
 					}
 				}
 			}
@@ -448,7 +462,11 @@ class Performant_Translations {
 			$preferred_format = 'php';
 		}
 
-		$mofile_preferred = "$file.$preferred_format";
+		$mofile_preferred = $file;
+
+		if ( 'mo' !== $preferred_format ) {
+			$mofile_preferred = substr_replace( $file, ".l10n.$preferred_format", -strlen( '.mo' ) );
+		}
 
 		/** This filter is documented in lib/class-performant-translations.php */
 		$convert = apply_filters( 'performant_translations_convert_files', true );
@@ -462,13 +480,15 @@ class Performant_Translations {
 				}
 
 				if ( true === WP_Filesystem() ) {
-					$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+					$file_written = $wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 				} else {
-					file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+					$file_written = (bool) file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 				}
 
-				/** This action is documented in lib/class-performant-translations.php */
-				do_action( 'performant_translations_file_written', $mofile_preferred );
+				if ( $file_written ) {
+					/** This action is documented in lib/class-performant-translations.php */
+					do_action('performant_translations_file_written', $mofile_preferred);
+				}
 			}
 		}
 	}
