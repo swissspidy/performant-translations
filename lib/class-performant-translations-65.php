@@ -204,9 +204,14 @@ class Performant_Translations_65 {
 						}
 
 						if ( true === $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
-							$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+							$write_success = $wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 						} else {
-							file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+							$write_success = (bool) file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+						}
+
+						if ( $write_success ) {
+							/** This action is documented in lib/class-performant-translations.php */
+							do_action( 'performant_translations_file_written', $mofile_preferred );
 						}
 					}
 				}
@@ -262,9 +267,14 @@ class Performant_Translations_65 {
 				}
 
 				if ( true === WP_Filesystem() ) {
-					$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+					$write_success = $wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 				} else {
-					file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+					$write_success = (bool) file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+				}
+
+				if ( $write_success ) {
+					/** This action is documented in lib/class-performant-translations.php */
+					do_action( 'performant_translations_file_written', $mofile_preferred );
 				}
 			}
 		}

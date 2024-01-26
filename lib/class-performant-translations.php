@@ -18,6 +18,7 @@ class Performant_Translations {
 	 */
 	public static function init() {
 		add_action( 'wp_head', array( __CLASS__, 'add_generator_tag' ) );
+		add_action( 'performant_translations_file_written', array( __CLASS__, 'opcache_invalidate' ) );
 
 		if ( class_exists( 'WP_Translation_Controller' ) ) {
 			require_once __DIR__ . '/class-performant-translations-65.php';
@@ -36,6 +37,16 @@ class Performant_Translations {
 			add_action( 'loco_file_written', array( __CLASS__, 'regenerate_translation_file' ) );
 			add_action( 'wpml_st_translation_file_updated', array( __CLASS__, 'regenerate_translation_file' ) );
 		}
+	}
+
+	/**
+	 * Invalidates OPCache for a given file upon write/modification.
+	 *
+	 * @param string $file File path.
+	 * @return void
+	 */
+	public static function opcache_invalidate( string $file ) {
+		wp_opcache_invalidate( $file );
 	}
 
 	/**
@@ -225,10 +236,21 @@ class Performant_Translations {
 						}
 					}
 
-					// If file creation within wp-content/plugins or wp-content/themes failed,
-					// try creating it in wp-content/languages instead.
-					// See https://github.com/swissspidy/performant-translations/issues/108
-					if ( ! $write_success ) {
+					if ( $write_success ) {
+						/**
+						 * Fires whenever a file has been created or modified.
+						 *
+						 * Useful for cache clearing or similar.
+						 *
+						 * @since 1.1.0
+						 *
+						 * @param string $file File path.
+						 */
+						do_action( 'performant_translations_file_written', $mofile_preferred );
+					} else {
+						// If file creation within wp-content/plugins or wp-content/themes failed,
+						// try creating it in wp-content/languages instead.
+						// See https://github.com/swissspidy/performant-translations/issues/108
 						$new_location = '';
 
 						if ( str_contains( $modir, WP_PLUGIN_DIR ) ) {
@@ -239,11 +261,16 @@ class Performant_Translations {
 
 						if ( '' !== $new_location ) {
 							if ( true === WP_Filesystem() ) {
-								$wp_filesystem->put_contents( $new_location, $contents, FS_CHMOD_FILE );
+								$write_success = $wp_filesystem->put_contents( $new_location, $contents, FS_CHMOD_FILE );
 							} else {
 								if ( is_writable( $modir ) ) {
-									(bool) file_put_contents( $new_location, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+									$write_success = (bool) file_put_contents( $new_location, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 								}
+							}
+
+							if ( $write_success ) {
+								/** This action is documented in lib/class-performant-translations.php */
+								do_action( 'performant_translations_file_written', $new_location );
 							}
 						}
 					}
@@ -388,9 +415,14 @@ class Performant_Translations {
 						}
 
 						if ( true === $upgrader->fs_connect( array( dirname( $file ) ) ) ) {
-							$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+							$file_written = $wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 						} else {
-							file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+							$file_written = (bool) file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+						}
+
+						if ( $file_written ) {
+							/** This action is documented in lib/class-performant-translations.php */
+							do_action( 'performant_translations_file_written', $mofile_preferred );
 						}
 					}
 				}
@@ -461,9 +493,14 @@ class Performant_Translations {
 				}
 
 				if ( true === WP_Filesystem() ) {
-					$wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
+					$file_written = $wp_filesystem->put_contents( $mofile_preferred, $contents, FS_CHMOD_FILE );
 				} else {
-					file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+					$file_written = (bool) file_put_contents( $mofile_preferred, $contents, LOCK_EX ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+				}
+
+				if ( $file_written ) {
+					/** This action is documented in lib/class-performant-translations.php */
+					do_action( 'performant_translations_file_written', $mofile_preferred );
 				}
 			}
 		}
