@@ -4,14 +4,6 @@
  * @coversDefaultClass Performant_Translations_Compat_Provider
  */
 class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
-	public function set_up() {
-		parent::set_up();
-
-		if ( class_exists( 'WP_Translation_Controller' ) ) {
-			$this->markTestSkipped( 'This test is no longer relevant on trunk' );
-		}
-	}
-
 	/**
 	 * @return void
 	 */
