@@ -487,7 +487,7 @@ class Performant_Translations {
 
 				if ( $file_written ) {
 					/** This action is documented in lib/class-performant-translations.php */
-					do_action('performant_translations_file_written', $mofile_preferred);
+					do_action( 'performant_translations_file_written', $mofile_preferred );
 				}
 			}
 		}
