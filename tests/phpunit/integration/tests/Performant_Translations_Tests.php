@@ -4,14 +4,6 @@
  * @coversDefaultClass Performant_Translations
  */
 class Performant_Translations_Tests extends WP_UnitTestCase {
-	public function set_up() {
-		parent::set_up();
-
-		if ( version_compare( get_bloginfo( 'version' ), '6.5-alpha-57337', '>=' ) ) {
-			$this->markTestSkipped( 'This test is no longer relevant on trunk' );
-		}
-	}
-
 	/**
 	 * @return void
 	 */
@@ -590,6 +582,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::upgrader_process_complete
+	 * @covers ::opcache_invalidate
 	 *
 	 * @return void
 	 */
@@ -598,6 +591,9 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		require_once ABSPATH . 'wp-admin/includes/class-language-pack-upgrader.php';
 		require_once DIR_PLUGIN_TESTDATA . '/class-dummy-upgrader-skin.php';
 		require_once DIR_PLUGIN_TESTDATA . '/class-dummy-language-pack-upgrader.php';
+
+		$filter = new MockAction();
+		add_filter( 'wp_opcache_invalidate_file', [ $filter, 'filter' ] );
 
 		$upgrader = new Dummy_Language_Pack_Upgrader( new Dummy_Upgrader_Skin() );
 
@@ -628,6 +624,8 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 				),
 			)
 		);
+
+		$this->assertGreaterThan( 0, $filter->get_call_count() );
 
 		$this->assertIsNotBool( $result );
 		$this->assertNotWPError( $result );
