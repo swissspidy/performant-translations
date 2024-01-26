@@ -39,7 +39,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$class_name = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$this->assertInstanceOf( $class_name, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSets(
 			array(
@@ -78,7 +79,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$class_name = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$this->assertInstanceOf( $class_name, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSets(
 			array(
@@ -119,7 +121,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$class_name = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$this->assertInstanceOf( $class_name, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSets(
 			array(
@@ -166,7 +169,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
 		$this->assertTrue( $load_successful, 'Text domain not successfully loaded' );
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$class_name = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$this->assertInstanceOf( $class_name, $compat_instance, 'No compat provider instance used' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
 		$this->assertEqualSetsWithIndex(
 			array(
@@ -190,7 +194,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$compat_instance = $l10n['wp-tests-domain'] ?? null;
 
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance );
+		$class_name = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$this->assertInstanceOf( $class_name, $compat_instance, 'No compat provider instance used' );
 
 		$this->assertNull( $compat_instance->foo );
 	}
@@ -212,7 +217,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$class_name = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$this->assertInstanceOf( $class_name, $compat_instance, 'No compat provider instance used' );
 		$this->assertSame( 'dyado', $translation, 'Actual translation does not match expected one' );
 		$this->assertSame( 'does not exist', $translation_missing, 'Actual translation fallback does not match expected one' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
@@ -236,7 +242,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$class_name = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$this->assertInstanceOf( $class_name, $compat_instance, 'No compat provider instance used' );
 		$this->assertSame( 'oney dragoney', $translation_1, 'Actual translation does not match expected one' );
 		$this->assertSame( 'twoey dragoney', $translation_2, 'Actual translation does not match expected one' );
 		$this->assertSame( 'twoey dragoney', $translation_minus_8, 'Actual translation does not match expected one' );
@@ -260,7 +267,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 
 		$unload_successful = unload_textdomain( 'wp-tests-domain' );
 
-		$this->assertInstanceOf( Performant_Translations_Compat_Provider::class, $compat_instance, 'No compat provider instance used' );
+		$class_name = class_exists( 'WP_Translations' ) ? WP_Translations::class : Performant_Translations_Compat_Provider::class;
+		$this->assertInstanceOf( $class_name, $compat_instance, 'No compat provider instance used' );
 		$this->assertSame( '%d house', $translation_1, 'Actual translation fallback does not match expected one' );
 		$this->assertSame( '%d cars', $translation_2, 'Actual plural translation fallback does not match expected one' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
