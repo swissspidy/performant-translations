@@ -115,10 +115,15 @@ class Performant_Translations {
 			 *
 			 * @since 1.0.3
 			 *
-			 * @param string $file   Path to the translation file to load.
+			 * @param mixed  $file   Path to the translation file to load.
 			 * @param string $domain The text domain.
 			 */
 			$mofile_preferred = apply_filters( 'performant_translations_load_translation_file', $mofile_preferred, $domain );
+
+			// Just some precaution, see https://wordpress.org/support/topic/wpml-newest-versions-error-500-on-installation-of-plugin/.
+			if ( ! is_string( $mofile_preferred ) ) {
+				return $override;
+			}
 
 			$success = Ginger_MO::instance()->load( $mofile_preferred, $domain, $locale );
 
@@ -151,6 +156,10 @@ class Performant_Translations {
 					/** This filter is documented in lib/class-performant-translations.php */
 					$new_location = apply_filters( 'performant_translations_load_translation_file', $new_location, $domain );
 
+					if ( ! is_string( $new_location ) ) {
+						return $override;
+					}
+
 					$success = Ginger_MO::instance()->load( $new_location, $domain, $locale );
 
 					if ( $success ) {
@@ -178,6 +187,10 @@ class Performant_Translations {
 
 		/** This filter is documented in lib/class-performant-translations.php */
 		$mofile = apply_filters( 'performant_translations_load_translation_file', $mofile, $domain );
+
+		if ( ! is_string( $mofile ) ) {
+			return $override;
+		}
 
 		$success = Ginger_MO::instance()->load( $mofile, $domain, $locale );
 
