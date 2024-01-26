@@ -26,7 +26,7 @@ class Performant_Translations {
 			add_action( 'change_locale', array( __CLASS__, 'change_locale' ) );
 		} else {
 			// WordPress 6.5+
-			add_filter( 'load_translation_file', array( __CLASS__, 'load_translation_file' ), 10, 2 );
+			add_filter( 'load_translation_file', array( __CLASS__, 'load_translation_file' ), 100, 2 );
 		}
 
 		// Any version.
