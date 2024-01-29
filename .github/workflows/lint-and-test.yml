@@ -129,21 +129,21 @@ jobs:
               if: ${{ matrix.coverage }}
 
             - name: Upload code coverage report
-              uses: codecov/codecov-action@v3.1.4
+              uses: codecov/codecov-action@v3.1.5
               with:
                   file: coverage.xml
                   flags: ${{ matrix.wp == 'trunk' && 'trunk,unit' || 'default'  }}
               if: ${{ matrix.coverage }}
 
             - name: Upload code coverage report
-              uses: codecov/codecov-action@v3.1.4
+              uses: codecov/codecov-action@v3.1.5
               with:
                   file: coverage-integration.xml
                   flags: ${{ matrix.wp == 'trunk' && 'trunk,integration' || 'integration'  }}
               if: ${{ matrix.coverage }}
 
             - name: Upload code coverage report
-              uses: codecov/codecov-action@v3.1.4
+              uses: codecov/codecov-action@v3.1.5
               with:
                   file: coverage-integration-multisite.xml
                   flags: ${{ matrix.wp == 'trunk' && 'trunk,multisite' || 'multisite'  }}
