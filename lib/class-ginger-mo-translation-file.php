@@ -148,7 +148,32 @@ abstract class Ginger_MO_Translation_File {
 			$this->parse_file();
 		}
 
-		return $this->entries[ $text ] ?? false;
+		if ( isset( $this->entries[ $text ] ) ) {
+			return $this->entries[ $text ];
+		}
+
+		/*
+		 * Handle cases where a pluralized string is only used as a singular one.
+		 * For example, when both __( 'Product' ) and _n( 'Product', 'Products' )
+		 * are used, the entry key will have the format "ProductNULProducts".
+		 * Fall back to looking up just "Product" to support this edge case.
+		 */
+
+		$found_entry = array_filter(
+			$this->entries,
+			static function ( $key ) use ( $text ) {
+				return str_starts_with( $key, $text . "\0" );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
+
+		// $found_entry will have the format [ "ProductNULProducts"=> "ProduktNULProdukte" ].
+		if ( count( $found_entry ) === 1 ) {
+			$parts = explode( "\0", ( array_values( $found_entry ) )[0] );
+			return $parts[0];
+		}
+
+		return false;
 	}
 
 	/**
