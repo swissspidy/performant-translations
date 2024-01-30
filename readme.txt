@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.5
-Stable tag:        1.0.9
+Stable tag:        1.1.0
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
@@ -19,9 +19,10 @@ With this plugin's new approach to localization, this overhead is massively redu
 
 If your site is using a language other than English (US), you should see immediate speed improvements simply by activating this plugin.
 
-The primary purpose of this plugin is to allow broader testing of these enhancements, for which the goal is to eventually land in WordPress core.
+**Important:** this new functionality has been merged into WordPress 6.5! However, this plugin is still useful!
 
-Performant Translations supports multiple file formats (`.mo` and `.php`), as well as multiple text domains and locales loaded at the same time. By default, it converts existing `.mo` files to `.php` and afterwards only loads the translations from the `.php` file.
+On WordPress 6.5+, this plugin automatically converts existing `.mo` files to `.php` and afterwards only loads the translations from the `.php` file.
+This is useful for cases where language packs are not downloaded from WordPress.org but somewhere else.
 
 == Installation ==
 
@@ -84,6 +85,13 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.1.0 =
+
+* Enhancement: Support for this functionality existing in WordPress 6.5.
+* Enhancement: Added hardening for file paths not being strings because of a faulty plugin filter.
+* Enhancement: Invalidate OPcache after writing PHP files.
+* Enhancement: Improve compatibility with pluralized strings referenced as singulars.
+
 = 1.0.9 =
 
 * Enhancement: Improved compatibility with WPML string translation add-on.
@@ -135,42 +143,6 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 
 == Upgrade Notice ==
 
-= 1.0.9 =
+= 1.1.0 =
 
-Improves compatibility with WPML string translation add-on.
-
-= 1.0.8 =
-
-Adds a workaround for potential file permission issues.
-
-= 1.0.7 =
-
-Fixes an issue where not all core translations were updated.
-
-= 1.0.6 =
-
-This release removes JSON file support and includes some hardening when using symlinks.
-
-= 1.0.5 =
-
-This release includes enhanced compatibility with Loco Translate to avoid duplicate files.
-
-= 1.0.4 =
-
-This release includes some performance improvements, as well as enhanced compatibility with certain setups.
-
-= 1.0.3 =
-
-This release improves Multisite support and compatibility with Query Monitor's developer tools panel.
-
-= 1.0.2 =
-
-This release adds hardening for invalid values being passed to translation functions.
-
-= 1.0.1 =
-
-This release includes bug fixes for usage with certain plugins and locales. 
-
-= 1.0.0 =
-
-Initial release.
+Improves compatibility with the upcoming WordPress 6.5 release.
