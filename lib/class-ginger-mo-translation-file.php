@@ -158,19 +158,11 @@ abstract class Ginger_MO_Translation_File {
 		 * are used, the entry key will have the format "ProductNULProducts".
 		 * Fall back to looking up just "Product" to support this edge case.
 		 */
-
-		$found_entry = array_filter(
-			$this->entries,
-			static function ( $key ) use ( $text ) {
-				return str_starts_with( $key, $text . "\0" );
-			},
-			ARRAY_FILTER_USE_KEY
-		);
-
-		// $found_entry will have the format [ "ProductNULProducts"=> "ProduktNULProdukte" ].
-		if ( count( $found_entry ) === 1 ) {
-			$parts = explode( "\0", ( array_values( $found_entry ) )[0] );
-			return $parts[0];
+		foreach( $this->entries as $key => $value ) {
+			if ( str_starts_with( $key, $text . "\0" ) ) {
+				$parts = explode( "\0", $value );
+				return $parts[0];
+			}
 		}
 
 		return false;
