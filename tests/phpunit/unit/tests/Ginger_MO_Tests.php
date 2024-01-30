@@ -190,6 +190,7 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 	 * @covers ::translate_plural
 	 * @covers ::locate_translation
 	 * @covers ::get_files
+	 * @covers Ginger_MO_Translation_File::translate
 	 *
 	 * @dataProvider data_simple_example_files
 	 *
