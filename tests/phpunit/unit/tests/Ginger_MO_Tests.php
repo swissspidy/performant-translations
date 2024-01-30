@@ -216,6 +216,10 @@ class Ginger_MO_Tests extends Ginger_MO_TestCase {
 		$this->assertSame( 'translation1 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 0, 'context', 'unittest' ) );
 		$this->assertSame( 'translation0 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 1, 'context', 'unittest' ) );
 		$this->assertSame( 'translation1 with context', $ginger_mo->translate_plural( array( 'plural0 with context', 'plural1 with context' ), 2, 'context', 'unittest' ) );
+
+		$this->assertSame( 'Produkt', $ginger_mo->translate( 'Product', '', 'unittest' ) );
+		$this->assertSame( 'Produkt', $ginger_mo->translate_plural( array( 'Product', 'Products' ), 1, '', 'unittest' ) );
+		$this->assertSame( 'Produkte', $ginger_mo->translate_plural( array( 'Product', 'Products' ), 2, '', 'unittest' ) );
 	}
 
 	/**
