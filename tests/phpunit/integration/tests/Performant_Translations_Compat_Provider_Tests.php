@@ -65,6 +65,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 	/**
 	 * @covers ::__get
 	 * @covers ::make_entry
+	 *
+	 * @return void
 	 */
 	public function test_get_entries_plural() {
 		global $l10n;
@@ -105,6 +107,8 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 	/**
 	 * @covers ::__get
 	 * @covers ::make_entry
+	 *
+	 * @return void
 	 */
 	public function test_get_entries_context() {
 		global $l10n;
