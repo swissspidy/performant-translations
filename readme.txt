@@ -85,6 +85,11 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.1.1 =
+
+* Fixed: Addressed a slight performance regression in 1.1.0.
+* Fixed: Addressed an issue with incorrect plural forms for certain locales.
+
 = 1.1.0 =
 
 * Enhancement: Support for this functionality existing in WordPress 6.5.
@@ -143,6 +148,6 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 
 == Upgrade Notice ==
 
-= 1.1.0 =
+= 1.1.1 =
 
-Improves compatibility with the upcoming WordPress 6.5 release.
+Addresses a performance regression and a bug related to plural forms parsing.
