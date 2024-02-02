@@ -18,6 +18,10 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 			$this->unlink( DIR_TESTDATA . '/pomo/plural.php' );
 		}
 
+		if ( file_exists( DIR_PLUGIN_TESTDATA . '/l10n/plural-complex.l10n.php' ) ) {
+			$this->unlink( DIR_PLUGIN_TESTDATA . '/l10n/plural-complex.l10n.php' );
+		}
+
 		parent::tear_down();
 	}
 
@@ -271,6 +275,68 @@ class Performant_Translations_Compat_Provider_Tests extends WP_UnitTestCase {
 		$this->assertSame( '%d house', $translation_1, 'Actual translation fallback does not match expected one' );
 		$this->assertSame( '%d cars', $translation_2, 'Actual plural translation fallback does not match expected one' );
 		$this->assertTrue( $unload_successful, 'Text domain not successfully unloaded' );
+	}
+
+	/**
+	 * @covers ::translate_plural
+	 * @covers Ginger_MO_Translation_File::get_plural_form
+	 *
+	 * @return void
+	 */
+	public function test_translate_plural_complex() {
+		load_textdomain( 'wp-tests-domain', DIR_PLUGIN_TESTDATA . '/l10n/plural-complex.mo' );
+
+		$this->assertSame( '%s razpoložljiva posodobitev', _n( '%s update available', '%s updates available', 101, 'wp-tests-domain' ) );
+		// 1, 101, 201
+		$this->assertSame( '%s razpoložljivi posodobitvi', _n( '%s update available', '%s updates available', 102, 'wp-tests-domain' ) );
+		// 2, 102, 202
+		$this->assertSame( '%s razpoložljive posodobitve', _n( '%s update available', '%s updates available', 103, 'wp-tests-domain' ) );
+		// 3, 4, 103
+		$this->assertSame( '%s razpoložljivih posodobitev', _n( '%s update available', '%s updates available', 5, 'wp-tests-domain' ) );
+		// 0, 5, 6
+	}
+
+	/**
+	 * @covers ::translate_plural
+	 * @covers Ginger_MO_Translation_File::get_plural_form
+	 *
+	 * @return void
+	 */
+	public function test_translate_plural_complex_php() {
+		load_textdomain( 'wp-tests-domain', DIR_PLUGIN_TESTDATA . '/l10n/plural-complex.php' );
+
+		$this->assertSame( '%s razpoložljiva posodobitev', _n( '%s update available', '%s updates available', 101, 'wp-tests-domain' ) );
+		// 1, 101, 201
+		$this->assertSame( '%s razpoložljivi posodobitvi', _n( '%s update available', '%s updates available', 102, 'wp-tests-domain' ) );
+		// 2, 102, 202
+		$this->assertSame( '%s razpoložljive posodobitve', _n( '%s update available', '%s updates available', 103, 'wp-tests-domain' ) );
+		// 3, 4, 103
+		$this->assertSame( '%s razpoložljivih posodobitev', _n( '%s update available', '%s updates available', 5, 'wp-tests-domain' ) );
+		// 0, 5, 6
+	}
+
+	/**
+	 * @covers Ginger_MO_Translation_File::get_plural_form
+	 *
+	 * @return void
+	 */
+	public function test_get_plural_form() {
+		$moe = Ginger_MO_Translation_File::create( DIR_PLUGIN_TESTDATA . '/l10n/plural-complex.mo' );
+
+		$this->assertInstanceOf( Ginger_MO_Translation_File::class, $moe );
+
+		$this->assertSame( 0, $moe->get_plural_form( 1 ) );
+		$this->assertSame( 0, $moe->get_plural_form( 101 ) );
+		$this->assertSame( 0, $moe->get_plural_form( 201 ) );
+		$this->assertSame( 1, $moe->get_plural_form( 2 ) );
+		$this->assertSame( 1, $moe->get_plural_form( 102 ) );
+		$this->assertSame( 1, $moe->get_plural_form( 202 ) );
+		$this->assertSame( 2, $moe->get_plural_form( 3 ) );
+		$this->assertSame( 2, $moe->get_plural_form( 4 ) );
+		$this->assertSame( 2, $moe->get_plural_form( 103 ) );
+		$this->assertSame( 3, $moe->get_plural_form( 0 ) );
+		$this->assertSame( 3, $moe->get_plural_form( 5 ) );
+		$this->assertSame( 3, $moe->get_plural_form( 6 ) );
 	}
 
 	/**

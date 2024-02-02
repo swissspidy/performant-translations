@@ -166,9 +166,9 @@ abstract class Ginger_MO_Translation_File {
 			$this->parse_file();
 		}
 
-		// In case a plural form is specified as a header, but no function included, build one.
 		if ( null === $this->plural_forms && isset( $this->headers['plural-forms'] ) ) {
-			$this->plural_forms = $this->make_plural_form_function( $this->headers['plural-forms'] );
+			$expression         = $this->get_plural_expression_from_header( $this->headers['plural-forms'] );
+			$this->plural_forms = $this->make_plural_form_function( $expression );
 		}
 
 		if ( is_callable( $this->plural_forms ) ) {
@@ -192,7 +192,7 @@ abstract class Ginger_MO_Translation_File {
 	 * @param string $expression Plural form expression.
 	 * @return callable(int $num): int Plural forms function.
 	 */
-	public function make_plural_form_function( string $expression ) {
+	protected function make_plural_form_function( string $expression ) {
 		try {
 			$handler = new Plural_Forms( rtrim( $expression, ';' ) );
 			return array( $handler, 'get' );
@@ -200,6 +200,20 @@ abstract class Ginger_MO_Translation_File {
 			// Fall back to default plural-form function.
 			return $this->make_plural_form_function( 'n != 1' );
 		}
+	}
+
+	/**
+	 * Returns the plural forms expression as a tuple.
+	 *
+	 * @param string $header Plural-Forms header string.
+	 * @return string Plural forms expression.
+	 */
+	protected function get_plural_expression_from_header( string $header ): string {
+		if ( false !== preg_match( '/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $header, $matches ) ) {
+			return trim( $matches[2] );
+		}
+
+		return 'n != 1';
 	}
 
 	/**
