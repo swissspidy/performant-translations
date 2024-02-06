@@ -470,7 +470,7 @@ class Performant_Translations_Tests_64 extends WP_UnitTestCase {
 	 *
 	 * @return void
 	 */
-	public function test_load_textdomain_inception_does_not_create_duplicate_files() {
+	public function test_load_textdomain_mo_inception_does_not_create_duplicate_files() {
 		add_action( 'load_textdomain', array( $this, '_on_load_textdomain' ), 10, 2 );
 
 		// Just to ensure the PHP files exist.
@@ -479,6 +479,21 @@ class Performant_Translations_Tests_64 extends WP_UnitTestCase {
 
 		$this->assertFileExists( DIR_TESTDATA . '/pomo/simple.l10n.php' );
 		$this->assertFileDoesNotExist( DIR_TESTDATA . '/pomo/simple.l10n.php.php' );
+	}
+
+	/**
+	 * @covers ::load_textdomain
+	 *
+	 * @return void
+	 */
+	public function test_load_textdomain_php_inception_does_not_create_duplicate_files() {
+		add_action( 'load_textdomain', array( $this, '_on_load_textdomain' ), 10, 2 );
+
+		// Just to ensure the PHP files exist.
+		load_textdomain( 'wp-tests-domain', DIR_PLUGIN_TESTDATA . '/l10n/plural-complex.php' );
+		unload_textdomain( 'wp-tests-domain' );
+
+		$this->assertFileDoesNotExist( DIR_PLUGIN_TESTDATA . '/l10n/plural-complex.php.l10n.php' );
 	}
 
 	/**

@@ -98,7 +98,7 @@ class Performant_Translations {
 		$modir            = dirname( $mofile );
 		$mofile_preferred = $mofile;
 
-		if ( 'mo' !== $preferred_format ) {
+		if ( 'mo' !== $preferred_format && ! str_ends_with( $mofile, $preferred_format ) ) {
 			$mofile_preferred = substr_replace( $mofile, ".l10n.$preferred_format", -strlen( '.mo' ) );
 		}
 
