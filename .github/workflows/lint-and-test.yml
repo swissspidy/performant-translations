@@ -149,53 +149,6 @@ jobs:
                   flags: ${{ matrix.wp == 'trunk' && 'trunk,multisite' || 'multisite'  }}
               if: ${{ matrix.coverage }}
 
-    phpbench:
-        name: 'Benchmarks ${{ matrix.php }} - WP ${{ matrix.wp }} - OPCache ${{ matrix.opcache }}'
-        runs-on: ubuntu-latest
-        services:
-            mysql:
-                image: mariadb:latest
-                env:
-                    MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
-                    MARIADB_DATABASE: wordpress_test
-                    MARIADB_MYSQL_LOCALHOST_USER: 1
-                    MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
-                ports:
-                    - 3306
-                options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
-        strategy:
-            matrix:
-                php: ['8.2']
-                wp: ['latest']
-                opcache: [true, false]
-
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: ${{ matrix.opcache == false && ':opcache' || 'opcache' }}
-                  coverage: none
-                  tools: composer
-                  ini-values: opcache.enable_cli=1
-
-            - name: Install PHP dependencies
-              uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
-              with:
-                  composer-options: '--prefer-dist --no-scripts'
-
-            - name: Shutdown default MySQL service
-              run: sudo service mysql stop
-
-            - name: Set up tests
-              run: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1:${{ job.services.mysql.ports['3306'] }} ${{ matrix.wp }} true
-
-            - name: Run benchmarks
-              run: composer phpbench
-
     core-php:
         name: 'WP core tests (${{ matrix.wp }})'
         runs-on: ubuntu-latest
