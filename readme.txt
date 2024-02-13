@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.5
-Stable tag:        1.1.0
+Stable tag:        1.1.2
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translations, localization, internationalization
@@ -18,6 +18,8 @@ An [in-depth i18n performance analysis](https://make.wordpress.org/core/2023/07/
 With this plugin's new approach to localization, this overhead is massively reduced, making your site fast again.
 
 If your site is using a language other than English (US), you should see immediate speed improvements simply by activating this plugin.
+
+=== WordPress 6.5 and newer ===
 
 **Important:** this new functionality has been merged into WordPress 6.5! However, this plugin is still useful!
 
@@ -85,6 +87,10 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.1.2 =
+
+* Fixed a minor regression when assembling file paths to look up.
+
 = 1.1.1 =
 
 * Fixed: Addressed a slight performance regression in 1.1.0.
@@ -148,6 +154,6 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 
 == Upgrade Notice ==
 
-= 1.1.1 =
+= 1.1.2 =
 
-Addresses a performance regression and a bug related to plural forms parsing.
+Fixed a minor regression when assembling file paths to look up.
