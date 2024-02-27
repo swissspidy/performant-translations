@@ -5,7 +5,7 @@ Tested up to:      6.5
 Stable tag:        1.1.2
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
-Tags:              performance, i18n, translations, localization, internationalization
+Tags:              performance, i18n, translation, localization, internationalization
 
 Making internationalization/localization in WordPress faster than ever before.
 
