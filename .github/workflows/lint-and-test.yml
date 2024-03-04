@@ -22,7 +22,7 @@ jobs:
                   tools: composer, cs2pr
 
             - name: Install PHP dependencies
-              uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
+              uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a
               with:
                   composer-options: '--prefer-dist --no-scripts'
 
@@ -90,7 +90,7 @@ jobs:
                   tools: composer, cs2pr
 
             - name: Install PHP dependencies
-              uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
+              uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a
               with:
                   composer-options: '--prefer-dist --no-scripts'
 
@@ -188,7 +188,7 @@ jobs:
                   tools: composer
 
             - name: Install PHP dependencies
-              uses: ramsey/composer-install@83af392bf5f031813d25e6fe4cd626cdba9a2df6
+              uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a
               with:
                   composer-options: '--prefer-dist'
                   dependency-versions: 'highest'
