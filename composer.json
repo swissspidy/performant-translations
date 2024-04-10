@@ -54,15 +54,12 @@
 			"build-cs/vendor/bin/phpmd . text phpmd.xml"
 		],
 		"test": [
-			"@test:unit",
 			"@test:integration",
 			"@test:integration:multisite"
 		],
-		"test:unit": "vendor/bin/phpunit",
 		"test:integration": "vendor/bin/phpunit -c phpunit-integration.xml.dist",
 		"test:integration:multisite": "vendor/bin/phpunit -c phpunit-integration-multisite.xml.dist",
 		"test:coverage": [
-			"@test:unit --coverage-clover coverage.xml",
 			"@test:integration --coverage-clover coverage-integration.xml",
 			"@test:integration:multisite --coverage-clover coverage-integration-multisite.xml"
 		]

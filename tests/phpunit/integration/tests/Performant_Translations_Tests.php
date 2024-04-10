@@ -64,10 +64,10 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 	 */
 	public function test_load_translation_file_creates_and_reads_php_files_if_filtered_format_is_unsupported() {
 		add_filter(
-		  'translation_file_format',
-		  static function () {
-			  return 'unknown-format';
-		  }
+			'translation_file_format',
+			static function () {
+				return 'unknown-format';
+			}
 		);
 
 		$load_mo_successful = load_textdomain( 'wp-tests-domain', DIR_TESTDATA . '/pomo/simple.mo' );

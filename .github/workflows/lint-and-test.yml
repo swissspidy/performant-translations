@@ -58,23 +58,28 @@ jobs:
         strategy:
             matrix:
                 php: ['8.2', '8.1', '8.0', '7.4', '7.3', '7.2', '7.1', '7.0']
-                wp: ['6.4', 'trunk']
+                wp: ['latest', 'trunk']
                 coverage: [false]
                 experimental: [false]
                 exclude:
                     - php: '8.2'
-                      wp: '6.4'
+                      wp: 'latest'
                       coverage: false
                       experimental: false
                 include:
                     - php: '8.2'
-                      wp: '6.4'
+                      wp: 'latest'
                       coverage: true
                       experimental: false
 
                     - php: '8.3'
                       wp: 'trunk'
                       coverage: true
+                      experimental: true
+
+                    - php: '8.4'
+                      wp: 'trunk'
+                      coverage: false
                       experimental: true
 
         steps:
@@ -159,7 +164,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                wp: ['6.4']
+                wp: ['latest']
         services:
             mysql:
                 image: mariadb:latest
