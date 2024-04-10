@@ -211,7 +211,7 @@ class Performant_Translations {
 					$convert = apply_filters( 'performant_translations_convert_files', true );
 
 					if ( 'mo' !== $preferred_format && $convert ) {
-						$contents   = WP_Translation_File::transform( $file, $preferred_format );
+						$contents = WP_Translation_File::transform( $file, $preferred_format );
 
 						if ( false === $contents ) {
 							return;
@@ -289,7 +289,7 @@ class Performant_Translations {
 		$convert = apply_filters( 'performant_translations_convert_files', true );
 
 		if ( 'mo' !== $preferred_format && $convert ) {
-			$contents   = WP_Translation_File::transform( $file, $preferred_format );
+			$contents = WP_Translation_File::transform( $file, $preferred_format );
 
 			if ( false !== $contents ) {
 				if ( ! function_exists( 'WP_Filesystem' ) ) {
