@@ -164,7 +164,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                wp: ['latest']
+                wp: ['trunk']
         services:
             mysql:
                 image: mariadb:latest
