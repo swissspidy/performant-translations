@@ -198,10 +198,8 @@ class Performant_Translations {
 						$preferred_format = 'php';
 					}
 
-					if ( class_exists( 'WP_Translation_File' ) ) {
-						/** This filter is documented in wp-includes/l10n.php */
-						$preferred_format = apply_filters( 'translation_file_format', $preferred_format, $translation['slug'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-					}
+					/** This filter is documented in wp-includes/l10n.php */
+					$preferred_format = apply_filters( 'translation_file_format', $preferred_format, $translation['slug'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 					$mofile_preferred = $file;
 
@@ -213,8 +211,7 @@ class Performant_Translations {
 					$convert = apply_filters( 'performant_translations_convert_files', true );
 
 					if ( 'mo' !== $preferred_format && $convert ) {
-						$class_name = class_exists( 'WP_Translation_File' ) ? WP_Translation_File::class : Ginger_MO_Translation_File::class;
-						$contents   = $class_name::transform( $file, $preferred_format );
+						$contents   = WP_Translation_File::transform( $file, $preferred_format );
 
 						if ( false === $contents ) {
 							return;
@@ -292,8 +289,7 @@ class Performant_Translations {
 		$convert = apply_filters( 'performant_translations_convert_files', true );
 
 		if ( 'mo' !== $preferred_format && $convert ) {
-			$class_name = class_exists( 'WP_Translation_File' ) ? WP_Translation_File::class : Ginger_MO_Translation_File::class;
-			$contents   = $class_name::transform( $file, $preferred_format );
+			$contents   = WP_Translation_File::transform( $file, $preferred_format );
 
 			if ( false !== $contents ) {
 				if ( ! function_exists( 'WP_Filesystem' ) ) {
