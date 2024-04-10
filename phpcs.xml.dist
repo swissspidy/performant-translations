@@ -53,7 +53,6 @@
 
 	<!-- Ignore prefix requirement for test class -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
-		<exclude-pattern>tests/phpunit/unit/includes/Testable_Ginger_MO_Translation_File.php</exclude-pattern>
 		<exclude-pattern>tests/phpunit/integration/data</exclude-pattern>
 		<exclude-pattern>tests/benchmark/tests</exclude-pattern>
 	</rule>
@@ -82,6 +81,4 @@
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/*/bootstrap.php</exclude-pattern>
 	<exclude-pattern>*/tests/benchmark/install.php</exclude-pattern>
-	<exclude-pattern>*/tests/phpunit/unit/data/*</exclude-pattern>
-	<exclude-pattern>*/tests/phpunit/unit/includes/Plural_Forms.php</exclude-pattern>
 </ruleset>

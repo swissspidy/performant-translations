@@ -22,10 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'PERFORMANT_TRANSLATIONS_VERSION', '1.2.0' );
 
-require __DIR__ . '/lib/class-ginger-mo.php';
-require __DIR__ . '/lib/class-ginger-mo-translation-file.php';
-require __DIR__ . '/lib/class-ginger-mo-translation-file-mo.php';
-require __DIR__ . '/lib/class-ginger-mo-translation-file-php.php';
 require __DIR__ . '/lib/class-performant-translations-compat-provider.php';
 require __DIR__ . '/lib/class-performant-translations.php';
 
