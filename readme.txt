@@ -2,7 +2,7 @@
 
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.5
-Stable tag:        1.1.2
+Stable tag:        1.2.0
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 Tags:              performance, i18n, translation, localization, internationalization
@@ -87,6 +87,10 @@ To report a security issue, please visit the [WordPress HackerOne](https://hacke
 
 For the plugin's full changelog, please see [the Releases page on GitHub](https://github.com/swissspidy/performant-translations/releases).
 
+= 1.2.0 =
+
+* This plugin now requires WordPress 6.5
+
 = 1.1.2 =
 
 * Fixed a minor regression when assembling file paths to look up.
@@ -154,6 +158,6 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 
 == Upgrade Notice ==
 
-= 1.1.2 =
+= 1.2.0 =
 
-Fixed a minor regression when assembling file paths to look up.
+Bumps the minimum WordPress version to 6.5.
