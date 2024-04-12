@@ -241,7 +241,7 @@ class Performant_Translations {
 	 * @return void
 	 */
 	public static function add_generator_tag() {
-		echo '<meta name="generator" content="Performant Translations ' . esc_attr( PERFORMANT_TRANSLATIONS_VERSION ) . '">' . "\n";
+		echo '<meta name="generator" content="performant-translations ' . esc_attr( PERFORMANT_TRANSLATIONS_VERSION ) . '">' . "\n";
 	}
 
 	/**
