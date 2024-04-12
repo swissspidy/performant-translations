@@ -58,23 +58,38 @@ jobs:
         strategy:
             matrix:
                 php: ['8.2', '8.1', '8.0', '7.4', '7.3', '7.2', '7.1', '7.0']
-                wp: ['6.4', 'trunk']
+                wp: ['latest', 'trunk']
                 coverage: [false]
                 experimental: [false]
                 exclude:
+                    - php: '7.0'
+                      wp: 'trunk'
+                      coverage: false
+                      experimental: false
+
+                    - php: '7.1'
+                      wp: 'trunk'
+                      coverage: false
+                      experimental: false
+
                     - php: '8.2'
-                      wp: '6.4'
+                      wp: 'latest'
                       coverage: false
                       experimental: false
                 include:
                     - php: '8.2'
-                      wp: '6.4'
+                      wp: 'latest'
                       coverage: true
                       experimental: false
 
                     - php: '8.3'
                       wp: 'trunk'
                       coverage: true
+                      experimental: true
+
+                    - php: '8.4'
+                      wp: 'trunk'
+                      coverage: false
                       experimental: true
 
         steps:
@@ -113,7 +128,7 @@ jobs:
             # See https://make.wordpress.org/core/handbook/references/phpunit-compatibility-and-wordpress-versions/
             - name: Update PHPUnit
               run: |
-                  if [[ $PHP_VERSION == "7.4" || $PHP_VERSION == "8.0" || $PHP_VERSION == "8.1" || $PHP_VERSION == "8.2" || $PHP_VERSION == "8.3" ]]; then
+                  if [[ $PHP_VERSION == "7.4" || $PHP_VERSION == "8.0" || $PHP_VERSION == "8.1" || $PHP_VERSION == "8.2" || $PHP_VERSION == "8.3" || $PHP_VERSION == "8.4" ]]; then
                     echo "Installing latest version of PHPUnit"
                     composer update --ignore-platform-reqs --no-interaction --no-scripts yoast/phpunit-polyfills --with-dependencies
                   fi
@@ -159,7 +174,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                wp: ['6.4']
+                wp: ['trunk']
         services:
             mysql:
                 image: mariadb:latest

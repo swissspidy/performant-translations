@@ -5,12 +5,8 @@ parameters:
 	paths:
 		- performant-translations.php
 		- lib/
-		- tests/phpunit/unit/includes
-		- tests/phpunit/unit/tests
 		- tests/phpunit/integration/tests
 		- tests/phpunit/integration/data
-	excludePaths:
-		- tests/phpunit/unit/includes/Plural_Forms.php
 	scanFiles:
 		- build-cs/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
 	bootstrapFiles:
@@ -19,17 +15,6 @@ parameters:
 		# WordPress core includes a polyfill for these.
 		- message: '/^Function str_ends_with not found\./'
 		- message: '/^Function str_contains not found\./'
-		# We explicitly want to test with improper values.
-		- message: '/^Parameter #\d \$(text|single|plural|context) of function (__|_n|_x) expects string, null given\.$/'
-		- message: '/^Parameter #3 \$number of function _n expects int, float given\.$/'
-		- message: '/^Call to method PHPUnit\\Framework\\Assert::assertNull\(\) with string will always evaluate to false.$/'
-		  path: tests/phpunit/integration/tests/Performant_Translations_Compat_Provider_Tests.php
-		- message: "/'invalid' given.$/"
-		  paths:
-		  	- tests/phpunit/unit/tests/Ginger_MO_Convert_Tests.php
-		  	- tests/phpunit/unit/tests/Ginger_MO_Tests.php
-		- message: '/^Access to property \$foo on an unknown class WP_Translations.$/'
-		  path: tests/phpunit/integration/tests/Performant_Translations_Compat_Provider_Tests.php
 		# Stubs for 6.5 are not available yet.
 		- message: '/^Call to static method transform\(\) on an unknown class WP_Translation_File.$/'
 includes:

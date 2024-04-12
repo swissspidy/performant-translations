@@ -5,7 +5,6 @@ vendor/
 phpcs.xml
 phpstan.neon
 phpunit.xml
-phpunit-multisite.xml
 .phpunit.cache/
 .phpunit.result.cache
 .wp-env.override.json
