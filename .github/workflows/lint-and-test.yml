@@ -62,6 +62,16 @@ jobs:
                 coverage: [false]
                 experimental: [false]
                 exclude:
+                    - php: '7.0'
+                      wp: 'trunk'
+                      coverage: false
+                      experimental: false
+
+                    - php: '7.1'
+                      wp: 'trunk'
+                      coverage: false
+                      experimental: false
+
                     - php: '8.2'
                       wp: 'latest'
                       coverage: false
