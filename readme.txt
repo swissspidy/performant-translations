@@ -1,7 +1,7 @@
 === Performant Translations ===
 
 Contributors:      swissspidy, dd32, wordpressdotorg
-Tested up to:      6.5
+Tested up to:      6.6
 Stable tag:        1.2.0
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -11,20 +11,24 @@ Making internationalization/localization in WordPress faster than ever before.
 
 == Description ==
 
+=== Disclaimer about WordPress 6.5 ===
+
+**Important:** most functionality of this plugin has been merged into WordPress 6.5! You might not need it anymore.
+
+_However+, this plugin is still relevant for cases where language packs are not downloaded from WordPress.org but somewhere else.
+This is the case if you are developing your own plugins or using commercial plugins.
+
+The Performant Translations plugin can convert the translation files of those plugins to the new file format introduced in WordPress 6.5, to really optimize them for speed. 
+
+=== What this plugin does ===
+
 This project uses a new approach to handle translation files in WordPress, making localization blazing fast.
 
 An [in-depth i18n performance analysis](https://make.wordpress.org/core/2023/07/24/i18n-performance-analysis/) showed that localized WordPress sites load significantly slower than a site without translations.
 
-With this plugin's new approach to localization, this overhead is massively reduced, making your site fast again.
+With this plugin's new approach to localization, this overhead is massively reduced, making your site fast again. It does so by converting `.mo` translation files to `.php` files.
 
 If your site is using a language other than English (US), you should see immediate speed improvements simply by activating this plugin.
-
-=== WordPress 6.5 and newer ===
-
-**Important:** this new functionality has been merged into WordPress 6.5! However, this plugin is still useful!
-
-On WordPress 6.5+, this plugin automatically converts existing `.mo` files to `.php` and afterwards only loads the translations from the `.php` file.
-This is useful for cases where language packs are not downloaded from WordPress.org but somewhere else.
 
 == Installation ==
 
