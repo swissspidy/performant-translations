@@ -13,12 +13,11 @@ Making internationalization/localization in WordPress faster than ever before.
 
 === Disclaimer about WordPress 6.5 ===
 
-**Important:** most functionality of this plugin has been merged into WordPress 6.5! You might not need it anymore.
+**Attention:** most functionality of this plugin has been merged into WordPress 6.5! You might not need it anymore.
 
-_However_, this plugin is still relevant for cases where language packs are not downloaded from WordPress.org but somewhere else.
-This is the case if you are developing your own plugins or using commercial plugins.
+_However_, this plugin is still relevant for cases where language packs are not downloaded from WordPress.org but somewhere else, for example if you are developing your own plugins or using commercial plugins.
 
-The Performant Translations plugin can convert the translation files of those plugins to the new file format introduced in WordPress 6.5, to really optimize them for speed. 
+The Performant Translations plugin converts the translation files of those plugins to the new file format introduced in WordPress 6.5, to really optimize them for speed. 
 
 === What this plugin does ===
 
