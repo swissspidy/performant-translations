@@ -14,7 +14,7 @@
 	"homepage": "https://github.com/swissspidy/performant-translations#readme",
 	"type": "module",
 	"devDependencies": {
-		"@wordpress/env": "^10.3.0",
+		"@wordpress/env": "^10.4.0",
 		"@wordpress/scripts": "^28.3.0"
 	},
 	"scripts": {
