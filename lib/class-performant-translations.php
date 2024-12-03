@@ -192,11 +192,25 @@ class Performant_Translations {
 
 			foreach ( $files as $file ) {
 				if ( file_exists( $file ) ) {
-					/** This filter is documented in lib/class-performant-translations.php */
+					/**
+					 * Filters the preferred file format for translation files.
+					 *
+					 * Can be used to disable the use of PHP files for translations.
+					 *
+					 * @since 1.0.0
+					 *
+					 * @param string $preferred_format Preferred file format. Possible values: 'php', 'mo'. Default: 'php'.
+					 */
 					$preferred_format = apply_filters( 'performant_translations_preferred_format', 'php' );
 					if ( ! in_array( $preferred_format, array( 'php', 'mo' ), true ) ) {
 						$preferred_format = 'php';
 					}
+
+					/**
+					 * Preferred file format.
+					 *
+					 * @var string $preferred_format
+					 */
 
 					/** This filter is documented in wp-includes/l10n.php */
 					$preferred_format = apply_filters( 'translation_file_format', $preferred_format, $translation['slug'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
