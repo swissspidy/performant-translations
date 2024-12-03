@@ -355,7 +355,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 			)
 		);
 
-		$this->assertNotFalse( $result );
+		$this->assertIsArray( $result );
 		$this->assertFileDoesNotExist( WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.php' );
 		$this->assertFileDoesNotExist( WP_PLUGIN_DIR . '/plugins/custom-internationalized-plugin/custom-internationalized-plugin-de_DE.php' );
 	}
