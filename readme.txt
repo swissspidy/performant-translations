@@ -1,7 +1,7 @@
 === Performant Translations ===
 
 Contributors:      swissspidy, dd32, wordpressdotorg
-Tested up to:      6.6
+Tested up to:      6.7
 Stable tag:        1.2.0
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -17,7 +17,7 @@ Making internationalization/localization in WordPress faster than ever before.
 
 _However_, this plugin is still relevant for cases where language packs are not downloaded from WordPress.org but somewhere else, for example if you are developing your own plugins or using commercial plugins.
 
-The Performant Translations plugin converts the translation files of those plugins to the new file format introduced in WordPress 6.5, to really optimize them for speed. 
+The Performant Translations plugin converts the translation files of those plugins to the new file format introduced in WordPress 6.5, to really optimize them for speed.
 
 === What this plugin does ===
 
@@ -149,7 +149,7 @@ For the plugin's full changelog, please see [the Releases page on GitHub](https:
 
 * Fixed: Add hardening for invalid values being passed to translation functions.
 
-= 1.0.1 = 
+= 1.0.1 =
 
 * Enhancement: Regenerate translation files when Loco Translate updates MO files.
 * Fixed: Add hardening for invalid context being passed.
