@@ -17,7 +17,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.2'
+                  php-version: 'latest'
                   coverage: none
                   tools: composer, cs2pr
 
@@ -182,7 +182,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.2'
+                  php-version: 'latest'
                   extensions: mysql
                   coverage: none
                   tools: composer
