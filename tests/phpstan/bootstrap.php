@@ -2,7 +2,6 @@
 
 define( 'GINGER_MO_TEST_DATA', '' );
 define( 'DIR_TESTDATA', '' );
-define( 'WP_LANG_DIR', '' );
 define( 'DIR_PLUGIN_TESTDATA', '' );
 
 function i18n_plugin_test() {

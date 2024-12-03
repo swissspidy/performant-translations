@@ -1,7 +1,5 @@
 parameters:
 	level: 9
-	strictRules:
-		strictCalls: false
 	paths:
 		- performant-translations.php
 		- lib/
@@ -14,8 +12,10 @@ parameters:
 	ignoreErrors:
 		# WordPress core includes a polyfill for these.
 		- message: '/^Function str_ends_with not found\./'
+		  identifier: function.notFound
 		- message: '/^Function str_contains not found\./'
-		# Stubs for 6.5 are not available yet.
-		- message: '/^Call to static method transform\(\) on an unknown class WP_Translation_File.$/'
+		  identifier: function.notFound
+		- identifier: requireOnce.fileNotFound
+		- identifier: staticMethod.dynamicCall
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
