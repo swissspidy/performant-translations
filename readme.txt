@@ -1,7 +1,7 @@
 === Performant Translations ===
 
 Contributors:      swissspidy, dd32, wordpressdotorg
-Tested up to:      6.7
+Tested up to:      6.8
 Stable tag:        1.2.0
 License:           GPL-2.0+
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
