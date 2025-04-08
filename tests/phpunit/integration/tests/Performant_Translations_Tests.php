@@ -359,4 +359,11 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 		$this->assertFileDoesNotExist( WP_LANG_DIR . '/plugins/custom-internationalized-plugin-de_DE.php' );
 		$this->assertFileDoesNotExist( WP_PLUGIN_DIR . '/plugins/custom-internationalized-plugin/custom-internationalized-plugin-de_DE.php' );
 	}
+
+	/**
+	 * Temporary workaround to allow the tests to run on PHPUnit 10.
+	 *
+	 * @link https://core.trac.wordpress.org/ticket/59486
+	 */
+	public function expectDeprecated(): void {}
 }
