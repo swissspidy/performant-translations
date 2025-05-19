@@ -135,7 +135,7 @@ jobs:
               if: ${{ matrix.coverage }}
 
             - name: Upload code coverage report
-              uses: codecov/codecov-action@v5.4.2
+              uses: codecov/codecov-action@v5.4.3
               with:
                   file: coverage.xml
                   flags: ${{ matrix.wp == 'trunk' && 'trunk,unit' || 'default'  }}
@@ -143,7 +143,7 @@ jobs:
               if: ${{ matrix.coverage }}
 
             - name: Upload code coverage report
-              uses: codecov/codecov-action@v5.4.2
+              uses: codecov/codecov-action@v5.4.3
               with:
                   file: coverage-integration.xml
                   flags: ${{ matrix.wp == 'trunk' && 'trunk,integration' || 'integration'  }}
@@ -151,7 +151,7 @@ jobs:
               if: ${{ matrix.coverage }}
 
             - name: Upload code coverage report
-              uses: codecov/codecov-action@v5.4.2
+              uses: codecov/codecov-action@v5.4.3
               with:
                   file: coverage-integration-multisite.xml
                   flags: ${{ matrix.wp == 'trunk' && 'trunk,multisite' || 'multisite'  }}
