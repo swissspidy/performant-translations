@@ -5,7 +5,7 @@
  * Description: Making internationalization/localization in WordPress faster than ever before.
  * Version:     1.2.0
  * Network:     true
- * Author:      performanceteam
+ * Author:      WordPress Performance Team
  * Author URI:  https://make.wordpress.org/performance/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
