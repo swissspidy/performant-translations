@@ -1,5 +1,6 @@
 === Performant Translations ===
 
+Author:      performanceteam
 Contributors:      swissspidy, dd32, wordpressdotorg
 Tested up to:      6.8
 Stable tag:        1.2.0
