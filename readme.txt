@@ -1,6 +1,6 @@
 === Performant Translations ===
 
-Contributors:      swissspidy, dd32, wordpressdotorg
+Contributors:      swissspidy, dd32, wordpressdotorg, performanceteam
 Tested up to:      6.8
 Stable tag:        1.2.0
 License:           GPL-2.0+
