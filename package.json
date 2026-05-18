@@ -15,7 +15,7 @@
 	"type": "module",
 	"devDependencies": {
 		"@wordpress/env": "^11.5.0",
-		"@wordpress/scripts": "^32.1.0"
+		"@wordpress/scripts": "^32.2.0"
 	},
 	"scripts": {
 		"lint": "wp-scripts lint-js",
