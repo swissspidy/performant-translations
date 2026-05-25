@@ -16,6 +16,5 @@ parameters:
 		- message: '/^Function str_contains not found\./'
 		  identifier: function.notFound
 		- identifier: requireOnce.fileNotFound
-		- identifier: staticMethod.dynamicCall
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
