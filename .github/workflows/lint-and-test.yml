@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -89,7 +89,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -189,7 +189,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
               with:
                   repository: 'wordpress/wordpress-develop'
                   ref: ${{ matrix.wp }}
@@ -228,7 +228,7 @@ jobs:
                   DB_HOST: 127.0.0.1:${{ job.services.mysql.ports['3306'] }}
 
             - name: Checkout Performant Translations
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
               with:
                   path: 'src/wp-content/plugins/performant-translations'
 
