@@ -15,23 +15,22 @@
 		"php": ">=7.0"
 	},
 	"require-dev": {
-		"dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
-		"phpcompatibility/phpcompatibility-wp": "^2.0",
-		"roave/security-advisories": "dev-latest",
-		"wp-coding-standards/wpcs": "^3.0.0",
 		"yoast/phpunit-polyfills": "^1.0.1"
 	},
 	"config": {
-		"allow-plugins": {
-			"dealerdirect/phpcodesniffer-composer-installer": true
-		},
 		"platform": {
 			"php": "7.0"
 		}
 	},
 	"scripts": {
-		"format": "vendor/bin/phpcbf --report-summary --report-source .",
-		"lint": "vendor/bin/phpcs --report-summary --report-source .",
+		"format": [
+			"composer --working-dir=build-cs install",
+			"build-cs/vendor/bin/phpcbf --report-summary --report-source ."
+		],
+		"lint": [
+			"composer --working-dir=build-cs install",
+			"build-cs/vendor/bin/phpcs --report-summary --report-source ."
+		],
 		"phpstan": [
 			"composer --working-dir=build-cs install",
 			"build-cs/vendor/bin/phpstan analyse --memory-limit=2048M"

@@ -4,6 +4,8 @@
 
 	<rule ref="WordPress-Core" />
 
+	<rule ref="PHPCompatibilityWP" />
+
 	<rule ref="WordPress-Docs">
 		<exclude-pattern>*/tests/*</exclude-pattern>
 	</rule>
@@ -18,7 +20,10 @@
 	<!-- Make sure we prefix everything in the global namespace. -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
-			<property name="prefixes" type="array" value="Performant_Translations,Ginger_MO" />
+			<property name="prefixes" type="array">
+				<element value="Performant_Translations" />
+				<element value="Ginger_MO" />
+			</property>
 		</properties>
 		<exclude-pattern>uninstall.php</exclude-pattern>
 	</rule>

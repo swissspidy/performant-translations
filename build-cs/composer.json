@@ -2,14 +2,16 @@
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
 		"php-stubs/wordpress-tests-stubs": "^7.0.0",
+		"phpbench/phpbench": "^1.2",
+		"phpcompatibility/phpcompatibility-wp": "^2.0",
+		"phpmd/phpmd": "^2.9",
 		"phpstan/extension-installer": "^1.4.3",
 		"phpstan/phpstan-phpunit": "^2.0.1",
 		"phpstan/phpstan-strict-rules": "^2.0.0",
-		"slevomat/coding-standard": "^8.9",
+		"roave/security-advisories": "dev-latest",
 		"swissspidy/phpstan-no-private": "^1.0.0",
 		"szepeviktor/phpstan-wordpress": "^2.0.1",
-		"phpbench/phpbench": "^1.2",
-		"phpmd/phpmd": "^2.9"
+		"wp-coding-standards/wpcs": "^3.4.1"
 	},
 	"config": {
 		"allow-plugins": {
