@@ -200,7 +200,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$this->assertIsNotBool( $result );
 		$this->assertNotWPError( $result );
-		$this->assertNotEmpty( $result );
+		$this->assertNotSame( array(), $result );
 
 		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.l10n.php' );
 		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.l10n.php' );
@@ -260,7 +260,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$this->assertIsNotBool( $result );
 		$this->assertNotWPError( $result );
-		$this->assertNotEmpty( $result );
+		$this->assertNotSame( array(), $result );
 
 		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.l10n.php' );
 		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.l10n.php' );
@@ -318,7 +318,7 @@ class Performant_Translations_Tests extends WP_UnitTestCase {
 
 		$this->assertIsNotBool( $result );
 		$this->assertNotWPError( $result );
-		$this->assertNotEmpty( $result );
+		$this->assertNotSame( array(), $result );
 
 		$this->assertFileExists( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.l10n.php' );
 		$this->assertFileExists( WP_LANG_DIR . '/themes/internationalized-theme-de_DE.l10n.php' );
